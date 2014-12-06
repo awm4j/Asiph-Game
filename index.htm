@@ -128,7 +128,6 @@
 
 			        return true;
 			    }
-
 			    return false;
 			}
 
@@ -186,7 +185,6 @@
 			var nextFire = 0;
 
 			function create () {
-
 			    //  Resize our game world to be a 2000 x 2000 square
 			    game.world.setBounds(-1000, -1000, 2000, 2000);
 
@@ -267,26 +265,19 @@
 			    game.camera.focusOnXY(0, 0);
 
 			    cursors = game.input.keyboard.createCursorKeys();
-
 			}
 
 			function removeLogo () {
-
 			    game.input.onDown.remove(removeLogo, this);
 			    logo.kill();
-
 			}
 
 			function update () {
-
 			    game.physics.arcade.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
-
 			    enemiesAlive = 0;
 
-			    for (var i = 0; i < enemies.length; i++)
-			    {
-			        if (enemies[i].alive)
-			        {
+			    for (var i = 0; i < enemies.length; i++) {
+			        if (enemies[i].alive) {
 			            enemiesAlive++;
 			            game.physics.arcade.collide(tank, enemies[i].tank);
 			            game.physics.arcade.overlap(bullets, enemies[i].tank, bulletHitEnemy, null, this);
@@ -294,30 +285,24 @@
 			        }
 			    }
 
-			    if (cursors.left.isDown)
-			    {
+			    if (cursors.left.isDown) {
 			        tank.angle -= 4;
 			    }
-			    else if (cursors.right.isDown)
-			    {
+			    else if (cursors.right.isDown) {
 			        tank.angle += 4;
 			    }
 
-			    if (cursors.up.isDown)
-			    {
+			    if (cursors.up.isDown) {
 			        //  The speed we'll travel at
 			        currentSpeed = 300;
 			    }
-			    else
-			    {
-			        if (currentSpeed > 0)
-			        {
+			    else {
+			        if (currentSpeed > 0) {
 			            currentSpeed -= 4;
 			        }
 			    }
 
-			    if (currentSpeed > 0)
-			    {
+			    if (currentSpeed > 0) {
 			        game.physics.arcade.velocityFromRotation(tank.rotation, currentSpeed, tank.body.velocity);
 			    }
 
@@ -334,55 +319,40 @@
 
 			    turret.rotation = game.physics.arcade.angleToPointer(turret);
 
-			    if (game.input.activePointer.isDown)
-			    {
+			    if (game.input.activePointer.isDown) {
 			        //  Boom!
 			        fire();
 			    }
-
 			}
 
 			function bulletHitPlayer (tank, bullet) {
-
 			    bullet.kill();
-
 			}
 
 			function bulletHitEnemy (tank, bullet) {
-
 			    bullet.kill();
-
 			    var destroyed = enemies[tank.name].damage();
 
-			    if (destroyed)
-			    {
+			    if (destroyed) {
 			        var explosionAnimation = explosions.getFirstExists(false);
 			        explosionAnimation.reset(tank.x, tank.y);
 			        explosionAnimation.play('kaboom', 30, false, true);
 			    }
-
 			}
 
 			function fire () {
-
-			    if (game.time.now > nextFire && bullets.countDead() > 0)
-			    {
+			    if (game.time.now > nextFire && bullets.countDead() > 0) {
 			        nextFire = game.time.now + fireRate;
-
 			        var bullet = bullets.getFirstExists(false);
-
 			        bullet.reset(turret.x, turret.y);
-
 			        bullet.rotation = game.physics.arcade.moveToPointer(bullet, 1000, game.input.activePointer, 500);
 			    }
-
 			}
 
 			function render () {
 			    // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
 			    game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
 			}
-
 		};
 
 	</script>

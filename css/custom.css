@@ -57,3 +57,7 @@ ul.legals li:last-child:after {
 .credit {
     text-align: right;
 }
+canvas {
+   display : block;
+   margin : auto;
+}

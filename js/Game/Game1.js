@@ -75,15 +75,13 @@ Game1 = function() {
         this.tank.angle = game.rnd.angle();
 
         game.physics.arcade.velocityFromRotation(this.tank.rotation, 100, this.tank.body.velocity);
-
     };
 
     EnemyTank.prototype.damage = function() {
 
         this.health -= 1;
 
-        if (this.health <= 0)
-        {
+        if (this.health <= 0) {
             this.alive = false;
 
             this.shadow.kill();
@@ -92,9 +90,7 @@ Game1 = function() {
 
             return true;
         }
-
         return false;
-
     }
 
     EnemyTank.prototype.update = function() {
@@ -107,33 +103,26 @@ Game1 = function() {
         this.turret.y = this.tank.y;
         this.turret.rotation = this.game.physics.arcade.angleBetween(this.tank, this.player);
 
-        if (this.game.physics.arcade.distanceBetween(this.tank, this.player) < 300)
-        {
-            if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0)
-            {
+        if (this.game.physics.arcade.distanceBetween(this.tank, this.player) < 300) {
+            if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0) {
                 this.nextFire = this.game.time.now + this.fireRate;
 
                 var bullet = this.bullets.getFirstDead();
-
                 bullet.reset(this.turret.x, this.turret.y);
-
                 bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 500);
             }
         }
-
     };
 
-    var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+    var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', { preload: preload, create: create, update: update, render: render });
 
     function preload () {
-
-        game.load.atlas('tank', '../../assets/games/tanks/tanks.png', 'assets/games/tanks/tanks.json');
-        game.load.atlas('enemy', '../../assets/games/tanks/enemy-tanks.png', 'assets/games/tanks/tanks.json');
-        game.load.image('logo', '../../assets/games/tanks/logo.png');
-        game.load.image('bullet', '../../assets/games/tanks/bullet.png');
-        game.load.image('earth', '../../assets/games/tanks/scorched_earth.png');
-        game.load.spritesheet('kaboom', '../../assets/games/tanks/explosion.png', 64, 64, 23);
-
+        game.load.atlas('tank', '../../assets/tanks.png', '../../assets/tanks.json');
+        game.load.atlas('enemy', '../../assets/enemy-tanks.png', '../../assets/tanks.json');
+        game.load.image('logo', '../../assets/logo.png');
+        game.load.image('bullet', '../../assets/bullet.png');
+        game.load.image('earth', '../../assets/scorched_earth.png');
+        game.load.spritesheet('kaboom', '../../assets/explosion.png', 64, 64, 23);
     }
 
     var land;
@@ -158,7 +147,6 @@ Game1 = function() {
     var nextFire = 0;
 
     function create () {
-
         //  Resize our game world to be a 2000 x 2000 square
         game.world.setBounds(-1000, -1000, 2000, 2000);
 
@@ -220,8 +208,7 @@ Game1 = function() {
         //  Explosion pool
         explosions = game.add.group();
 
-        for (var i = 0; i < 10; i++)
-        {
+        for (var i = 0; i < 10; i++) {
             var explosionAnimation = explosions.create(0, 0, 'kaboom', [0], false);
             explosionAnimation.anchor.setTo(0.5, 0.5);
             explosionAnimation.animations.add('kaboom');
@@ -240,26 +227,19 @@ Game1 = function() {
         game.camera.focusOnXY(0, 0);
 
         cursors = game.input.keyboard.createCursorKeys();
-
     }
 
     function removeLogo () {
-
         game.input.onDown.remove(removeLogo, this);
         logo.kill();
-
     }
 
     function update () {
-
         game.physics.arcade.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
-
         enemiesAlive = 0;
 
-        for (var i = 0; i < enemies.length; i++)
-        {
-            if (enemies[i].alive)
-            {
+        for (var i = 0; i < enemies.length; i++) {
+            if (enemies[i].alive) {
                 enemiesAlive++;
                 game.physics.arcade.collide(tank, enemies[i].tank);
                 game.physics.arcade.overlap(bullets, enemies[i].tank, bulletHitEnemy, null, this);
@@ -267,30 +247,24 @@ Game1 = function() {
             }
         }
 
-        if (cursors.left.isDown)
-        {
+        if (cursors.left.isDown) {
             tank.angle -= 4;
         }
-        else if (cursors.right.isDown)
-        {
+        else if (cursors.right.isDown) {
             tank.angle += 4;
         }
 
-        if (cursors.up.isDown)
-        {
+        if (cursors.up.isDown) {
             //  The speed we'll travel at
             currentSpeed = 300;
         }
-        else
-        {
-            if (currentSpeed > 0)
-            {
+        else {
+            if (currentSpeed > 0) {
                 currentSpeed -= 4;
             }
         }
 
-        if (currentSpeed > 0)
-        {
+        if (currentSpeed > 0) {
             game.physics.arcade.velocityFromRotation(tank.rotation, currentSpeed, tank.body.velocity);
         }
 
@@ -307,55 +281,39 @@ Game1 = function() {
 
         turret.rotation = game.physics.arcade.angleToPointer(turret);
 
-        if (game.input.activePointer.isDown)
-        {
+        if (game.input.activePointer.isDown) {
             //  Boom!
             fire();
         }
-
     }
 
     function bulletHitPlayer (tank, bullet) {
-
         bullet.kill();
-
     }
 
     function bulletHitEnemy (tank, bullet) {
-
         bullet.kill();
-
         var destroyed = enemies[tank.name].damage();
 
-        if (destroyed)
-        {
+        if (destroyed) {
             var explosionAnimation = explosions.getFirstExists(false);
             explosionAnimation.reset(tank.x, tank.y);
             explosionAnimation.play('kaboom', 30, false, true);
         }
-
     }
 
     function fire () {
-
-        if (game.time.now > nextFire && bullets.countDead() > 0)
-        {
+        if (game.time.now > nextFire && bullets.countDead() > 0) {
             nextFire = game.time.now + fireRate;
-
             var bullet = bullets.getFirstExists(false);
-
             bullet.reset(turret.x, turret.y);
-
             bullet.rotation = game.physics.arcade.moveToPointer(bullet, 1000, game.input.activePointer, 500);
         }
-
     }
 
     function render () {
-
         // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
         game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
-
     }
 
 }

@@ -74,10 +74,41 @@
 			</div>
 		</section>
 	
+		
+	
+	
+	<section>
+	<script src="js/phaser.min.js"></script>
+	<script type="text/javascript">
+
+		window.onload = function() {
+
+		var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
+
+		function preload () {
+
+			game.load.image('logo', 'js/phaser.png');
+
+		}
+
+		function create () {
+
+			var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+			logo.anchor.setTo(0.5, 0.5);
+
+		}
+
+		};
+
+	</script>
+	</section>
+	
+	
+	
 	
 	
 		<section id="GetStarted" class="text-center start-cta">
-			<h3>sad face</h3>
+			<h3>Newsletter</h3>
 			<form class="form-inline" role="form">
 				<div class="form-group">
 					<div class="input-group">
@@ -85,7 +116,7 @@
 						<input type="text" class="form-control" id="Email" placeholder="Example: Email@yourmom.com">
 					</div>
 				</div>
-				<button type="submit" class="btn btn-default">Go</button> <!-- save to cookie -->
+				<button type="submit" class="btn btn-default">Go</button> 
 			</form>
 		</section>
 	

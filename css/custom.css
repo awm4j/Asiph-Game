@@ -1,0 +1,59 @@
+header{
+	background: #3DC9B3 url("") no-repeat  center center / cover ;
+	margin-top: 0px;
+	
+}
+header h1 span, header p span{
+	
+}
+.hero{
+	background: url("../img/hero-bg.jpg") no-repeat scroll center center / cover transparent;
+	padding: 300px 0px 300px;
+	height: auto;
+}
+.shadow {
+    text-shadow: 1px 1px #37B5A1, 2px 2px #37B5A1, 3px 3px #37B5A1, 4px 4px #37B5A1, 5px 5px #37B5A1, 6px 6px #37B5A1, 7px 7px #37B5A1, 8px 8px #37B5A1, 9px 9px #37B5A1, 10px 10px #37B5A1, 11px 11px #37B5A1, 12px 12px #37B5A1, 13px 13px #37B6A2, 14px 14px #37B7A3, 15px 15px rgb(56, 184, 164), 16px 16px rgb(56, 185, 165), 17px 17px rgb(56, 186, 166), 18px 18px rgb(57, 187, 167), 19px 19px rgb(57, 188, 168), 20px 20px rgb(57, 189, 169), 21px 21px rgb(58, 191, 170), 22px 22px rgb(58, 192, 171), 23px 23px rgb(58, 193, 172), 24px 24px rgb(59, 194, 173), 25px 25px rgb(59, 195, 174), 26px 26px rgb(59, 196, 175), 27px 27px rgb(60, 197, 176), 28px 28px rgb(60, 198, 177), 29px 29px rgb(60, 199, 178), 30px 30px rgb(61, 201, 179);
+}
+.icon {
+    height: 175px;
+    width: 175px;
+    line-height: 175px;
+    max-width: 100%;
+    background: none repeat scroll 0% 0% #3DC9B3;
+    border-radius: 50%;
+    display: block;
+    color: #FFF;
+    font-size: 55px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    margin: 0px auto 50px;
+}
+.start-cta {
+    background-color: #242830;
+    padding: 70px 0px;
+}
+footer {
+    background-color: #242830;
+    padding: 40px 0px 30px;
+}
+ul.legals {
+    list-style: outside none none;
+    color: #FFF;
+    line-height: 25px;
+}
+ul.legals li {
+    display: inline-block;
+}
+ul.legals li:after {
+    content: " |";
+}
+ul.legals li:last-child:after {
+    content: "";
+}
+.legals {
+    text-align: left;
+}
+.credit {
+    text-align: right;
+}

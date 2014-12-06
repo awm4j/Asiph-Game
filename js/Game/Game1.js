@@ -3,25 +3,30 @@
  */
 
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, '{preload: Preload, create: Create, update: Update, render: Render }');
-
-function Preload()
-{
-    
-}
+///The main game class
+Game1 = function() {
+    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: Preload, create: Create, update: Update, render: Render });
 
 
-function Create()
-{
+    ///Called before the game is started
+    ///Use to load the game assets
+    function Preload() {
 
-}
+    }
 
-function Update()
-{
+    ///Use to instantiate objects before the game starts
+    function Create() {
 
-}
+    }
 
-function Render()
-{
+    ///Called every frame for updating
+    function Update() {
+
+    }
+
+    ///Called every frame for drawing
+    function Render() {
+
+    }
 
 }

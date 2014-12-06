@@ -43,8 +43,8 @@
 }*/
 
 
-Game1 = function() {
-
+Game1 = function()
+{
     EnemyTank = function (index, game, player, bullets) {
 
         var x = game.world.randomX;
@@ -315,5 +315,4 @@ Game1 = function() {
         // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
         game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
     }
-
-}
+};

@@ -5,48 +5,61 @@
 
 var gameWidth = 600;
 var kodingWidth = 400; // ;)
+
+var topSec = 200;
+var botSec = 400;
+
 var totalWidth = gameWidth + kodingWidth;
-var totalHeight = 600;
+var totalHeight = topSec + botSec;
 
 //The main game class
 Game1 = function() {
-    var game = new Phaser.Game(totalWidth, totalHeight, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
+    this.game = new Phaser.Game(totalWidth, totalHeight, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 	this.player;
 	this.cursors;
     this.controlManager;
+    this.isGamePaused = false;
 	
 	var bot;
     //Called before the game is started
     //Use to load the game assets
     function Preload() {
-		game.load.image('background','assets/rockFlooring.png');
-		game.load.image('background2','assets/light_sand.png');
-		game.load.image('player','assets/player.png');
-		game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
-		game.load.image('running','assets/running.png');
-        game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
+        this.game.load.image('background','assets/rockFlooring.png');
+        this.game.load.image('background2','assets/light_sand.png');
+        this.game.load.image('player','assets/player.png');
+        this.game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
+        this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
+        this.game.load.image('running','assets/blocks/running.png');
     } 
 
     ///Use to instantiate objects before the game starts
     function Create() {
-        this.controlManager = new ControlManager(game);
-		game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
-		game.add.tileSprite(gameWidth, 0, kodingWidth, 250, 'background2');
-        game.world.setBounds(0, 0, gameWidth, totalHeight);
-        
-		game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.controlManager = new ControlManager(this.game);
+        this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
+        this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background2');
+        this.game.world.setBounds(0, 0, gameWidth, totalHeight);
 
-        this.player = new Player(game);
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+        this.player = new Player(this.game);
 		
-        cursors = game.input.keyboard.createCursorKeys();
+        cursors = this.game.input.keyboard.createCursorKeys();
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
-	    
-		var runIcon = game.add.sprite(gameWidth + 10, 10, 'running');
-		runIcon.inputEnabled = true;
-		runIcon.input.enableDrag(true);
-		
-		bot = game.add.sprite(200, 200, 'bot');
+
+		// Programming blocks
+		for (var i = 0; i < 7; ++i) {
+			for (var j = 0; j < 3; ++j) {
+				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, 'running');
+				item.inputEnabled = true;
+				item.input.enableDrag(true);
+				item.x0 = item.x;
+				item.y0 = item.y;
+				item.events.onDragStop.add(fixLocation);
+			}
+		}
+
+        bot = this.game.add.sprite(200, 200, 'bot');
 
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
@@ -57,28 +70,41 @@ Game1 = function() {
 		//  true means it will loop when it finishes
 		bot.animations.play('run', 15, true);
 
-        this.popup = new PopupWindow(50, 50, 300, 200);
+        this.popup = new PopupWindow(this, 50, 50, 500, 400);
     }
+	
+	function fixLocation (item) {
+		if (item.x > gameWidth && item.y > topSec) {
+			
+		}
+		else {
+			item.x = item.x0;
+			item.y = item.y0;
+		}
+	}
 
     ///Called every frame for updating
     function Update() {
-		var xDir = 0;
-		var yDir = 0;
-		
-        if(this.controlManager.IsArrowKeyUp_Pressed()) {
-            yDir -= 1;
-        }
-        if(this.controlManager.IsArrowKeyDown_Pressed()) {
-            yDir += 1;
-        }
+        if(!this.isGamePaused) {
+            var xDir = 0;
+            var yDir = 0;
 
-        if(this.controlManager.IsArrowKeyLeft_Pressed()) {
-            xDir -= 1;
+            if (this.controlManager.IsArrowKeyUp_Pressed()) {
+                yDir -= 1;
+                this.popup.Show("This is osme text");
+            }
+            if (this.controlManager.IsArrowKeyDown_Pressed()) {
+                yDir += 1;
+            }
+
+            if (this.controlManager.IsArrowKeyLeft_Pressed()) {
+                xDir -= 1;
+            }
+            if (this.controlManager.IsArrowKeyRight_Pressed()) {
+                xDir += 1;
+            }
+            this.player.Update(xDir, yDir);
         }
-        if (this.controlManager.IsArrowKeyRight_Pressed()) {
-            xDir += 1;
-        }
-        this.player.Update(xDir, yDir);
     }
 
     ///Called every frame for drawing
@@ -126,43 +152,53 @@ ControlManager = function(game) {
     }
 };
 
-PopupWindow = function(x, y, width, height) {
+PopupWindow = function(game1, x, y, width, height) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.style = { font: "26px Arial", fill: "#ff0044", align: "center" };
+    this.game = game1;
+    this.graphics = this.game.add.graphics(0,0);
 
-    //this.button.disabled = true;
     this.isRendering = false;
 
 
-
-
     this.Show = function(text){
-        this.isRendering = true;
-        this.text = game.add.text(this.x + 10, this.y + 10, text, this.style);
+        if(!this.isRendering) {
+            this.game.isGamePaused = true;
+            this.isRendering = true;
+            this.text = this.game.add.text(this.x + 10, this.y + 10, text, this.style);
 
-        this.isRendering = true;
+            this.group = this.game.add.group();
+            this.group.add(this.graphics);
+            this.group.add(this.button);
+            this.group.add(this.text);
+
+            this.isRendering = true;
+        }
     };
 
     this.Render = function(){
-
         if(this.isRendering) {
-            game.context.fillStyle = 'rgba(255,0,255,0.8)';
-            game.context.fillRect(this.x, this.y, this.width, this.height);
+            this.graphics.lineStyle(2, 0x0000FF, 1);
+            this.graphics.drawRect(x,y,width,height);
+            this.graphics.beginFill(0x0000FF, 0.5);
         }
     };
 
     this.actionOnClick = function(){
         if(this.isRendering)
         {
+            this.game.isGamePaused = false;
             this.isRendering = false;
             this.text.destroy();
-            this.button.destroy();
-            this.button.set("visible", false);
-            this.button.set("exists", false);
+            //this.button.destroy();
+            this.game.world.remove(this.group);
         }
     };
-    //this.button = game.add.button((x + width) / 2 - 75, y + height - 52, 'btnOk', this.actionOnClick, this, 0, 0, 1);
+    this.button = this.game.add.button((x + width) / 2 - 75, y + height - 52, 'btnOk', this.actionOnClick, this, 0, 0, 1);
+    this.group = this.game.add.group();
+    this.group.add(this.button);
+    this.game.world.remove(this.group);
 };

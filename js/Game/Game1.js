@@ -91,7 +91,7 @@ Game1 = function() {
 
             if (this.controlManager.IsArrowKeyUp_Pressed()) {
                 yDir -= 1;
-                this.popup.Show("This is osme text");
+                this.popup.Show("This is osme text\rtemp\nmore");
             }
             if (this.controlManager.IsArrowKeyDown_Pressed()) {
                 yDir += 1;

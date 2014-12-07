@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11da8ae0-67e8-416c-a8e7-5a6d4f2f0542" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/assets/running.png" afterPath="$PROJECT_DIR$/assets/blocks/running.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Game/Game1.js" afterPath="$PROJECT_DIR$/js/Game/Game1.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Koding-Hackathon.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,8 +40,8 @@
       <file leaf-file-name="Game1.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6188748" vertical-offset="188" max-vertical-offset="3195">
-              <caret line="58" column="44" selection-start-line="58" selection-start-column="44" selection-end-line="58" selection-end-column="44" />
+            <state vertical-scroll-proportion="-0.027223231" vertical-offset="1245" max-vertical-offset="3135">
+              <caret line="81" column="29" selection-start-line="81" selection-start-column="29" selection-end-line="81" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -350,8 +350,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6188748" vertical-offset="188" max-vertical-offset="3195">
-          <caret line="58" column="44" selection-start-line="58" selection-start-column="44" selection-end-line="58" selection-end-column="44" />
+        <state vertical-scroll-proportion="-0.027223231" vertical-offset="1245" max-vertical-offset="3135">
+          <caret line="81" column="29" selection-start-line="81" selection-start-column="29" selection-end-line="81" selection-end-column="29" />
           <folding />
         </state>
       </provider>

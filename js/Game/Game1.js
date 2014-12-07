@@ -26,10 +26,12 @@ var bot;
 		game.load.image('player','assets/player.png');
 		game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
 		game.load.image('running','assets/running.png');
+        game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
     } 
 
     ///Use to instantiate objects before the game starts
     function Create() {
+
 
         this.controlManager = new ControlManager();
 
@@ -59,6 +61,8 @@ var bot;
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
 		bot.animations.play('run', 15, true);
+
+        this.popup = new PopupWindow(50, 50, 300, 200);
     }
 
     ///Called every frame for updating
@@ -81,8 +85,9 @@ var bot;
 
     ///Called every frame for drawing
     function Render() {
-	    game.context.fillStyle = 'rgba(255,0,0,0.6)';
-	    game.context.fillRect(gameWidth, 0, kodingWidth, totalHeight);		
+        game.context.fillStyle = 'rgba(255,0,0,0.6)';
+        game.context.fillRect(gameWidth, 0, kodingWidth, totalHeight);
+        this.popup.Render();
     }
 
 };
@@ -138,4 +143,47 @@ ControlManager = function() {
     this.isKeyPressed = function(key) {
         return (game.input.keyboard.isDown(key));
     }
+};
+
+
+PopupWindow = function(x, y, width, height){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.style = { font: "26px Arial", fill: "#ff0044", align: "center" };
+
+    //this.button.disabled = true;
+    this.isRendering = false;
+
+
+
+
+    this.Show = function(text){
+        this.isRendering = true;
+        this.text = game.add.text(this.x + 10, this.y + 10, text, this.style);
+
+        this.isRendering = true;
+    };
+
+    this.Render = function(){
+
+        if(this.isRendering) {
+            game.context.fillStyle = 'rgba(255,0,255,0.8)';
+            game.context.fillRect(this.x, this.y, this.width, this.height);
+        }
+    };
+
+    this.actionOnClick = function(){
+        if(this.isRendering)
+        {
+            this.isRendering = false;
+            this.text.destroy();
+            this.button.destroy();
+            this.button.set("visible", false);
+            this.button.set("exists", false);
+        }
+    };
+    this.button = game.add.button((x + width) / 2 - 75, y + height - 52, 'btnOk', this.actionOnClick, this, 0, 0, 1);
+
 };

@@ -33,7 +33,12 @@ Game1 = function() {
         this.game.load.image('player','assets/player.png');
         this.game.load.atlasJSONHash('bot', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
-        this.game.load.image('running','assets/blocks/running.png');
+        
+		// Blocks
+        this.game.load.image('block0','assets/blocks/up.png');
+        this.game.load.image('block1','assets/blocks/down.png');
+        this.game.load.image('block2','assets/blocks/left.png');
+        this.game.load.image('block3','assets/blocks/right.png');
 		
         this.game.load.spritesheet('play','assets/play.png', 48, 48);
     } 
@@ -58,7 +63,8 @@ Game1 = function() {
 		// Programming blocks
 		for (var i = 0; i < 7; ++i) {
 			for (var j = 0; j < 3; ++j) {
-				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, 'running');
+				var blockName = 'block' + i % 4;
+				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, blockName);
 				item.inputEnabled = true;
 				item.input.enableDrag(true);
 				item.x0 = item.x;
@@ -99,8 +105,9 @@ Game1 = function() {
 	
 	// Used for the coding blocks
 	function fixLocation (item) {
-		if (item.x > gameWidth && item.y > topSec && item.original) {			
-			var newItem = that.game.add.sprite(item.x0, item.y0, 'running');
+		// Moved a fresh block into the bottom coding area
+		if (item.x > gameWidth - item.width && item.y > topSec - item.height && item.original) {			
+			var newItem = that.game.add.sprite(item.x0, item.y0, item.key);
 			newItem.inputEnabled = true;
 			newItem.input.enableDrag(true);
 			newItem.x0 = newItem.x;
@@ -111,14 +118,19 @@ Game1 = function() {
 			item.original = false;
 			
 			currentBlocks.push(item);
+			
+			var oldIndex = currentBlocks.indexOf(item);
+			var newIndex = getBlockIndex(item);
+			
+			currentBlocks.move(oldIndex, newIndex);
 		}
-		
+		// Moved a fresh block somewhere other than the bottom coding area
 		else if (item.original) {
 			item.x = item.x0;
 			item.y = item.y0;
 		}
-		
-		else if (item.x < gameWidth || item.y < topSec){
+		// Moved an old block out of the bottom coding area
+		else if (item.x < gameWidth - item.width || item.y < topSec - item.height){
 			// Remove it from the current blocks array
 			var i = currentBlocks.indexOf(item);
 			if(i != -1) {
@@ -126,8 +138,25 @@ Game1 = function() {
 			}
 			item.destroy();
 		}
+		// Moved an old block inside of the coding area
+		else {
+			var oldIndex = currentBlocks.indexOf(item);
+			var newIndex = getBlockIndex(item);
+			
+			currentBlocks.move(oldIndex, newIndex);
+		}
 		
 		updateCurrentBlocks();
+	}
+	
+	function getBlockIndex (item) {
+		for (var i = 0; i < currentBlocks.length; ++i) {
+			var block = currentBlocks[i];
+			if (item.x < block.x && item.y < block.y + block.height/2) {
+				return i;
+			}
+		}
+		return currentBlocks.length - 1;
 	}
 	
 	// Updates the look of the bottom blocks
@@ -364,4 +393,16 @@ Console = function(game1)
                 break;
         }
     }
+};
+
+// Taken from: http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
 };

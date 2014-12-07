@@ -56,6 +56,7 @@ Game1 = function() {
         this.game.load.image('block1','assets/blocks/down.png');
         this.game.load.image('block2','assets/blocks/left.png');
         this.game.load.image('block3','assets/blocks/right.png');
+        this.game.load.image('block4','assets/blocks/sword.png');
 		
         this.game.load.spritesheet('play','assets/play.png', 48, 48);
     } 
@@ -80,7 +81,7 @@ Game1 = function() {
 		// Programming blocks
 		for (var i = 0; i < 7; ++i) {
 			for (var j = 0; j < 3; ++j) {
-				var blockName = 'block' + i % 4;
+				var blockName = 'block' + i % 5;
 				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, blockName);
 				item.inputEnabled = true;
 				item.input.enableDrag(true);

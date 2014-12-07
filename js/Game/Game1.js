@@ -10,12 +10,15 @@ Game1 = function() {
 
     var land;
     var logo;
+	
+	var player;
+	var cursors;
 
 
     ///Called before the game is started
     ///Use to load the game assets
     function Preload() {
-        game.load.image('logo', 'phaser.png');
+		game.load.image('player','assets/player.png');
     }
 
     ///Use to instantiate objects before the game starts
@@ -28,6 +31,14 @@ Game1 = function() {
 
         land.fixedToCamera = true;
 
+		game.world.setBounds(0, 0, 1920, 1920);
+	    game.physics.startSystem(Phaser.Physics.P2JS);
+	    player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+	    game.physics.p2.enable(player);
+	    cursors = game.input.keyboard.createCursorKeys();
+	    game.camera.follow(player);
+
+	    game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
     }
 
@@ -38,7 +49,9 @@ Game1 = function() {
 
     ///Called every frame for drawing
     function Render() {
-
+		//var zone = game.camera.deadzone;
+	    //game.context.fillStyle = 'rgba(255,0,0,0.6)';
+	    //game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
     }
 
 }
@@ -86,10 +99,12 @@ ControlManager = function()
 
 }
 
-
-/*
-Game1 = function()
+/*Game1 = function()
 {
+    /**
+     * Created by Nate on 12/6/2014.
+     *//*
+>>>>>>> e7db43c2d84f8837a9b0c8a68cbc04909616ea69
     EnemyTank = function (index, game, player, bullets) {
 
         var x = game.world.randomX;

@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11da8ae0-67e8-416c-a8e7-5a6d4f2f0542" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/enemy.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/mainChar.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/player.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/sigOther.png" />
+      <change type="MOVED" beforePath="C:\xampp\htdocs\Koding_Hackathon\assets\enemy-tanks.png" afterPath="$PROJECT_DIR$/assets/enemy-tanks - Copy.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/enemy-tanks.png" afterPath="$PROJECT_DIR$/assets/enemy-tanks.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/scorched_earth.png" afterPath="$PROJECT_DIR$/assets/scorched_earth.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/scorched_earth.xcf" afterPath="$PROJECT_DIR$/assets/scorched_earth.xcf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Game/Game1.js" afterPath="$PROJECT_DIR$/js/Game/Game1.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Koding-Hackathon.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,8 +47,8 @@
       <file leaf-file-name="Game1.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9018287" vertical-offset="5319" max-vertical-offset="6358">
-              <caret line="368" column="4" selection-start-line="368" selection-start-column="4" selection-end-line="368" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.11453321" vertical-offset="561" max-vertical-offset="6613">
+              <caret line="40" column="72" selection-start-line="40" selection-start-column="72" selection-end-line="40" selection-end-column="72" />
               <folding />
             </state>
           </provider>
@@ -336,8 +343,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9018287" vertical-offset="5319" max-vertical-offset="6358">
-          <caret line="368" column="4" selection-start-line="368" selection-start-column="4" selection-end-line="368" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.11453321" vertical-offset="561" max-vertical-offset="6613">
+          <caret line="40" column="72" selection-start-line="40" selection-start-column="72" selection-end-line="40" selection-end-column="72" />
           <folding />
         </state>
       </provider>

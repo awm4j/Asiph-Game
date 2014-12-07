@@ -10,16 +10,14 @@ var kodingWidth = 400; // ;)
 var totalWidth = gameWidth + kodingWidth;
 var totalHeight = 600;
 
-var GAME_SPEED = 1;
-var PLAYER_SPEED = 4;
-
 //The main game class
 Game1 = function() {
     game = new Phaser.Game(totalWidth, totalHeight, Phaser.CANVAS, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 	this.player;
 	this.cursors;
     this.controlManager;
-var bot;
+	
+	var bot;
     //Called before the game is started
     //Use to load the game assets
     function Preload() {
@@ -32,25 +30,23 @@ var bot;
 
     ///Use to instantiate objects before the game starts
     function Create() {
-
-
         this.controlManager = new ControlManager();
 		game.add.tileSprite(0,0,gameWidth,totalHeight, 'background');
         game.world.setBounds(0, 0, gameWidth, totalHeight);
-        game.physics.startSystem(Phaser.Physics.P2JS);
+        
+		game.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.player = new Player();
-        game.physics.p2.enable(this.player.sprite);
-        game.camera.follow(this.player.sprite);
+		
+		game.camera.follow(this.player.sprite);
 
         cursors = game.input.keyboard.createCursorKeys();
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 	    
-		var runIcon = game.add.sprite(100, 100, 'running');
+		var runIcon = game.add.sprite(gameWidth + 100, 500, 'running');
 		runIcon.inputEnabled = true;
 		runIcon.input.enableDrag(true);
-		
 		
 		bot = game.add.sprite(200, 200, 'bot');
 
@@ -68,64 +64,55 @@ var bot;
 
     ///Called every frame for updating
     function Update() {
+		var xDir = 0;
+		var yDir = 0;
+		
         if(this.controlManager.IsArrowKeyUp_Pressed()) {
-            this.player.vel_y = -1;
+            yDir -= 1;
         }
-        else if(this.controlManager.IsArrowKeyDown_Pressed()) {
-            this.player.vel_y = 1;
+        if(this.controlManager.IsArrowKeyDown_Pressed()) {
+            yDir += 1;
         }
 
         if(this.controlManager.IsArrowKeyLeft_Pressed()) {
-            this.player.vel_x = -1;
+            xDir -= 1;
         }
-        else if (this.controlManager.IsArrowKeyRight_Pressed()) {
-            this.player.vel_x = 1;
+        if (this.controlManager.IsArrowKeyRight_Pressed()) {
+            xDir += 1;
         }
-        this.player.Update(GAME_SPEED);
+        this.player.Update(xDir, yDir);
     }
 
     ///Called every frame for drawing
     function Render() {
-        game.context.fillStyle = 'rgba(255,0,0,0.6)';
-        game.context.fillRect(gameWidth, 0, kodingWidth, totalHeight);
+		var topSection = 200;
+		
+        game.context.fillStyle = 'rgba(255,0,0,1)';
+        game.context.fillRect(gameWidth, 0, kodingWidth, topSection);
+        
+		game.context.fillStyle = 'rgba(255,0,0,0.6)';
+        game.context.fillRect(gameWidth, topSection, kodingWidth, totalHeight - topSection);
+        
         this.popup.Render();
     }
-
 };
 
 Player = function() {
-    this.vel_x = 0;
-    this.vel_y = 0;
-
     this.sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
     this.sprite.anchor.setTo(0.5, 0.5);
-//    this.sprite.immovable = false;
-
-    this.Update = function(deltaTime) {
-		
-		// How much you'll move
-		var deltaX = this.vel_x * PLAYER_SPEED * deltaTime;
-		var deltaY = this.vel_y * PLAYER_SPEED * deltaTime;
 	
-		// Distance from an edge
-		var distX = Math.min(gameWidth - this.sprite.body.x, this.sprite.body.x);
-		var distY = Math.min(totalHeight - this.sprite.body.y, this.sprite.body.y);
-		
-        this.sprite.body.x += Math.min(deltaX, distX);
-        this.sprite.body.y += Math.min(deltaY, distY);
+	game.physics.arcade.enableBody(this.sprite);        
+	this.sprite.body.collideWorldBounds = true;
 
-		if (this.sprite.body.x < 0)
-			this.sprite.body.x = 0;
-		if (this.sprite.body.y < 0)
-			this.sprite.body.y = 0;
-
-        this.vel_x = 0;
-        this.vel_y = 0;
+    this.Update = function(xDir, yDir) {
+		var SPEED = 100;
+		var len = Math.sqrt(xDir * xDir + yDir * yDir);
+		this.sprite.body.velocity.x = xDir / len * SPEED;
+		this.sprite.body.velocity.y = yDir / len * SPEED;
     };
 };
-
 
 ControlManager = function() {
     this.IsArrowKeyUp_Pressed = function() {
@@ -146,8 +133,7 @@ ControlManager = function() {
     }
 };
 
-
-PopupWindow = function(x, y, width, height){
+PopupWindow = function(x, y, width, height) {
     this.x = x;
     this.y = y;
     this.width = width;

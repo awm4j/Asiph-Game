@@ -3,8 +3,6 @@
  * Modified by AwM4J 12/6/14.
  */
 
-var game;
-
 var gameWidth = 600;
 var kodingWidth = 400; // ;)
 var totalWidth = gameWidth + kodingWidth;
@@ -12,7 +10,7 @@ var totalHeight = 600;
 
 //The main game class
 Game1 = function() {
-    game = new Phaser.Game(totalWidth, totalHeight, Phaser.CANVAS, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
+    var game = new Phaser.Game(totalWidth, totalHeight, Phaser.CANVAS, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 	this.player;
 	this.cursors;
     this.controlManager;
@@ -30,16 +28,14 @@ Game1 = function() {
 
     ///Use to instantiate objects before the game starts
     function Create() {
-        this.controlManager = new ControlManager();
+        this.controlManager = new ControlManager(game);
 		game.add.tileSprite(0,0,gameWidth,totalHeight, 'background');
         game.world.setBounds(0, 0, gameWidth, totalHeight);
         
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        this.player = new Player();
+        this.player = new Player(game);
 		
-		game.camera.follow(this.player.sprite);
-
         cursors = game.input.keyboard.createCursorKeys();
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
@@ -97,7 +93,7 @@ Game1 = function() {
     }
 };
 
-Player = function() {
+var Player = function(game) {
     this.sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
@@ -105,16 +101,19 @@ Player = function() {
 	
 	game.physics.arcade.enableBody(this.sprite);        
 	this.sprite.body.collideWorldBounds = true;
-
-    this.Update = function(xDir, yDir) {
-		var SPEED = 100;
-		var len = Math.sqrt(xDir * xDir + yDir * yDir);
-		this.sprite.body.velocity.x = xDir / len * SPEED;
-		this.sprite.body.velocity.y = yDir / len * SPEED;
-    };
+	
+	game.camera.follow(this.sprite);
 };
 
-ControlManager = function() {
+Player.prototype.Update = function(xDir, yDir) {
+	var SPEED = 100;
+	var len = Math.sqrt(xDir * xDir + yDir * yDir);
+	this.sprite.body.velocity.x = xDir / len * SPEED;
+	this.sprite.body.velocity.y = yDir / len * SPEED;
+};
+
+
+ControlManager = function(game) {
     this.IsArrowKeyUp_Pressed = function() {
         return this.isKeyPressed(Phaser.Keyboard.UP);
     };
@@ -127,7 +126,6 @@ ControlManager = function() {
     this.IsArrowKeyRight_Pressed = function() {
         return this.isKeyPressed(Phaser.Keyboard.RIGHT);
     };
-
     this.isKeyPressed = function(key) {
         return (game.input.keyboard.isDown(key));
     }

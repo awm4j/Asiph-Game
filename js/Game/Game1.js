@@ -111,14 +111,14 @@ Game1 = function() {
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
 		mCwU.animations.play('run', 5, true);
-		mCwD.animations.play('run', 5, 3);
-		mCwL.animations.play('run', 5, true);
-		mCwR.animations.play('run', 5, true);
+		mCwD.animations.play('run', 5, 10);
+		mCwL.animations.play('run', 5, 10);
+		mCwR.animations.play('run', 5, 10);
 		mCaU.animations.play('run', 5, true);
 		mCaD.animations.play('run', 5, true);
 		mCaL.animations.play('run', 5, true);
 		mCaR.animations.play('run', 5, true);
-		mCDIE.animations.play('run', 5, 3);
+		mCDIE.animations.play('run', 5, 10);
 		
 		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);

@@ -10,7 +10,7 @@ var totalHeight = 600;
 
 //The main game class
 Game1 = function() {
-    var game = new Phaser.Game(totalWidth, totalHeight, Phaser.CANVAS, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
+    var game = new Phaser.Game(totalWidth, totalHeight, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 	this.player;
 	this.cursors;
     this.controlManager;
@@ -20,6 +20,7 @@ Game1 = function() {
     //Use to load the game assets
     function Preload() {
 		game.load.image('background','assets/rockFlooring.png');
+		game.load.image('background2','assets/light_sand.png');
 		game.load.image('player','assets/player.png');
 		game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
 		game.load.image('running','assets/running.png');
@@ -29,7 +30,8 @@ Game1 = function() {
     ///Use to instantiate objects before the game starts
     function Create() {
         this.controlManager = new ControlManager(game);
-		game.add.tileSprite(0,0,gameWidth,totalHeight, 'background');
+		game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
+		game.add.tileSprite(gameWidth, 0, kodingWidth, 250, 'background2');
         game.world.setBounds(0, 0, gameWidth, totalHeight);
         
 		game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -40,7 +42,7 @@ Game1 = function() {
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 	    
-		var runIcon = game.add.sprite(gameWidth + 100, 500, 'running');
+		var runIcon = game.add.sprite(gameWidth + 10, 10, 'running');
 		runIcon.inputEnabled = true;
 		runIcon.input.enableDrag(true);
 		
@@ -81,13 +83,6 @@ Game1 = function() {
 
     ///Called every frame for drawing
     function Render() {
-		var topSection = 200;
-		
-        game.context.fillStyle = 'rgba(255,0,0,1)';
-        game.context.fillRect(gameWidth, 0, kodingWidth, topSection);
-        
-		game.context.fillStyle = 'rgba(255,0,0,0.6)';
-        game.context.fillRect(gameWidth, topSection, kodingWidth, totalHeight - topSection);
         
         this.popup.Render();
     }

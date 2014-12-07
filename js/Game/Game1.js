@@ -20,6 +20,8 @@ Game1 = function() {
     this.controlManager;
     this.isGamePaused = false;
 	
+	var currentBlocks = [];
+	
 	var that = this;
 	
 	var bot;
@@ -29,7 +31,7 @@ Game1 = function() {
         this.game.load.image('background','assets/rockFlooring.png');
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('player','assets/player.png');
-        this.game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
+        this.game.load.atlasJSONHash('bot', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         this.game.load.image('running','assets/blocks/running.png');
     } 
@@ -93,7 +95,9 @@ Game1 = function() {
 			newItem.original = true;			
 			newItem.events.onDragStop.add(fixLocation);
 			
-			item.original = false;			
+			item.original = false;
+			
+			currentBlocks.push(item);
 		}
 		
 		else if (item.original) {
@@ -102,7 +106,23 @@ Game1 = function() {
 		}
 		
 		else if (item.x < gameWidth || item.y < topSec){
+			// Remove it from the current blocks array
+			var i = currentBlocks.indexOf(item);
+			if(i != -1) {
+				currentBlocks.splice(i, 1);
+			}
 			item.destroy();
+		}
+		
+		updateCurrentBlocks();
+	}
+	
+	// Updates the look of the bottom blocks
+	function updateCurrentBlocks() {
+		for (var i = 0; i < currentBlocks.length; ++i) {
+			var item = currentBlocks[i];
+			item.x = gameWidth + 8 + 56 * (i % 7);
+			item.y = topSec + 10 + Math.trunc(i / 7) * 60;
 		}
 	}
 

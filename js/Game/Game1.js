@@ -2,10 +2,11 @@
  * Created by Nate on 12/6/2014.
  */
 
+var game;
 
 ///The main game class
-/*Game1 = function() {
-    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: Preload, create: Create, update: Update, render: Render });
+Game1 = function() {
+    game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: Preload, create: Create, update: Update, render: Render });
 
     var land;
     var logo;
@@ -40,14 +41,55 @@
 
     }
 
-}*/
+}
+
+Player = function()
+{
+    var position = new Phaser.vec2();
+    var velocity = new Phaser.vec2();
+
+    function update(deltaTime)
+    {
+        position += velocity * deltaTime;
+
+        velocity.x = 0;
+        velocity.y = 0;
+    }
+
+}
+
+ControlManager = function()
+{
+    function IsArrowKeyUp_Pressed()
+    {
+        return isKeyPressed(Phaser.Keyboard.UP);
+    }
+    function IsArrowKeyDown_Pressed()
+    {
+        return isKeyPressed(Phaser.Keyboard.DOWN);
+    }
+    function IsArrowKeyLeft_Pressed()
+    {
+        return isKeyPressed(Phaser.Keyboard.LEFT);
+    }
+    function IsArrowKeyRight_Pressed()
+    {
+        return isKeyPressed(Phaser.Keyboard.RIGHT);
+    }
 
 
+
+    function isKeyPressed(key)
+    {
+        return (game.input.keyboard.isDown(key));
+    }
+
+}
+
+
+/*
 Game1 = function()
 {
-    /**
-     * Created by Nate on 12/6/2014.
-     */
     EnemyTank = function (index, game, player, bullets) {
 
         var x = game.world.randomX;
@@ -117,6 +159,8 @@ Game1 = function()
         }
     };
 
+
+
     var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', { preload: preload, create: create, update: update, render: render });
 
     function preload () {
@@ -127,6 +171,7 @@ Game1 = function()
         game.load.image('earth', 'assets/scorched_earth.png');
         game.load.spritesheet('kaboom', 'assets/explosion.png', 64, 64, 23);
     }
+
 
     var land;
 
@@ -148,6 +193,7 @@ Game1 = function()
     var bullets;
     var fireRate = 100;
     var nextFire = 0;
+
 
     function create () {
         //  Resize our game world to be a 2000 x 2000 square
@@ -237,6 +283,7 @@ Game1 = function()
         logo.kill();
     }
 
+
     function update () {
         game.physics.arcade.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
         enemiesAlive = 0;
@@ -314,8 +361,9 @@ Game1 = function()
         }
     }
 
+
     function render () {
         // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
         game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
     }
-};
+};*/

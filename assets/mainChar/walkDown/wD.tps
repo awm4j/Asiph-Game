@@ -188,6 +188,7 @@
         </struct>
         <key>fileList</key>
         <array>
+            <filename>3.png</filename>
             <filename>4.png</filename>
             <filename>5.png</filename>
             <filename>6.png</filename>
@@ -196,7 +197,6 @@
             <filename>0.png</filename>
             <filename>1.png</filename>
             <filename>2.png</filename>
-            <filename>3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

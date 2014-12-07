@@ -36,7 +36,7 @@ Game1 = function() {
     function Create() {
         this.controlManager = new ControlManager(this.game);
         this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
-        this.game.add.tileSprite(gameWidth, 0, kodingWidth, 250, 'background2');
+        this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background2');
         this.game.world.setBounds(0, 0, gameWidth, totalHeight);
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -46,10 +46,6 @@ Game1 = function() {
         cursors = this.game.input.keyboard.createCursorKeys();
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
-
-		var runIcon = this.game.add.sprite(gameWidth + 10, 10, 'running');
-		runIcon.inputEnabled = true;
-		runIcon.input.enableDrag(true);
 
 		// Programming blocks
 		for (var i = 0; i < 7; ++i) {

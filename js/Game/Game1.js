@@ -10,7 +10,13 @@ var PLAYER_SPEED = 40;
 ///The main game class
 Game1 = function() {
 
-    game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
+	var gameWidth = 600;
+	var kodingWidth = 400; // ;)
+	
+	var totalWidth = gameWidth + kodingWidth;
+	var totalHeight = 600;
+
+    game = new Phaser.Game(totalWidth, totalHeight, Phaser.CANVAS, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 	this.player;
 	this.cursors;
     this.controlManager;
@@ -26,8 +32,7 @@ Game1 = function() {
 
         this.controlManager = new ControlManager();
 
-        //  Resize our game world to be a 2000 x 2000 square
-        game.world.setBounds(0, 0, 1920, 1920);
+        game.world.setBounds(0, 0, gameWidth, totalHeight);
         game.physics.startSystem(Phaser.Physics.P2JS);
 
         this.player = new Player();
@@ -37,46 +42,35 @@ Game1 = function() {
         cursors = game.input.keyboard.createCursorKeys();
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
-
     }
 
     ///Called every frame for updating
     function Update() {
-
-        if(this.controlManager.IsArrowKeyUp_Pressed())
-        {
+        if(this.controlManager.IsArrowKeyUp_Pressed()) {
             this.player.vel_y = 1;
         }
-        else if(this.controlManager.IsArrowKeyDown_Pressed())
-        {
+        else if(this.controlManager.IsArrowKeyDown_Pressed()) {
             this.player.vel_y = -1;
         }
 
-        if(this.controlManager.IsArrowKeyLeft_Pressed())
-        {
+        if(this.controlManager.IsArrowKeyLeft_Pressed()) {
             this.player.vel_x = -1;
         }
-        else if (this.controlManager.IsArrowKeyRight_Pressed())
-        {
+        else if (this.controlManager.IsArrowKeyRight_Pressed()) {
             this.player.vel_x = 1;
         }
         this.player.Update(GAME_SPEED);
-
     }
 
     ///Called every frame for drawing
     function Render() {
-		//var zone = game.camera.deadzone;
-	    //game.context.fillStyle = 'rgba(255,0,0,0.6)';
-	    //game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
-        game.debug.text('PlayerPosition ' + this.player.sprite.x + ', ' + this.player.sprite.y, 10, 10);
-        game.debug.text('PlayerSpeed ' + this.player.xdir + ', ' + this.player.ydir, 10, 25);
+	    game.context.fillStyle = 'rgba(255,0,0,0.6)';
+	    game.context.fillRect(gameWidth, 0, kodingWidth, totalHeight);		
     }
 
 };
 
-Player = function()
-{
+Player = function() {
     this.vel_x = 0;
     this.vel_y = 0;
 

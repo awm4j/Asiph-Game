@@ -1,5 +1,6 @@
 /**
  * Created by Nate on 12/6/2014.
+ * Modified by AwM4J 12/6/14.
  */
 
 var game;
@@ -7,19 +8,20 @@ var game;
 var GAME_SPEED = 1;
 var PLAYER_SPEED = 40;
 
-///The main game class
+//The main game class
 Game1 = function() {
 
     game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 	this.player;
 	this.cursors;
     this.controlManager;
-
-    ///Called before the game is started
-    ///Use to load the game assets
+var bot;
+    //Called before the game is started
+    //Use to load the game assets
     function Preload() {
 		game.load.image('player','assets/player.png');
-    }
+		game.load.spritesheet('bot', 'assets/mainCharUp.png', 32, 32, 8);
+    } 
 
     ///Use to instantiate objects before the game starts
     function Create() {
@@ -37,7 +39,18 @@ Game1 = function() {
         cursors = game.input.keyboard.createCursorKeys();
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+	    
+		
+		bot = game.add.sprite(32, 32, 'bot');
 
+		//  Here we add a new animation called 'run'
+		//  We haven't specified any frames because it's using every frame in the texture atlas
+		bot.animations.add('run');
+
+		//  And this starts the animation playing by using its key ("run")
+		//  15 is the frame rate (15fps)
+		//  true means it will loop when it finishes
+		bot.animations.play('run', 15, true);
     }
 
     ///Called every frame for updating

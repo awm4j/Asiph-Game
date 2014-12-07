@@ -25,6 +25,7 @@ var bot;
     function Preload() {
 		game.load.image('player','assets/player.png');
 		game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
+		game.load.image('running','assets/running.png');
     } 
 
     ///Use to instantiate objects before the game starts
@@ -43,6 +44,10 @@ var bot;
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 	    
+		var runIcon = game.add.sprite(100, 100, 'running');
+		runIcon.inputEnabled = true;
+		runIcon.input.enableDrag(true);
+		
 		
 		bot = game.add.sprite(200, 200, 'bot');
 

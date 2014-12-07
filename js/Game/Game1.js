@@ -31,7 +31,7 @@ Game1 = function() {
         this.game.load.image('background','assets/rockFlooring.png');
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('player','assets/player.png');
-        this.game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
+        this.game.load.atlasJSONHash('bot', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         this.game.load.image('running','assets/blocks/running.png');
     } 

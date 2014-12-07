@@ -13,9 +13,11 @@ Game1 = function() {
     game = new Phaser.Game(totalWidth, totalHeight, Phaser.CANVAS, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 
     ///Use to load the game assets
+var bot;
     function Preload() {
 		game.load.image('player','assets/player.png');
-    }
+		game.load.spritesheet('bot', 'assets/mainCharUp.png', 34, 51, 9);
+    } 
 
     ///Use to instantiate objects before the game starts
     function Create() {
@@ -29,7 +31,19 @@ Game1 = function() {
 
         this.cursors = game.input.keyboard.createCursorKeys();
 
-	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
+	    
+		
+		bot = game.add.sprite(200, 200, 'bot');
+
+		//  Here we add a new animation called 'run'
+		//  We haven't specified any frames because it's using every frame in the texture atlas
+		bot.animations.add('run');
+
+		//  And this starts the animation playing by using its key ("run")
+		//  15 is the frame rate (15fps)
+		//  true means it will loop when it finishes
+		bot.animations.play('run', 15, true);
     }
 
     ///Called every frame for updating

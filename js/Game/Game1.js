@@ -5,8 +5,12 @@
 
 var gameWidth = 600;
 var kodingWidth = 400; // ;)
+
+var topSec = 200;
+var botSec = 400;
+
 var totalWidth = gameWidth + kodingWidth;
-var totalHeight = 600;
+var totalHeight = topSec + botSec;
 
 //The main game class
 Game1 = function() {
@@ -24,8 +28,8 @@ Game1 = function() {
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('player','assets/player.png');
         this.game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
-        this.game.load.image('running','assets/running.png');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
+        this.game.load.image('running','assets/blocks/running.png');
     } 
 
     ///Use to instantiate objects before the game starts
@@ -42,12 +46,24 @@ Game1 = function() {
         cursors = this.game.input.keyboard.createCursorKeys();
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
-	    
+
 		var runIcon = this.game.add.sprite(gameWidth + 10, 10, 'running');
 		runIcon.inputEnabled = true;
 		runIcon.input.enableDrag(true);
-		
-		bot = this.game.add.sprite(200, 200, 'bot');
+
+		// Programming blocks
+		for (var i = 0; i < 7; ++i) {
+			for (var j = 0; j < 3; ++j) {
+				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, 'running');
+				item.inputEnabled = true;
+				item.input.enableDrag(true);
+				item.x0 = item.x;
+				item.y0 = item.y;
+				item.events.onDragStop.add(fixLocation);
+			}
+		}
+
+        bot = this.game.add.sprite(200, 200, 'bot');
 
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
@@ -60,6 +76,16 @@ Game1 = function() {
 
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
     }
+	
+	function fixLocation (item) {
+		if (item.x > gameWidth && item.y > topSec) {
+			
+		}
+		else {
+			item.x = item.x0;
+			item.y = item.y0;
+		}
+	}
 
     ///Called every frame for updating
     function Update() {

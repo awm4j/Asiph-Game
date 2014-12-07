@@ -28,15 +28,15 @@ Game1 = function() {
 
         //  Resize our game world to be a 2000 x 2000 square
         game.world.setBounds(-1000, -1000, 2000, 2000);
-
         land.fixedToCamera = true;
+
+        game.physics.p2.enable(player.sprite);
+        game.camera.follow(player.sprite);
 
 		game.world.setBounds(0, 0, 1920, 1920);
 	    game.physics.startSystem(Phaser.Physics.P2JS);
-	    player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
-	    game.physics.p2.enable(player);
+
 	    cursors = game.input.keyboard.createCursorKeys();
-	    game.camera.follow(player);
 
 	    game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
@@ -54,22 +54,24 @@ Game1 = function() {
 	    //game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
     }
 
-}
+};
 
 Player = function()
 {
-    var position = new Phaser.vec2();
     var velocity = new Phaser.vec2();
 
-    function update(deltaTime)
+    var sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+
+    function Update(deltaTime)
     {
-        position += velocity * deltaTime;
+        sprite.x += velocity.x * deltaTime;
+        sprite.y += velocity.y * deltaTime;
 
         velocity.x = 0;
         velocity.y = 0;
     }
 
-}
+};
 
 ControlManager = function()
 {
@@ -97,7 +99,7 @@ ControlManager = function()
         return (game.input.keyboard.isDown(key));
     }
 
-}
+};
 
 /*Game1 = function()
 {

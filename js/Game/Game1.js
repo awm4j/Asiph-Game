@@ -24,7 +24,7 @@ var bot;
     //Use to load the game assets
     function Preload() {
 		game.load.image('player','assets/player.png');
-		game.load.spritesheet('bot', 'assets/mainCharUp.png', 34, 51, 9);
+		game.load.atlasJSONHash('bot', 'assets/mainChar/walkUp/spriteSheet.png', 'assets/mainChar/walkUp/mainChar_walkUp.json');
     } 
 
     ///Use to instantiate objects before the game starts

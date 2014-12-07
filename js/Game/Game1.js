@@ -6,14 +6,10 @@ var game;
 
 ///The main game class
 Game1 = function() {
-    game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: Preload, create: Create, update: Update, render: Render });
 
-    var land;
-    var logo;
-	
-	var player;
-	var cursors;
-
+    game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
+	this.player;
+	this.cursors;
 
     ///Called before the game is started
     ///Use to load the game assets
@@ -23,22 +19,18 @@ Game1 = function() {
 
     ///Use to instantiate objects before the game starts
     function Create() {
-        logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-        logo.anchor.setTo(0.5, 0.5);
 
         //  Resize our game world to be a 2000 x 2000 square
-        game.world.setBounds(-1000, -1000, 2000, 2000);
-        land.fixedToCamera = true;
+        game.world.setBounds(0, 0, 1920, 1920);
+        game.physics.startSystem(Phaser.Physics.P2JS);
 
-        game.physics.p2.enable(player.sprite);
-        game.camera.follow(player.sprite);
+        this.player = new Player();
+        game.physics.p2.enable(this.player.sprite);
+        game.camera.follow(this.player.sprite);
 
-		game.world.setBounds(0, 0, 1920, 1920);
-	    game.physics.startSystem(Phaser.Physics.P2JS);
+        cursors = game.input.keyboard.createCursorKeys();
 
-	    cursors = game.input.keyboard.createCursorKeys();
-
-	    game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
     }
 
@@ -58,14 +50,16 @@ Game1 = function() {
 
 Player = function()
 {
-    var velocity = new Phaser.vec2();
+    this.vel_x = 0;
+    this.vel_y = 0;
 
-    var sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+    this.sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+
 
     function Update(deltaTime)
     {
-        sprite.x += velocity.x * deltaTime;
-        sprite.y += velocity.y * deltaTime;
+        sprite.x += vel_x * deltaTime;
+        sprite.y += vel_y * deltaTime;
 
         velocity.x = 0;
         velocity.y = 0;

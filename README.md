@@ -1,7 +1,7 @@
 The Asiph Game
 ==========
 
-An education game for the koding hackathon.
+:children_crossing: An education game for the koding hackathon. :school_satchel: :school:
 
 Introduction
 =======
@@ -39,4 +39,4 @@ Chapter 7.1
 =======
 You resisted congratulations, you made it out alive.
 
-We are using [Phaser](http://phaser.io), [Bootswatch](http://bootswatch.com/), and [Font Awesome](http://fortawesome.github.io)
+:shipit: We are using [Phaser](http://phaser.io), [Bootswatch](http://bootswatch.com/), and [Font Awesome](http://fortawesome.github.io)

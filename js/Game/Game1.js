@@ -30,6 +30,8 @@ Game1 = function() {
     this.controlManager;
     this.isGamePaused = false;
 	
+	var currentBlocks = [];
+	
 	var that = this;
 	
     //Called before the game is started
@@ -49,6 +51,8 @@ Game1 = function() {
         this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         this.game.load.image('running','assets/blocks/running.png');
+		
+        this.game.load.spritesheet('play','assets/play.png', 48, 48);
     } 
 
     ///Use to instantiate objects before the game starts
@@ -60,9 +64,11 @@ Game1 = function() {
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        this.player = new Player(this.game);
+        this.player = new Player(this);
 		
         cursors = this.game.input.keyboard.createCursorKeys();
+
+		this.play = this.game.add.button(totalWidth - 70, totalHeight - 70, 'play', playStop, this);
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 
@@ -116,7 +122,22 @@ Game1 = function() {
 		
 		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
+
+
+        //Creating and adding commands to the console
+        this.console = new Console(this);
+        this.console.AddCommand("MoveUp:5");
+        this.console.AddCommand("MoveDown:10");
     }
+	
+	function playStop (button, pointer, isOver) {
+		if (button.frame == 1) {
+			button.frame = 0;
+		}
+		else {
+			button.frame = 1;
+		}
+	}
 	
 	// Used for the coding blocks
 	function fixLocation (item) {
@@ -129,7 +150,9 @@ Game1 = function() {
 			newItem.original = true;			
 			newItem.events.onDragStop.add(fixLocation);
 			
-			item.original = false;			
+			item.original = false;
+			
+			currentBlocks.push(item);
 		}
 		
 		else if (item.original) {
@@ -138,58 +161,96 @@ Game1 = function() {
 		}
 		
 		else if (item.x < gameWidth || item.y < topSec){
+			// Remove it from the current blocks array
+			var i = currentBlocks.indexOf(item);
+			if(i != -1) {
+				currentBlocks.splice(i, 1);
+			}
 			item.destroy();
 		}
+		
+		updateCurrentBlocks();
+	}
+	
+	// Updates the look of the bottom blocks
+	function updateCurrentBlocks() {
+		for (var i = 0; i < currentBlocks.length; ++i) {
+			var item = currentBlocks[i];
+			item.x = gameWidth + 8 + 56 * (i % 7);
+			item.y = topSec + 10 + Math.trunc(i / 7) * 60;
+		}		
 	}
 
     ///Called every frame for updating
     function Update() {
-        if(!this.isGamePaused) {
-            var xDir = 0;
-            var yDir = 0;
 
+        if(!this.isGamePaused) {
             if (this.controlManager.IsArrowKeyUp_Pressed()) {
-                yDir -= 1;
-                this.popup.Show("This is osme text");
+                this.player.MoveUp();
+                this.console.StartCommands();
             }
             if (this.controlManager.IsArrowKeyDown_Pressed()) {
-                yDir += 1;
+                this.player.MoveDown();
+                this.console.StopCommands();
             }
 
             if (this.controlManager.IsArrowKeyLeft_Pressed()) {
-                xDir -= 1;
+                this.player.MoveLeft();
             }
             if (this.controlManager.IsArrowKeyRight_Pressed()) {
-                xDir += 1;
+                this.player.MoveRight();
             }
-            this.player.Update(xDir, yDir);
+
+            this.console.Update(1);
         }
+        this.player.Update();
     }
 
     ///Called every frame for drawing
     function Render() {
-        
         this.popup.Render();
     }
 };
 
-var Player = function(game) {
-    this.sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+
+var Player = function(game1) {
+    this.game = game1;
+    this.sprite = game1.game.add.sprite(game1.game.world.centerX, game1.game.world.centerY, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
     this.sprite.anchor.setTo(0.5, 0.5);
+
+    this.yDir = 0;
+    this.xDir = 0;
 	
-	game.physics.arcade.enableBody(this.sprite);        
+	this.game.game.physics.arcade.enableBody(this.sprite);
 	this.sprite.body.collideWorldBounds = true;
 	
-	game.camera.follow(this.sprite);
+	this.game.game.camera.follow(this.sprite);
 };
 
-Player.prototype.Update = function(xDir, yDir) {
+Player.prototype.Update = function() {
 	var SPEED = 100;
-	var len = Math.sqrt(xDir * xDir + yDir * yDir);
-	this.sprite.body.velocity.x = xDir / len * SPEED;
-	this.sprite.body.velocity.y = yDir / len * SPEED;
+	var len = Math.sqrt(this.xDir * this.xDir + this.yDir * this.yDir);
+	this.sprite.body.velocity.x = this.xDir / len * SPEED;
+	this.sprite.body.velocity.y = this.yDir / len * SPEED;
+
+
+    this.yDir = 0;
+    this.xDir = 0;
+};
+
+Player.prototype.MoveUp = function(){
+    this.yDir -= 1;
+};
+Player.prototype.MoveDown = function(){
+    this.yDir += 1;
+};
+Player.prototype.MoveLeft = function(){
+    this.xDir -= 1;
+};
+Player.prototype.MoveRight = function(){
+    this.xDir += 1;
 };
 
 
@@ -211,12 +272,13 @@ ControlManager = function(game) {
     }
 };
 
+
 PopupWindow = function(game1, x, y, width, height) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.style = { font: "26px Arial", fill: "#ff0044", align: "center" };
+    this.style = { font: "18px Arial", fill: "#ffffff", align: "left" };
     this.game = game1;
     this.graphics = this.game.add.graphics(0,0);
 
@@ -260,4 +322,88 @@ PopupWindow = function(game1, x, y, width, height) {
     this.group = this.game.add.group();
     this.group.add(this.button);
     this.game.world.remove(this.group);
+};
+
+
+///Command should look like: '<command>:<duration>' duration can be distance, or time
+var COMAND_BLOCK_TIME = 10;
+Console = function(game1)
+{
+    this.game = game1;
+    this.isRunningCommands = false;
+    this.commandsToRun = new Array();
+    this.currentCommandIndex = 0;
+    this.timer = 0;
+
+    this.AddCommand = function(command)
+    {
+        this.commandsToRun.push(command);
+    };
+
+    this.ClearCommands = function()
+    {
+        this.commandsToRun.length = 0;
+    }
+
+    this.StartCommands = function()
+    {
+        this.isRunningCommands = true;
+        this.currentCommandIndex = 0;
+    };
+
+    this.StopCommands = function()
+    {
+        this.isRunningCommands = false;
+    };
+
+    this.Update = function(elapsedTime)
+    {
+        if(this.isRunningCommands) {
+            var currentCommand = this.commandsToRun[this.currentCommandIndex];
+
+            var c = currentCommand.split(":");
+
+            var command = c[0];
+            var duration = parseInt(c[1]);
+
+            this.timer += elapsedTime;
+
+            if(this.timer < duration * COMAND_BLOCK_TIME)
+            {
+                this.runCommand(command);
+            }
+            else
+            {
+                this.timer = 0;
+                ++this.currentCommandIndex;
+            }
+
+            if(this.currentCommandIndex >= this.commandsToRun.length)
+            {
+                this.StopCommands();
+            }
+        }
+    };
+
+    this.runCommand = function(command)
+    {
+        var c = command.split(":");
+        switch (c[0])
+        {
+            case "MoveUp":
+                this.game.player.MoveUp();
+                break;
+            case "MoveDown":
+                this.game.player.MoveDown();
+                break;
+            case "MoveLeft":
+                this.game.player.MoveLeft();
+                break;
+            case "MoveRight":
+                this.game.player.MoveRight();
+                break;
+            default:
+                break;
+        }
+    }
 };

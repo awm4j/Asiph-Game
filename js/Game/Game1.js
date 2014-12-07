@@ -77,12 +77,15 @@ Player = function() {
     this.sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
+    this.sprite.anchor.setTo(0.5, 0.5);
+//    this.sprite.immovable = false;
 
     this.xdir;
     this.ydir;
 
     this.Update = function(deltaTime)
     {
+
         this.sprite.body.x += (this.vel_x * PLAYER_SPEED * deltaTime);
         this.sprite.body.y += (this.vel_y * PLAYER_SPEED * deltaTime);
 
@@ -98,7 +101,6 @@ Player = function() {
 
 ControlManager = function()
 {
-
     this.IsArrowKeyUp_Pressed = function()
     {
         return this.isKeyPressed(Phaser.Keyboard.UP);

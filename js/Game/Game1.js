@@ -185,6 +185,5 @@ PopupWindow = function(x, y, width, height){
             this.button.set("exists", false);
         }
     };
-    this.button = game.add.button((x + width) / 2 - 75, y + height - 52, 'btnOk', this.actionOnClick, this, 0, 0, 1);
-
+    //this.button = game.add.button((x + width) / 2 - 75, y + height - 52, 'btnOk', this.actionOnClick, this, 0, 0, 1);
 };

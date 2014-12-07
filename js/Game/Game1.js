@@ -20,6 +20,8 @@ Game1 = function() {
     this.controlManager;
     this.isGamePaused = false;
 	
+	var that = this;
+	
 	var bot;
     //Called before the game is started
     //Use to load the game assets
@@ -55,6 +57,7 @@ Game1 = function() {
 				item.input.enableDrag(true);
 				item.x0 = item.x;
 				item.y0 = item.y;
+				item.original = true;
 				item.events.onDragStop.add(fixLocation);
 			}
 		}
@@ -73,13 +76,27 @@ Game1 = function() {
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
     }
 	
+	// Used for the coding blocks
 	function fixLocation (item) {
-		if (item.x > gameWidth && item.y > topSec) {
+		if (item.x > gameWidth && item.y > topSec && item.original) {			
+			var newItem = that.game.add.sprite(item.x0, item.y0, 'running');
+			newItem.inputEnabled = true;
+			newItem.input.enableDrag(true);
+			newItem.x0 = newItem.x;
+			newItem.y0 = newItem.y;
+			newItem.original = true;			
+			newItem.events.onDragStop.add(fixLocation);
 			
+			item.original = false;			
 		}
-		else {
+		
+		else if (item.original) {
 			item.x = item.x0;
 			item.y = item.y0;
+		}
+		
+		else {
+			item.destroy();
 		}
 	}
 

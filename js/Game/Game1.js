@@ -23,15 +23,16 @@ Game1 = function() {
 		game.load.image('background2','assets/light_sand.png');
 		game.load.image('player','assets/player.png');
 		game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
-		game.load.image('running','assets/running.png');
         game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
+		
+		game.load.image('running','assets/blocks/running.png');
     } 
 
     ///Use to instantiate objects before the game starts
     function Create() {
         this.controlManager = new ControlManager(game);
 		game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
-		game.add.tileSprite(gameWidth, 0, kodingWidth, 250, 'background2');
+		game.add.tileSprite(gameWidth, 0, kodingWidth, 200, 'background2');
         game.world.setBounds(0, 0, gameWidth, totalHeight);
         
 		game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -42,10 +43,15 @@ Game1 = function() {
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 	    
-		var runIcon = game.add.sprite(gameWidth + 10, 10, 'running');
-		runIcon.inputEnabled = true;
-		runIcon.input.enableDrag(true);
-		
+		// Programming blocks
+		for (var i = 0; i < 7; ++i) {
+			for (var j = 0; j < 3; ++j) {
+				var runIcon = game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, 'running');
+				runIcon.inputEnabled = true;
+				runIcon.input.enableDrag(true);
+			}
+		}
+
 		bot = game.add.sprite(200, 200, 'bot');
 
 		//  Here we add a new animation called 'run'

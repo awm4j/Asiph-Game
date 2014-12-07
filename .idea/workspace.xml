@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="11da8ae0-67e8-416c-a8e7-5a6d4f2f0542" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Game/Game1.js" afterPath="$PROJECT_DIR$/js/Game/Game1.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Koding-Hackathon.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,8 +40,8 @@
       <file leaf-file-name="Game1.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42037585" vertical-offset="1071" max-vertical-offset="7021">
-              <caret line="88" column="23" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.45400593" vertical-offset="1173" max-vertical-offset="7225">
+              <caret line="96" column="60" selection-start-line="96" selection-start-column="60" selection-end-line="96" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -335,8 +336,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42037585" vertical-offset="1071" max-vertical-offset="7021">
-          <caret line="88" column="23" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.45400593" vertical-offset="1173" max-vertical-offset="7225">
+          <caret line="96" column="60" selection-start-line="96" selection-start-column="60" selection-end-line="96" selection-end-column="60" />
           <folding />
         </state>
       </provider>

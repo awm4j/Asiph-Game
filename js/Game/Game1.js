@@ -69,6 +69,8 @@ Game1 = function() {
 		//var zone = game.camera.deadzone;
 	    //game.context.fillStyle = 'rgba(255,0,0,0.6)';
 	    //game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
+        game.debug.text('PlayerPosition ' + this.player.sprite.x + ', ' + this.player.sprite.y, 10, 10);
+        game.debug.text('PlayerSpeed ' + this.player.xdir + ', ' + this.player.ydir, 10, 25);
     }
 
 };
@@ -79,11 +81,21 @@ Player = function()
     this.vel_y = 0;
 
     this.sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+    this.sprite.angle = 0;
+    this.sprite.rotation = 0;
+
+    this.xdir;
+    this.ydir;
 
     this.Update = function(deltaTime)
     {
+
+
         this.sprite.x += (this.vel_x * PLAYER_SPEED * deltaTime);
         this.sprite.y += (this.vel_y * PLAYER_SPEED * deltaTime);
+
+        this.xdir = (this.vel_x * PLAYER_SPEED * deltaTime);
+        this.ydir = (this.vel_y * PLAYER_SPEED * deltaTime);
 
         this.vel_x = 0;
         this.vel_y = 0;

@@ -5,7 +5,7 @@
 var game;
 
 var GAME_SPEED = 1;
-var PLAYER_SPEED = 40;
+var PLAYER_SPEED = .5;
 
 ///The main game class
 Game1 = function() {
@@ -45,20 +45,20 @@ Game1 = function() {
 
         if(this.controlManager.IsArrowKeyUp_Pressed())
         {
-            this.player.vel_y = 1;
+            this.player.MoveUp(PLAYER_SPEED);
         }
         else if(this.controlManager.IsArrowKeyDown_Pressed())
         {
-            this.player.vel_y = -1;
+            this.player.MoveDown(PLAYER_SPEED);
         }
 
         if(this.controlManager.IsArrowKeyLeft_Pressed())
         {
-            this.player.vel_x = -1;
+            this.player.MoveLeft(PLAYER_SPEED);
         }
         else if (this.controlManager.IsArrowKeyRight_Pressed())
         {
-            this.player.vel_x = 1;
+            this.player.MoveRight(PLAYER_SPEED);
         }
         this.player.Update(GAME_SPEED);
 
@@ -101,6 +101,24 @@ Player = function()
         this.vel_x = 0;
         this.vel_y = 0;
     };
+
+    this.MoveUp = function(speed)
+    {
+        this.vel_y = speed;
+    };
+    this.MoveDown = function(speed)
+    {
+        this.vel_y = -speed;
+    };
+    this.MoveRight = function(speed)
+    {
+        this.vel_x = speed;
+    };
+    this.MoveLeft = function(speed)
+    {
+        this.vel_x = -speed;
+    };
+
 };
 
 

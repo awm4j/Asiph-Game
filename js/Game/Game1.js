@@ -23,6 +23,7 @@ var bot;
     //Called before the game is started
     //Use to load the game assets
     function Preload() {
+		game.load.image('background','assets/rockFlooring.png');
 		game.load.image('player','assets/player.png');
 		game.load.atlasJSONHash('bot', 'assets/mC_wU.png', 'assets/mC_wU.json');
 		game.load.image('running','assets/running.png');
@@ -32,7 +33,7 @@ var bot;
     function Create() {
 
         this.controlManager = new ControlManager();
-
+		game.add.tileSprite(0,0,gameWidth,totalHeight, 'background');
         game.world.setBounds(0, 0, gameWidth, totalHeight);
         game.physics.startSystem(Phaser.Physics.P2JS);
 

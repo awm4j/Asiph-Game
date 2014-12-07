@@ -41,11 +41,10 @@ var bot;
 
         cursors = game.input.keyboard.createCursorKeys();
 
-	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
-<<<<<<< HEAD
+	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 	    
 		
-		bot = game.add.sprite(960, 960, 'bot');
+		bot = game.add.sprite(200, 200, 'bot');
 
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
@@ -55,8 +54,6 @@ var bot;
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
 		bot.animations.play('run', 15, true);
-=======
->>>>>>> ec39d680f418224c91f160fd3f4684e6184b4018
     }
 
     ///Called every frame for updating

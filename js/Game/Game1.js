@@ -5,8 +5,12 @@
 
 var gameWidth = 600;
 var kodingWidth = 400; // ;)
+
+var topSec = 200;
+var botSec = 400;
+
 var totalWidth = gameWidth + kodingWidth;
-var totalHeight = 600;
+var totalHeight = topSec + botSec;
 
 //The main game class
 Game1 = function() {
@@ -32,7 +36,7 @@ Game1 = function() {
     function Create() {
         this.controlManager = new ControlManager(game);
 		game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
-		game.add.tileSprite(gameWidth, 0, kodingWidth, 200, 'background2');
+		game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background2');
         game.world.setBounds(0, 0, gameWidth, totalHeight);
         
 		game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -46,9 +50,12 @@ Game1 = function() {
 		// Programming blocks
 		for (var i = 0; i < 7; ++i) {
 			for (var j = 0; j < 3; ++j) {
-				var runIcon = game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, 'running');
-				runIcon.inputEnabled = true;
-				runIcon.input.enableDrag(true);
+				var item = game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, 'running');
+				item.inputEnabled = true;
+				item.input.enableDrag(true);
+				item.x0 = item.x;
+				item.y0 = item.y;
+				item.events.onDragStop.add(fixLocation);
 			}
 		}
 
@@ -65,6 +72,16 @@ Game1 = function() {
 
         this.popup = new PopupWindow(50, 50, 300, 200);
     }
+	
+	function fixLocation (item) {
+		if (item.x > gameWidth && item.y > topSec) {
+			
+		}
+		else {
+			item.x = item.x0;
+			item.y = item.y0;
+		}
+	}
 
     ///Called every frame for updating
     function Update() {

@@ -39,4 +39,4 @@ Chapter 7.1
 =======
 You resisted congratulations, you made it out alive.
 
-:shipit: We are using [Phaser](http://phaser.io), [Bootswatch](http://bootswatch.com/), and [Font Awesome](http://fortawesome.github.io)
+:shipit: We are using [Phaser](http://phaser.io), [Bootswatch](http://bootswatch.com/), [Font Awesome](http://fortawesome.github.io), and a web based [Character Generator](http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator)  by @Gaurav0 based on the Universal-LPC-Spritesheet 

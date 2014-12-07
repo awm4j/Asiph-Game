@@ -37,8 +37,11 @@ Game1 = function() {
     //Called before the game is started
     //Use to load the game assets
     function Preload() {
+		// Backgrounds
         this.game.load.image('background','assets/rockFlooring.png');
         this.game.load.image('background2','assets/light_sand.png');
+        this.game.load.image('background3','assets/greenSquare.png');
+		
         this.game.load.image('player','assets/player.png');
         this.game.load.atlasJSONHash('mainCharWalkUpAnim', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
         this.game.load.atlasJSONHash('mainCharWalkDownAnim', 'assets/mainChar/wD.png', 'assets/mainChar/wD.json');
@@ -57,6 +60,7 @@ Game1 = function() {
         this.game.load.image('block2','assets/blocks/left.png');
         this.game.load.image('block3','assets/blocks/right.png');
         this.game.load.image('block4','assets/blocks/sword.png');
+        this.game.load.image('block5','assets/blocks/bow.png');
 		
         this.game.load.spritesheet('play','assets/play.png', 48, 48);
     } 
@@ -64,9 +68,13 @@ Game1 = function() {
     ///Use to instantiate objects before the game starts
     function Create() {
         this.controlManager = new ControlManager(this.game);
-        this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
-        this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background2');
-        this.game.world.setBounds(0, 0, gameWidth, totalHeight);
+        
+		// Backgrounds
+		this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
+        this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background3');
+        this.game.add.tileSprite(gameWidth, topSec, kodingWidth, botSec, 'background2');
+		
+		this.game.world.setBounds(0, 0, gameWidth, totalHeight);
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -81,7 +89,7 @@ Game1 = function() {
 		// Programming blocks
 		for (var i = 0; i < 7; ++i) {
 			for (var j = 0; j < 3; ++j) {
-				var blockName = 'block' + i % 5;
+				var blockName = 'block' + i % 6;
 				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, blockName);
 				item.inputEnabled = true;
 				item.input.enableDrag(true);

@@ -27,6 +27,18 @@ Chapter 5
 =======
 You have a long maze to traverse, perhaps writing a function would help speed things up.
 
+Chapter 5.1
+=======
+Spawn a child with your lovely significant other...see how the child takes after you.
+
+Chapter 5.2
+=======
+Modify your character and see how it effects the child.
+
+Chapter 5.3
+=======
+...survive
+
 Chapter 6
 =======
 You see a red button, do you press it?
@@ -39,4 +51,4 @@ Chapter 7.1
 =======
 You resisted congratulations, you made it out alive.
 
-:shipit: We are using [Phaser](http://phaser.io), [Bootswatch](http://bootswatch.com/), [Font Awesome](http://fortawesome.github.io), and a web based [Character Generator](http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator)  by [@Gaurav0](https://github.com/Gaurav0) based on the Universal-LPC-Spritesheet 
+:shipit: We are using [Phaser](http://phaser.io), [Bootswatch](http://bootswatch.com/), [Font Awesome](http://fortawesome.github.io), and a web based [Character Generator](http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator)  by [@Gaurav0](https://github.com/Gaurav0) based on the [Universal-LPC-Spritesheet](https://github.com/makrohn/Universal-LPC-spritesheet)

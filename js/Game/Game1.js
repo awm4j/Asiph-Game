@@ -29,6 +29,7 @@ Game1 = function() {
 	this.cursors;
     this.controlManager;
     this.isGamePaused = false;
+    this.vGamePad;
 	
 	var currentBlocks = [];
 	
@@ -63,12 +64,20 @@ Game1 = function() {
         this.game.load.image('block5','assets/blocks/bow.png');
 		
         this.game.load.spritesheet('play','assets/play.png', 48, 48);
+
+        this.game.load.spritesheet('btnArrowUp', 'assets/GamePad/keyArrowUp.png', 50, 50);
+        this.game.load.spritesheet('btnArrowDown', 'assets/GamePad/keyArrowDown.png', 50, 50);
+        this.game.load.spritesheet('btnArrowLeft', 'assets/GamePad/keyArrowLeft.png', 50, 50);
+        this.game.load.spritesheet('btnArrowRight', 'assets/GamePad/keyArrowRight.png', 50, 50);
+
+        this.game.load.spritesheet('btnKeyW', 'assets/GamePad/keyW.png');
+        this.game.load.spritesheet('btnKeyA', 'assets/GamePad/keyA.png');
+        this.game.load.spritesheet('btnKeyS', 'assets/GamePad/keyS.png');
+        this.game.load.spritesheet('btnKeyD', 'assets/GamePad/keyD.png');
     } 
 
     ///Use to instantiate objects before the game starts
     function Create() {
-        this.controlManager = new ControlManager(this.game);
-        
 		// Backgrounds
 		this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
         this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background3');
@@ -137,6 +146,9 @@ Game1 = function() {
 		
 		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
+
+        this.vGamePad = new VGamePad(this);
+        this.controlManager = new ControlManager(this);
 
 
         //Creating and adding commands to the console
@@ -292,21 +304,22 @@ Player.prototype.MoveRight = function(){
 };
 
 
-ControlManager = function(game) {
+ControlManager = function(game1) {
+    this.game = game1;
     this.IsArrowKeyUp_Pressed = function() {
-        return this.isKeyPressed(Phaser.Keyboard.UP);
+        return (this.isKeyPressed(Phaser.Keyboard.UP) || isBtnArrowUp_Pressed);
     };
     this.IsArrowKeyDown_Pressed = function() {
-        return this.isKeyPressed(Phaser.Keyboard.DOWN);
+        return (this.isKeyPressed(Phaser.Keyboard.DOWN) || isBtnArrowDown_Pressed);
     };
     this.IsArrowKeyLeft_Pressed = function() {
-        return this.isKeyPressed(Phaser.Keyboard.LEFT);
+        return (this.isKeyPressed(Phaser.Keyboard.LEFT) || isBtnArrowLeft_Pressed);
     };
     this.IsArrowKeyRight_Pressed = function() {
-        return this.isKeyPressed(Phaser.Keyboard.RIGHT);
+        return (this.isKeyPressed(Phaser.Keyboard.RIGHT) || isBtnArrowRight_Pressed);
     };
     this.isKeyPressed = function(key) {
-        return (game.input.keyboard.isDown(key));
+        return (this.game.game.input.keyboard.isDown(key));
     }
 };
 
@@ -456,4 +469,72 @@ Array.prototype.move = function (old_index, new_index) {
     }
     this.splice(new_index, 0, this.splice(old_index, 1)[0]);
     return this; // for testing purposes
+};
+
+
+
+var isBtnArrowUp_Pressed = false;
+var isBtnArrowDown_Pressed = false;
+var isBtnArrowLeft_Pressed = false;
+var isBtnArrowRight_Pressed = false;
+
+VGamePad = function(game1)
+{
+    this.game = game1;
+
+    this.onBtnArrowUp_Pressed = function() {
+        isBtnArrowUp_Pressed = true;
+    };
+    this.onBtnArrowUp_Released = function(){
+        isBtnArrowUp_Pressed = false;
+    };
+
+    this.onBtnArrowDown_Pressed = function() {
+        isBtnArrowDown_Pressed = true;
+    };
+    this.onBtnArrowDown_Released = function(){
+        isBtnArrowDown_Pressed = false;
+    };
+
+    this.onBtnArrowLeft_Pressed = function() {
+        isBtnArrowLeft_Pressed = true;
+    };
+    this.onBtnArrowLeft_Released = function(){
+        isBtnArrowLeft_Pressed = false;
+    };
+
+    this.onBtnArrowRight_Pressed = function() {
+        isBtnArrowRight_Pressed = true;
+    };
+    this.onBtnArrowRight_Released = function(){
+        isBtnArrowRight_Pressed = false;
+    };
+
+    this.btnArrowUp = this.game.add.button(gameWidth - 110, totalHeight - 110, 'btnArrowUp', null, this, 0, 0, 1);
+    this.btnArrowUp.fixedToCamera = true;
+    this.btnArrowUp.events.onInputDown.add(this.onBtnArrowUp_Pressed);
+    this.btnArrowUp.events.onInputUp.add(this.onBtnArrowUp_Released);
+
+    this.btnArrowDown = this.game.add.button(gameWidth - 110, totalHeight - 55, 'btnArrowDown', null, this, 0, 0, 1);
+    this.btnArrowDown.fixedToCamera = true;
+    this.btnArrowDown.events.onInputDown.add(this.onBtnArrowDown_Pressed);
+    this.btnArrowDown.events.onInputUp.add(this.onBtnArrowDown_Released);
+
+    this.btnArrowLeft = this.game.add.button(gameWidth - 165, totalHeight - 55, 'btnArrowLeft', null, this, 0, 0, 1);
+    this.btnArrowLeft.fixedToCamera = true;
+    this.btnArrowLeft.events.onInputDown.add(this.onBtnArrowLeft_Pressed);
+    this.btnArrowLeft.events.onInputUp.add(this.onBtnArrowLeft_Released);
+
+    this.btnArrowRight = this.game.add.button(gameWidth - 55, totalHeight - 55, 'btnArrowRight', null, this, 0, 0, 1);
+    this.btnArrowRight.fixedToCamera = true;
+    this.btnArrowRight.events.onInputDown.add(this.onBtnArrowRight_Pressed);
+    this.btnArrowRight.events.onInputUp.add(this.onBtnArrowRight_Released);
+
+
+
+    this.groupArrows = this.game.game.add.group();
+    this.groupArrows.add(this.btnArrowUp);
+    this.groupArrows.add(this.btnArrowDown);
+    this.groupArrows.add(this.btnArrowLeft);
+    this.groupArrows.add(this.btnArrowRight);
 };

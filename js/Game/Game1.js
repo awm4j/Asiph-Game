@@ -164,7 +164,6 @@ Game1 = function() {
 			// Go through the blocks and add them to console
 			for (var i = 0; i < currentBlocks.length; ++i) {
 				var command = blockToCommand(currentBlocks[i]) + ':5';
-				alert(command);
 		        this.console.AddCommand(command);
 			}
             this.console.StartCommands();

@@ -4,50 +4,60 @@
 
 
 ///The main game class
-/*Game1 = function() {
-    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: Preload, create: Create, update: Update, render: Render });
+Game1 = function() {
+	var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', { preload: preload, create: create, update: update, render: render });
 
-    var land;
-    var logo;
+	function preload() {
+	    //game.load.image('background','assets/tests/debug-grid-1920x1920.png');
+	    game.load.image('player','assets/player.png');
+	}
+
+	var player;
+	var cursors;
+
+	function create() {
+	    //game.add.tileSprite(0, 0, 1920, 1920, 'background');
+	    game.world.setBounds(0, 0, 1920, 1920);
+	    game.physics.startSystem(Phaser.Physics.P2JS);
+	    player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+	    game.physics.p2.enable(player);
+	    cursors = game.input.keyboard.createCursorKeys();
+	    game.camera.follow(player);
+
+	    game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+	}
+
+	function update() {
+	    player.body.setZeroVelocity();
+
+	    if (cursors.up.isDown) {
+	        player.body.moveUp(300)
+	    }
+	    else if (cursors.down.isDown) {
+	        player.body.moveDown(300);
+	    }
+
+	    if (cursors.left.isDown) {
+	        player.body.velocity.x = -300;
+	    }
+	    else if (cursors.right.isDown) {
+	        player.body.moveRight(300);
+	    }
+	}
+
+	function render() {
+	    //var zone = game.camera.deadzone;
+	    //game.context.fillStyle = 'rgba(255,0,0,0.6)';
+	    //game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
+	}
+}
 
 
-    ///Called before the game is started
-    ///Use to load the game assets
-    function Preload() {
-        game.load.image('logo', 'phaser.png');
-    }
-
-    ///Use to instantiate objects before the game starts
-    function Create() {
-        logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-        logo.anchor.setTo(0.5, 0.5);
-
-        //  Resize our game world to be a 2000 x 2000 square
-        game.world.setBounds(-1000, -1000, 2000, 2000);
-
-        land.fixedToCamera = true;
-
-
-    }
-
-    ///Called every frame for updating
-    function Update() {
-
-    }
-
-    ///Called every frame for drawing
-    function Render() {
-
-    }
-
-}*/
-
-
-Game1 = function()
+/*Game1 = function()
 {
     /**
      * Created by Nate on 12/6/2014.
-     */
+     *//*
     EnemyTank = function (index, game, player, bullets) {
 
         var x = game.world.randomX;
@@ -318,4 +328,4 @@ Game1 = function()
         // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
         game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
     }
-};
+};*/

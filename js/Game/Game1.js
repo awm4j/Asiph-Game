@@ -34,6 +34,8 @@ Game1 = function() {
         this.game.load.atlasJSONHash('bot', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         this.game.load.image('running','assets/blocks/running.png');
+		
+        this.game.load.spritesheet('play','assets/play.png', 48, 48);
     } 
 
     ///Use to instantiate objects before the game starts
@@ -48,6 +50,8 @@ Game1 = function() {
         this.player = new Player(this.game);
 		
         cursors = this.game.input.keyboard.createCursorKeys();
+
+		this.play = this.game.add.button(totalWidth - 70, totalHeight - 70, 'play', playStop, this);
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 
@@ -77,6 +81,15 @@ Game1 = function() {
 
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
     }
+	
+	function playStop (button, pointer, isOver) {
+		if (button.frame == 1) {
+			button.frame = 0;
+		}
+		else {
+			button.frame = 1;
+		}
+	}
 	
 	// Used for the coding blocks
 	function fixLocation (item) {
@@ -117,7 +130,7 @@ Game1 = function() {
 			var item = currentBlocks[i];
 			item.x = gameWidth + 8 + 56 * (i % 7);
 			item.y = topSec + 10 + Math.trunc(i / 7) * 60;
-		}
+		}		
 	}
 
     ///Called every frame for updating

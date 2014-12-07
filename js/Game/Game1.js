@@ -1,6 +1,6 @@
 /**
  * Created by Nate on 12/6/2014.
- * Modified by AwM4J 12/6/14.
+ * Modified by AwM4J 12/6-7/2014.
  */
 
 var gameWidth = 600;
@@ -111,14 +111,14 @@ Game1 = function() {
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
 		mCwU.animations.play('run', 5, true);
-		//mCwD.animations.play('run', 5, true);
+		mCwD.animations.play('run', 5, true);
 		mCwL.animations.play('run', 5, true);
 		mCwR.animations.play('run', 5, true);
 		mCaU.animations.play('run', 5, true);
 		mCaD.animations.play('run', 5, true);
 		mCaL.animations.play('run', 5, true);
 		mCaR.animations.play('run', 5, true);
-		//mCDIE.animations.play('run', 5, true);
+		mCDIE.animations.play('run', 5, true);
 		
 		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);

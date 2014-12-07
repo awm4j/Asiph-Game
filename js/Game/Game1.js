@@ -174,7 +174,7 @@ PopupWindow = function(game1, x, y, width, height) {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.style = { font: "26px Arial", fill: "#ff0044", align: "center" };
+    this.style = { font: "18px Arial", fill: "#ffffff", align: "left" };
     this.game = game1;
     this.graphics = this.game.add.graphics(0,0);
 

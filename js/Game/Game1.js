@@ -54,7 +54,7 @@ Game1 = function() {
         this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         
-		// Blocks
+		// Code Blocks
         this.game.load.image('block0','assets/blocks/up.png');
         this.game.load.image('block1','assets/blocks/down.png');
         this.game.load.image('block2','assets/blocks/left.png');
@@ -141,8 +141,6 @@ Game1 = function() {
 
         //Creating and adding commands to the console
         this.console = new Console(this);
-        this.console.AddCommand("MoveUp:5");
-        this.console.AddCommand("MoveDown:10");
     }
 	
 	function playStop (button, pointer, isOver) {
@@ -150,7 +148,14 @@ Game1 = function() {
 			button.frame = 0;
 		}
 		else {
-			button.frame = 1;
+			button.frame = 1;	
+			// Go through the blocks and add them to console
+			for (var i = 0; i < currentBlocks.length; ++i) {
+				var command = blockToCommand(currentBlocks[i]) + ':5';
+				alert(command);
+		        this.console.AddCommand(command);
+			}
+            this.console.StartCommands();
 		}
 	}
 	
@@ -225,11 +230,9 @@ Game1 = function() {
         if(!this.isGamePaused) {
             if (this.controlManager.IsArrowKeyUp_Pressed()) {
                 this.player.MoveUp();
-                this.console.StartCommands();
             }
             if (this.controlManager.IsArrowKeyDown_Pressed()) {
                 this.player.MoveDown();
-                this.console.StopCommands();
             }
 
             if (this.controlManager.IsArrowKeyLeft_Pressed()) {
@@ -248,6 +251,31 @@ Game1 = function() {
     function Render() {
         this.popup.Render();
     }
+	
+	function blockToCommand(item) {
+		var command = '';
+		switch (item.key) {
+			case 'block0':
+				command = 'MoveUp';
+				break;
+			case 'block1':
+				command = 'MoveDown';
+				break;
+			case 'block2':
+				command = 'MoveLeft';
+				break;
+			case 'block3':
+				command = 'MoveRight';
+				break;
+			case 'block4':
+				break;
+			case 'block5':
+				break;
+			default:
+				break;
+		}
+		return command;
+	}
 };
 
 
@@ -395,8 +423,8 @@ Console = function(game1)
     };
 
     this.Update = function(elapsedTime)
-    {
-        if(this.isRunningCommands) {
+    {		
+        if(this.isRunningCommands) {			
             var currentCommand = this.commandsToRun[this.currentCommandIndex];
 
             var c = currentCommand.split(":");

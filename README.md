@@ -1,7 +1,7 @@
 The Asiph Game
 ==========
 
-:children_crossing: An education game for the koding hackathon. :school_satchel: :school:
+:children_crossing: An educational HTML 5 game for the koding hack-a-thon. :school_satchel:
 
 Introduction
 =======

@@ -180,7 +180,7 @@
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>heuristicMask</key>
             <false/>
             <key>pivotPoint</key>
@@ -188,12 +188,12 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>3.png</filename>
-            <filename>4.png</filename>
-            <filename>5.png</filename>
             <filename>0.png</filename>
             <filename>1.png</filename>
             <filename>2.png</filename>
+            <filename>3.png</filename>
+            <filename>4.png</filename>
+            <filename>5.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

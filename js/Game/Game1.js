@@ -1,6 +1,6 @@
 /**
  * Created by Nate on 12/6/2014.
- * Modified by AwM4J 12/6/14.
+ * Modified by AwM4J 12/6-7/2014.
  */
 
 var gameWidth = 600;
@@ -11,6 +11,16 @@ var botSec = 400;
 
 var totalWidth = gameWidth + kodingWidth;
 var totalHeight = topSec + botSec;
+
+var mCwU;
+var mCwD;
+var mCwL;
+var mCwR; 
+var mCaU;
+var mCaD;
+var mCaL;
+var mCaR; 
+var mCDIE;
 
 //The main game class
 Game1 = function() {
@@ -24,14 +34,21 @@ Game1 = function() {
 	
 	var that = this;
 	
-	var bot;
     //Called before the game is started
     //Use to load the game assets
     function Preload() {
         this.game.load.image('background','assets/rockFlooring.png');
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('player','assets/player.png');
-        this.game.load.atlasJSONHash('bot', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
+        this.game.load.atlasJSONHash('mainCharWalkUpAnim', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
+        this.game.load.atlasJSONHash('mainCharWalkDownAnim', 'assets/mainChar/wD.png', 'assets/mainChar/wD.json');
+        this.game.load.atlasJSONHash('mainCharWalkLeftAnim', 'assets/mainChar/wL.png', 'assets/mainChar/wL.json');
+        this.game.load.atlasJSONHash('mainCharWalkRightAnim', 'assets/mainChar/wR.png', 'assets/mainChar/wR.json');
+        this.game.load.atlasJSONHash('mainCharAttackUpAnim', 'assets/mainChar/aU.png', 'assets/mainChar/aU.json');
+        this.game.load.atlasJSONHash('mainCharAttackDownAnim', 'assets/mainChar/aD.png', 'assets/mainChar/aD.json');
+        this.game.load.atlasJSONHash('mainCharAttackLeftAnim', 'assets/mainChar/aL.png', 'assets/mainChar/aL.json');
+        this.game.load.atlasJSONHash('mainCharAttackRightAnim', 'assets/mainChar/aR.png', 'assets/mainChar/aR.json');
+        this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         
 		// Blocks
@@ -74,17 +91,42 @@ Game1 = function() {
 			}
 		}
 
-        bot = this.game.add.sprite(200, 200, 'bot');
+        mCwU = this.game.add.sprite(100, 100, 'mainCharWalkUpAnim');
+        mCwD = this.game.add.sprite(100, 150, 'mainCharWalkDownAnim');
+        mCwL = this.game.add.sprite(100, 200, 'mainCharWalkLeftAnim');
+        mCwR = this.game.add.sprite(100, 250, 'mainCharWalkRightAnim');
+        mCaU = this.game.add.sprite(100, 300, 'mainCharAttackUpAnim');
+        mCaD = this.game.add.sprite(100, 350, 'mainCharAttackDownAnim');
+        mCaL = this.game.add.sprite(100, 400, 'mainCharAttackLeftAnim');
+        mCaR = this.game.add.sprite(100, 450, 'mainCharAttackRightAnim');
+        mCDIE = this.game.add.sprite(100, 500, 'mainCharDie');
 
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
-		bot.animations.add('run');
-
+		mCwU.animations.add('run');
+		mCwD.animations.add('run');
+		mCwL.animations.add('run');
+		mCwR.animations.add('run');
+		mCaU.animations.add('run');
+		mCaD.animations.add('run');
+		mCaL.animations.add('run');
+		mCaR.animations.add('run');
+		mCDIE.animations.add('run');
+		
 		//  And this starts the animation playing by using its key ("run")
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
-		bot.animations.play('run', 15, true);
-
+		mCwU.animations.play('run', 5, true);
+		mCwD.animations.play('run', 5, 3);
+		mCwL.animations.play('run', 5, true);
+		mCwR.animations.play('run', 5, true);
+		mCaU.animations.play('run', 5, true);
+		mCaD.animations.play('run', 5, true);
+		mCaL.animations.play('run', 5, true);
+		mCaR.animations.play('run', 5, true);
+		mCDIE.animations.play('run', 5, 3);
+		
+		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
 
 

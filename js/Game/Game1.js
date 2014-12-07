@@ -95,7 +95,7 @@ Game1 = function() {
 			item.y = item.y0;
 		}
 		
-		else {
+		else if (item.x < gameWidth || item.y < topSec){
 			item.destroy();
 		}
 	}

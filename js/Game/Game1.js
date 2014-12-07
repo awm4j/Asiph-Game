@@ -288,7 +288,7 @@ Console = function(game1)
     this.ClearCommands = function()
     {
         this.commandsToRun.length = 0;
-    }
+    };
 
     this.StartCommands = function()
     {

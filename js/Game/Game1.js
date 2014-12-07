@@ -20,7 +20,7 @@ var bot;
     //Use to load the game assets
     function Preload() {
 		game.load.image('player','assets/player.png');
-		game.load.spritesheet('bot', 'assets/mainCharUp.png', 32, 32, 8);
+		game.load.spritesheet('bot', 'assets/mainCharUp.png', 34, 51, 9);
     } 
 
     ///Use to instantiate objects before the game starts
@@ -41,7 +41,7 @@ var bot;
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 	    
 		
-		bot = game.add.sprite(32, 32, 'bot');
+		bot = game.add.sprite(960, 960, 'bot');
 
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas

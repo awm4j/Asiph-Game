@@ -4,12 +4,16 @@
 
 var game;
 
+var GAME_SPEED = 1;
+var PLAYER_SPEED = 40;
+
 ///The main game class
 Game1 = function() {
 
     game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
 	this.player;
 	this.cursors;
+    this.controlManager;
 
     ///Called before the game is started
     ///Use to load the game assets
@@ -19,6 +23,8 @@ Game1 = function() {
 
     ///Use to instantiate objects before the game starts
     function Create() {
+
+        this.controlManager = new ControlManager();
 
         //  Resize our game world to be a 2000 x 2000 square
         game.world.setBounds(0, 0, 1920, 1920);
@@ -36,6 +42,25 @@ Game1 = function() {
 
     ///Called every frame for updating
     function Update() {
+
+        if(this.controlManager.IsArrowKeyUp_Pressed())
+        {
+            this.player.vel_y = 1;
+        }
+        else if(this.controlManager.IsArrowKeyDown_Pressed())
+        {
+            this.player.vel_y = -1;
+        }
+
+        if(this.controlManager.IsArrowKeyLeft_Pressed())
+        {
+            this.player.vel_x = -1;
+        }
+        else if (this.controlManager.IsArrowKeyRight_Pressed())
+        {
+            this.player.vel_x = 1;
+        }
+        this.player.Update(GAME_SPEED);
 
     }
 
@@ -55,45 +80,48 @@ Player = function()
 
     this.sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
 
-
-    function Update(deltaTime)
+    this.Update = function(deltaTime)
     {
-        sprite.x += vel_x * deltaTime;
-        sprite.y += vel_y * deltaTime;
+        this.sprite.x += (this.vel_x * PLAYER_SPEED * deltaTime);
+        this.sprite.y += (this.vel_y * PLAYER_SPEED * deltaTime);
 
-        velocity.x = 0;
-        velocity.y = 0;
-    }
-
+        this.vel_x = 0;
+        this.vel_y = 0;
+    };
 };
+
+
 
 ControlManager = function()
 {
-    function IsArrowKeyUp_Pressed()
+
+    this.IsArrowKeyUp_Pressed = function()
     {
-        return isKeyPressed(Phaser.Keyboard.UP);
-    }
-    function IsArrowKeyDown_Pressed()
+        return this.isKeyPressed(Phaser.Keyboard.UP);
+    };
+    this.IsArrowKeyDown_Pressed = function()
     {
-        return isKeyPressed(Phaser.Keyboard.DOWN);
-    }
-    function IsArrowKeyLeft_Pressed()
+        return this.isKeyPressed(Phaser.Keyboard.DOWN);
+    };
+    this.IsArrowKeyLeft_Pressed = function()
     {
-        return isKeyPressed(Phaser.Keyboard.LEFT);
-    }
-    function IsArrowKeyRight_Pressed()
+        return this.isKeyPressed(Phaser.Keyboard.LEFT);
+    };
+    this.IsArrowKeyRight_Pressed = function()
     {
-        return isKeyPressed(Phaser.Keyboard.RIGHT);
-    }
+        return this.isKeyPressed(Phaser.Keyboard.RIGHT);
+    };
 
 
 
-    function isKeyPressed(key)
+    this.isKeyPressed = function(key)
     {
         return (game.input.keyboard.isDown(key));
     }
 
 };
+
+
 
 /*Game1 = function()
 {

@@ -1,6 +1,6 @@
 /**
  * Created by Nate on 12/6/2014.
- * Modified by AwM4J 12/6/14.
+ * Modified by AwM4J 12/6-7/2014.
  */
 
 var gameWidth = 600;
@@ -11,6 +11,16 @@ var botSec = 400;
 
 var totalWidth = gameWidth + kodingWidth;
 var totalHeight = topSec + botSec;
+
+var mCwU;
+var mCwD;
+var mCwL;
+var mCwR; 
+var mCaU;
+var mCaD;
+var mCaL;
+var mCaR; 
+var mCDIE;
 
 //The main game class
 Game1 = function() {
@@ -24,16 +34,33 @@ Game1 = function() {
 	
 	var that = this;
 	
-	var bot;
     //Called before the game is started
     //Use to load the game assets
     function Preload() {
+		// Backgrounds
         this.game.load.image('background','assets/rockFlooring.png');
         this.game.load.image('background2','assets/light_sand.png');
+        this.game.load.image('background3','assets/greenSquare.png');
+		
         this.game.load.image('player','assets/player.png');
-        this.game.load.atlasJSONHash('bot', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
+        this.game.load.atlasJSONHash('mainCharWalkUpAnim', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
+        this.game.load.atlasJSONHash('mainCharWalkDownAnim', 'assets/mainChar/wD.png', 'assets/mainChar/wD.json');
+        this.game.load.atlasJSONHash('mainCharWalkLeftAnim', 'assets/mainChar/wL.png', 'assets/mainChar/wL.json');
+        this.game.load.atlasJSONHash('mainCharWalkRightAnim', 'assets/mainChar/wR.png', 'assets/mainChar/wR.json');
+        this.game.load.atlasJSONHash('mainCharAttackUpAnim', 'assets/mainChar/aU.png', 'assets/mainChar/aU.json');
+        this.game.load.atlasJSONHash('mainCharAttackDownAnim', 'assets/mainChar/aD.png', 'assets/mainChar/aD.json');
+        this.game.load.atlasJSONHash('mainCharAttackLeftAnim', 'assets/mainChar/aL.png', 'assets/mainChar/aL.json');
+        this.game.load.atlasJSONHash('mainCharAttackRightAnim', 'assets/mainChar/aR.png', 'assets/mainChar/aR.json');
+        this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
-        this.game.load.image('running','assets/blocks/running.png');
+        
+		// Blocks
+        this.game.load.image('block0','assets/blocks/up.png');
+        this.game.load.image('block1','assets/blocks/down.png');
+        this.game.load.image('block2','assets/blocks/left.png');
+        this.game.load.image('block3','assets/blocks/right.png');
+        this.game.load.image('block4','assets/blocks/sword.png');
+        this.game.load.image('block5','assets/blocks/bow.png');
 		
         this.game.load.spritesheet('play','assets/play.png', 48, 48);
     } 
@@ -41,9 +68,13 @@ Game1 = function() {
     ///Use to instantiate objects before the game starts
     function Create() {
         this.controlManager = new ControlManager(this.game);
-        this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
-        this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background2');
-        this.game.world.setBounds(0, 0, gameWidth, totalHeight);
+        
+		// Backgrounds
+		this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
+        this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background3');
+        this.game.add.tileSprite(gameWidth, topSec, kodingWidth, botSec, 'background2');
+		
+		this.game.world.setBounds(0, 0, gameWidth, totalHeight);
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -58,7 +89,8 @@ Game1 = function() {
 		// Programming blocks
 		for (var i = 0; i < 7; ++i) {
 			for (var j = 0; j < 3; ++j) {
-				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, 'running');
+				var blockName = 'block' + i % 6;
+				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, blockName);
 				item.inputEnabled = true;
 				item.input.enableDrag(true);
 				item.x0 = item.x;
@@ -68,17 +100,42 @@ Game1 = function() {
 			}
 		}
 
-        bot = this.game.add.sprite(200, 200, 'bot');
+        mCwU = this.game.add.sprite(100, 100, 'mainCharWalkUpAnim');
+        mCwD = this.game.add.sprite(100, 150, 'mainCharWalkDownAnim');
+        mCwL = this.game.add.sprite(100, 200, 'mainCharWalkLeftAnim');
+        mCwR = this.game.add.sprite(100, 250, 'mainCharWalkRightAnim');
+        mCaU = this.game.add.sprite(100, 300, 'mainCharAttackUpAnim');
+        mCaD = this.game.add.sprite(100, 350, 'mainCharAttackDownAnim');
+        mCaL = this.game.add.sprite(100, 400, 'mainCharAttackLeftAnim');
+        mCaR = this.game.add.sprite(100, 450, 'mainCharAttackRightAnim');
+        mCDIE = this.game.add.sprite(100, 500, 'mainCharDie');
 
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
-		bot.animations.add('run');
-
+		mCwU.animations.add('run');
+		mCwD.animations.add('run');
+		mCwL.animations.add('run');
+		mCwR.animations.add('run');
+		mCaU.animations.add('run');
+		mCaD.animations.add('run');
+		mCaL.animations.add('run');
+		mCaR.animations.add('run');
+		mCDIE.animations.add('run');
+		
 		//  And this starts the animation playing by using its key ("run")
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
-		bot.animations.play('run', 15, true);
-
+		mCwU.animations.play('run', 5, true);
+		mCwD.animations.play('run', 5, 10);
+		mCwL.animations.play('run', 5, 10);
+		mCwR.animations.play('run', 5, 10);
+		mCaU.animations.play('run', 5, true);
+		mCaD.animations.play('run', 5, true);
+		mCaL.animations.play('run', 5, true);
+		mCaR.animations.play('run', 5, true);
+		mCDIE.animations.play('run', 5, 10);
+		
+		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
 
 
@@ -99,8 +156,9 @@ Game1 = function() {
 	
 	// Used for the coding blocks
 	function fixLocation (item) {
-		if (item.x > gameWidth && item.y > topSec && item.original) {			
-			var newItem = that.game.add.sprite(item.x0, item.y0, 'running');
+		// Moved a fresh block into the bottom coding area
+		if (item.x > gameWidth - item.width && item.y > topSec - item.height && item.original) {			
+			var newItem = that.game.add.sprite(item.x0, item.y0, item.key);
 			newItem.inputEnabled = true;
 			newItem.input.enableDrag(true);
 			newItem.x0 = newItem.x;
@@ -111,14 +169,19 @@ Game1 = function() {
 			item.original = false;
 			
 			currentBlocks.push(item);
+			
+			var oldIndex = currentBlocks.indexOf(item);
+			var newIndex = getBlockIndex(item);
+			
+			currentBlocks.move(oldIndex, newIndex);
 		}
-		
+		// Moved a fresh block somewhere other than the bottom coding area
 		else if (item.original) {
 			item.x = item.x0;
 			item.y = item.y0;
 		}
-		
-		else if (item.x < gameWidth || item.y < topSec){
+		// Moved an old block out of the bottom coding area
+		else if (item.x < gameWidth - item.width || item.y < topSec - item.height){
 			// Remove it from the current blocks array
 			var i = currentBlocks.indexOf(item);
 			if(i != -1) {
@@ -126,8 +189,25 @@ Game1 = function() {
 			}
 			item.destroy();
 		}
+		// Moved an old block inside of the coding area
+		else {
+			var oldIndex = currentBlocks.indexOf(item);
+			var newIndex = getBlockIndex(item);
+			
+			currentBlocks.move(oldIndex, newIndex);
+		}
 		
 		updateCurrentBlocks();
+	}
+	
+	function getBlockIndex (item) {
+		for (var i = 0; i < currentBlocks.length; ++i) {
+			var block = currentBlocks[i];
+			if (item.x < block.x && item.y < block.y + block.height/2) {
+				return i;
+			}
+		}
+		return currentBlocks.length - 1;
 	}
 	
 	// Updates the look of the bottom blocks
@@ -364,4 +444,16 @@ Console = function(game1)
                 break;
         }
     }
+};
+
+// Taken from: http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
 };

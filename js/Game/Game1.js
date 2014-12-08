@@ -419,6 +419,7 @@ Game1 = function() {
 
 	this.ranFirstCommand = false;
     ///Called every frame for drawing
+	this.blockOffset = 0;
     function Render() {
         this.popup.Render();
 
@@ -430,17 +431,22 @@ Game1 = function() {
 			{
 				this.graphics = this.game.add.graphics(0,0);
 				this.graphics.lineStyle(3, 0x00FFFF, 1);
-				this.graphicsGroup = this.game.add.group();
-				this.graphicsGroup.add(this.graphics);
 
 				this.ranFirstCommand = true;
-			}
-			else if (this.previousCommand != index)
-			{
+				this.previousCommand = -1;
+				this.blockOffset = 0;
 				this.graphics.drawRect(block.x, block.y, block.width, block.height);
 			}
-
-			//this.graphics.beginFill(0x0000FF, 0.5);
+			if (this.previousCommand != index)
+			{
+				//block = currentBlocks[index + this.blockOffset];
+				//this.graphics.clear();
+				this.graphics.drawRect(block.x, block.y, block.width, block.height);
+				if(currentBlocks[index].key.indexOf("loopOpen") >= 0 && (index + this.blockOffset) < currentBlocks.length - 2) {
+					++this.blockOffset;
+				}
+				this.previousCommand = index;
+			}
 		}
     }
 	
@@ -645,8 +651,8 @@ Console = function(game1)
 		this.timer = 0;
         this.isRunningCommands = false;
 		this.game.ranFirstCommand = false;
-		this.game.game.world.remove(this.game.graphicsGroup);
-
+		//this.game.game.world.remove(this.game.graphicsGroup);
+		this.game.graphics.clear();
 		if (this.callback) {
 			this.callback();
 		}

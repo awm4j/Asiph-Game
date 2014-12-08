@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.5.3</string>
         <key>fileName</key>
-        <string>C:/Users/Matt/SkyDrive/Documents/Asiph-Game/assets/mainChar/attackDown/aU.tps</string>
+        <string>C:/Users/Matt/SkyDrive/Documents/Asiph-Game/assets/mainChar/attackDown/aD.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -180,7 +180,7 @@
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>heuristicMask</key>
             <false/>
             <key>pivotPoint</key>

@@ -551,11 +551,9 @@ Game1 = function() {
 };
 
 
-<<<<<<< HEAD
+
 //this = this.game.add.sprite(12,12,'playerAnimation');
 
-=======
->>>>>>> 4970b78d2619079642ec63524ca94673e5a880d7
 
 var Player = function(game1) {
     this.game = game1;

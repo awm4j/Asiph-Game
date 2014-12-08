@@ -42,6 +42,9 @@ Game1 = function() {
     this.controlManager;
     this.isGamePaused = false;
     this.vGamePad;
+	this.graphics;
+	this.graphicsGroup;
+	this.previousCommand = 0;
 	
 	var currentBlocks = [];
 	
@@ -112,6 +115,8 @@ Game1 = function() {
 		this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
         this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background3');
         this.game.add.tileSprite(gameWidth, topSec, kodingWidth, botSec, 'background2');
+
+
 		
 		this.game.world.setBounds(0, 0, gameWidth, totalHeight);
 
@@ -422,9 +427,31 @@ Game1 = function() {
         this.player.Update();
     }
 
+	this.ranFirstCommand = false;
     ///Called every frame for drawing
     function Render() {
         this.popup.Render();
+
+		if(this.console.isRunningCommands)
+		{
+			var index = this.console.currentCommandIndex;
+			var block = currentBlocks[index];
+			if(!this.ranFirstCommand)
+			{
+				this.graphics = this.game.add.graphics(0,0);
+				this.graphics.lineStyle(3, 0x00FFFF, 1);
+				this.graphicsGroup = this.game.add.group();
+				this.graphicsGroup.add(this.graphics);
+
+				this.ranFirstCommand = true;
+			}
+			else if (this.previousCommand != index)
+			{
+				this.graphics.drawRect(block.x, block.y, block.width, block.height);
+			}
+
+			//this.graphics.beginFill(0x0000FF, 0.5);
+		}
     }
 	
 	function blockToCommand(item) {
@@ -627,6 +654,9 @@ Console = function(game1)
     {
 		this.timer = 0;
         this.isRunningCommands = false;
+		this.game.ranFirstCommand = false;
+		this.game.game.world.remove(this.game.graphicsGroup);
+
 		if (this.callback) {
 			this.callback();
 		}

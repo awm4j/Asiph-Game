@@ -445,7 +445,7 @@ Game1 = function() {
     function Update() {
 
         if(!this.isGamePaused) {
-            if (this.controlManager.IsArrowKeyUp_Pressed()) {
+            /*if (this.controlManager.IsArrowKeyUp_Pressed()) {
                 this.player.MoveUp();
             }
             if (this.controlManager.IsArrowKeyDown_Pressed()) {
@@ -457,7 +457,7 @@ Game1 = function() {
             }
             if (this.controlManager.IsArrowKeyRight_Pressed()) {
                 this.player.MoveRight();
-            }
+            }*/
 
             this.console.Update(1);
         }

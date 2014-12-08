@@ -16,25 +16,6 @@ var botSec = 520;
 var totalWidth = gameWidth + kodingWidth;
 var totalHeight = topSec + botSec;
 
-var mCwU;
-var mCwD;
-var mCwL;
-var mCwR; 
-var mCaU;
-var mCaD;
-var mCaL;
-var mCaR; 
-var mCDIE;
-
-var hEwU;
-var hEwD;
-var hEwL;
-var hEwR; 
-var hEaU;
-var hEaD;
-var hEaL;
-var hEaR; 
-var hEDIE;
 
 //The main game class
 Game1 = function() {
@@ -60,31 +41,11 @@ Game1 = function() {
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('background3','assets/greenSquare.png');
 		
-        //this.game.load.image('player','assets/player.png');
-		/*
-        this.game.load.atlasJSONHash('mainCharWalkUpAnim', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
-        this.game.load.atlasJSONHash('mainCharWalkDownAnim', 'assets/mainChar/wD.png', 'assets/mainChar/wD.json');
-        this.game.load.atlasJSONHash('mainCharWalkLeftAnim', 'assets/mainChar/wL.png', 'assets/mainChar/wL.json');
-        this.game.load.atlasJSONHash('mainCharWalkRightAnim', 'assets/mainChar/wR.png', 'assets/mainChar/wR.json');
-        this.game.load.atlasJSONHash('mainCharAttackUpAnim', 'assets/mainChar/aU.png', 'assets/mainChar/aU.json');
-        this.game.load.atlasJSONHash('mainCharAttackDownAnim', 'assets/mainChar/aD.png', 'assets/mainChar/aD.json');
-        this.game.load.atlasJSONHash('mainCharAttackLeftAnim', 'assets/mainChar/aL.png', 'assets/mainChar/aL.json');
-        this.game.load.atlasJSONHash('mainCharAttackRightAnim', 'assets/mainChar/aR.png', 'assets/mainChar/aR.json');
-        this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
-        */
+
 		this.game.load.atlasJSONHash('playerAnimation', 'assets/mainPlayer.png', 'assets/mainPlayer.json');
 		this.game.load.atlasJSONHash('enemy1Animation', 'assets/enemy1.png', 'assets/enemy1.json');
-		/*
-		this.game.load.atlasJSONHash('humanEnemyWalkUpAnim', 'assets/humanEnemy/wU.png', 'assets/humanEnemy/wU.json');
-        this.game.load.atlasJSONHash('humanEnemyWalkDownAnim', 'assets/humanEnemy/wD.png', 'assets/humanEnemy/wD.json');
-        this.game.load.atlasJSONHash('humanEnemyWalkLeftAnim', 'assets/humanEnemy/wL.png', 'assets/humanEnemy/wL.json');
-        this.game.load.atlasJSONHash('humanEnemyWalkRightAnim', 'assets/humanEnemy/wR.png', 'assets/humanEnemy/wR.json');
-        this.game.load.atlasJSONHash('humanEnemyAttackUpAnim', 'assets/humanEnemy/aU.png', 'assets/humanEnemy/aU.json');
-        this.game.load.atlasJSONHash('humanEnemyAttackDownAnim', 'assets/humanEnemy/aD.png', 'assets/humanEnemy/aD.json');
-        this.game.load.atlasJSONHash('humanEnemyAttackLeftAnim', 'assets/humanEnemy/aL.png', 'assets/humanEnemy/aL.json');
-        this.game.load.atlasJSONHash('humanEnemyAttackRightAnim', 'assets/humanEnemy/aR.png', 'assets/humanEnemy/aR.json');
-        this.game.load.atlasJSONHash('humanEnemyDie', 'assets/humanEnemy/die.png', 'assets/humanEnemy/die.json');
-        */
+
+		this.game.load.image('lavaTile','assets/lavaFloor.png');
 		
 		this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         
@@ -121,7 +82,42 @@ Game1 = function() {
 		this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
         this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background3');
         this.game.add.tileSprite(gameWidth, topSec, kodingWidth, botSec, 'background2');
+		
+		// Create a new group
+		this.walls = this.game.add.group();
 
+		// Add Arcade physics to the whole group
+		this.walls.enableBody = true;
+
+
+
+		
+		this.lavaTile = [];
+		for(var i=0; i<8;++i)
+		{
+			// Create the lavaTiles wall
+			var lava = this.game.add.sprite(60+(i*60), 0, 'lavaTile', 0, this.walls); 
+			// Add Arcade physics
+			this.game.physics.arcade.enable(lava); 
+			// Set a property to make sure it won't move 
+			lava.body.immovable = true;
+			
+			lavaTile=lava;
+		}
+		for(var i=0; i<5;++i)
+		{
+			// Create the lavaTiles wall
+			var lava = this.game.add.sprite(60, 60+(i*60), 'lavaTile', 0, this.walls); 
+			// Add Arcade physics
+			this.game.physics.arcade.enable(lava); 
+			// Set a property to make sure it won't move 
+			lava.body.immovable = true;
+			
+			lavaTile=lava;
+		}
+		
+		// Set all the walls to be immovable
+		this.walls.setAll('body.immovable', true);
 
 		
 		this.game.world.setBounds(0, 0, gameWidth, totalHeight);
@@ -153,78 +149,7 @@ Game1 = function() {
 			item.original = true;
 			item.events.onDragStop.add(fixLocation);
 		}
-/*
-        mCwU = this.game.add.sprite(50, 60, 'mainCharWalkUpAnim');
-        mCwD = this.game.add.sprite(50, 110, 'mainCharWalkDownAnim');
-        mCwL  = this.game.add.sprite(50, 170, 'mainCharWalkLeftAnim');
-        mCwR = this.game.add.sprite(50, 230, 'mainCharWalkRightAnim');
-        mCaU  = this.game.add.sprite(50, 300, 'mainCharAttackUpAnim');
-        mCaD  = this.game.add.sprite(50, 350, 'mainCharAttackDownAnim');
-        mCaL   = this.game.add.sprite(50, 400, 'mainCharAttackLeftAnim');
-        mCaR  = this.game.add.sprite(50, 450, 'mainCharAttackRightAnim');
-        mCDIE = this.game.add.sprite(50, 0, 'mainCharDie');
-
-
 		
-		hEwU = this.game.add.sprite(150, 60, 'humanEnemyWalkUpAnim');
-		hEwD = this.game.add.sprite(150, 110, 'humanEnemyWalkDownAnim');
-		hEwL  = this.game.add.sprite(150, 170, 'humanEnemyWalkLeftAnim');
-		hEwR = this.game.add.sprite(150, 230, 'humanEnemyWalkRightAnim');
-		
-		hEaU  = this.game.add.sprite(150, 300, 'humanEnemyAttackUpAnim');
-		hEaD  = this.game.add.sprite(150, 350, 'humanEnemyAttackDownAnim');
-		hEaL   = this.game.add.sprite(150, 400, 'humanEnemyAttackLeftAnim'); 
-		hEaR  = this.game.add.sprite(150, 450, 'humanEnemyAttackRightAnim');
-		hEDIE = this.game.add.sprite(150, 0, 'humanEnemyDie');
-		
-		//  Here we add a new animation called 'run'
-		//  We haven't specified any frames because it's using every frame in the texture atlas
-		/*
-		mCwU.animations.add('run');
-		mCwD.animations.add('run');
-		mCwL.animations.add('run');
-		mCwR.animations.add('run');
-		mCaU.animations.add('run');
-		mCaD.animations.add('run');
-		mCaL.animations.add('run');
-		mCaR.animations.add('run');
-		mCDIE.animations.add('run');
-		
-		
-		hEwU.animations.add('run');
-		hEwD.animations.add('run');
-		hEwL.animations.add('run');
-		hEwR.animations.add('run');
-		hEaU.animations.add('run');
-		hEaD.animations.add('run');
-		hEaL.animations.add('run'); 
-		hEaR.animations.add('run');
-		hEDIE.animations.add('run'); 
-		//  And this starts the animation playing by using its key ("run")
-		//  15 is the frame rate (15fps)
-		//  true means it will loop when it finishes
-		// this.sprite.anchor.setTo(0.5,0.4); //call this after every animation change to fix the animation center
-		/*
-		mCwU.animations.play('run', 5, true);
-		mCwD.animations.play('run', 5, true);
-		mCwL.animations.play('run', 5, true);
-		mCwR.animations.play('run', 5, true);
-		mCaU.animations.play('run', 5, true);
-		mCaD.animations.play('run', 5, true);
-		mCaL.animations.play('run', 5, true);
-		mCaR.animations.play('run', 5, true);
-		mCDIE.animations.play('run', 5, true);
-		
-		hEwU.animations.play('run', 5, true);
-		hEwD.animations.play('run', 5, true);
-		hEwL.animations.play('run', 5, true);
-		hEwR.animations.play('run', 5, true);
-		hEaU.animations.play('run', 5, true);
-		hEaD.animations.play('run', 5, true);
-		hEaL.animations.play('run', 5, true);
-		hEaR.animations.play('run', 5, true);
-		hEDIE.animations.play('run', 5, true);
-		*/
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
 
 		//This will add virtual keys on the game board
@@ -600,6 +525,7 @@ Player.prototype.Update = function() {
     this.yDir = 0;
     this.xDir = 0;
 	
+	this.game.physics.arcade.collide(this.player, this.game.walls);
 };
 
 Player.prototype.MoveUp = function(){

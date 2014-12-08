@@ -3,6 +3,7 @@
  * Modified by AwM4J 12/6-7/2014.
  */
 var TILE_SIZE = 60;
+var COMAND_BLOCK_TIME = 7.3;
 
 
 var gameWidth = 600;
@@ -463,6 +464,7 @@ Game1 = function() {
 
 	this.ranFirstCommand = false;
     ///Called every frame for drawing
+	this.blockOffset = 0;
     function Render() {
         this.popup.Render();
 
@@ -474,17 +476,30 @@ Game1 = function() {
 			{
 				this.graphics = this.game.add.graphics(0,0);
 				this.graphics.lineStyle(3, 0x00FFFF, 1);
-				this.graphicsGroup = this.game.add.group();
-				this.graphicsGroup.add(this.graphics);
 
 				this.ranFirstCommand = true;
-			}
-			else if (this.previousCommand != index)
-			{
+				this.previousCommand = -1;
+				this.blockOffset = 0;
 				this.graphics.drawRect(block.x, block.y, block.width, block.height);
 			}
+			if (this.previousCommand != index)
+			{
+				//block = currentBlocks[index + this.blockOffset];
+				//this.graphics.clear();
+				if(currentBlocks[index].key.indexOf("loopOpen") >= 0) {
+					++this.blockOffset;
+				}
 
-			//this.graphics.beginFill(0x0000FF, 0.5);
+				if((index + this.blockOffset) <= this.console.commandsToRun.length - 1) {
+					block = currentBlocks[index + this.blockOffset];
+					this.graphics.drawRect(block.position.x, block.position.y, block.width, block.height);
+				}
+
+				this.previousCommand = index;
+			}
+			this.game.debug.text("INDEX: " + index, 10, 10);
+			this.game.debug.text("OFFSET: " + this.blockOffset, 10, 25);
+			this.game.debug.text("LENGTH: " + this.console.commandsToRun.length, 10, 40);
 		}
     }
 	
@@ -519,6 +534,7 @@ Game1 = function() {
 		return command;
 	}
 };
+
 
 
 var Player = function(game1) {
@@ -566,6 +582,22 @@ Player.prototype.ResetPosition = function () {
 }
 
 
+
+Enemy = function(game1, x_start, y_start)
+{
+	this.game = game1;
+	this.x_pos = x_start;
+	this.y_pos = y_start;
+	this.isAlive = true;
+
+	this.Update = function(elapsedTime) {
+
+	}
+
+};
+
+
+
 ControlManager = function(game1) {
     this.game = game1;
 
@@ -601,6 +633,7 @@ ControlManager = function(game1) {
         return (this.game.game.input.keyboard.isDown(key));
     }
 };
+
 
 
 PopupWindow = function(game1, x, y, width, height) {
@@ -655,8 +688,8 @@ PopupWindow = function(game1, x, y, width, height) {
 };
 
 
+
 ///Command should look like: '<command>:<duration>' duration can be distance, or time
-var COMAND_BLOCK_TIME = 7.3;
 Console = function(game1)
 {
     this.game = game1;
@@ -689,8 +722,8 @@ Console = function(game1)
 		this.timer = 0;
         this.isRunningCommands = false;
 		this.game.ranFirstCommand = false;
-		this.game.game.world.remove(this.game.graphicsGroup);
-
+		//this.game.game.world.remove(this.game.graphicsGroup);
+		this.game.graphics.clear();
 		if (this.callback) {
 			this.callback();
 		}
@@ -750,6 +783,8 @@ Console = function(game1)
         }
     }
 };
+
+
 
 // Taken from: http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
 Array.prototype.move = function (old_index, new_index) {

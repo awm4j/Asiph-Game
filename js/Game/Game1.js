@@ -268,7 +268,6 @@ Game1 = function() {
 	
 	function executeLoop(startIndex, endIndex, console) {
 		var endItem = currentBlocks[endIndex];
-		endItem.loops = 2;
 		// Number of loops
 		for (var i = 0; i < endItem.loops; ++i) {
 			// Go through each loop
@@ -308,15 +307,33 @@ Game1 = function() {
 				item.input.enableDrag(true);
 				item.original = false;
 				item.events.onDragStop.add(fixLocation);
+				item.events.onInputDown.add(function() {
+					if (item.loops > 0)
+						item.loops -= 1;
+					closeLoop.loops = item.loops;
+				});
 				
 				closeLoop = that.game.add.sprite(item.x, item.y, 'loopClose');
 				closeLoop.inputEnabled = true;
 				closeLoop.input.enableDrag(true);
 				closeLoop.original = false;
 				closeLoop.events.onDragStop.add(fixLocation);
+				closeLoop.events.onInputDown.add(function() {
+					closeLoop.loops += 1;
+					item.loops = closeLoop.loops;
+				});
+				
+			    var text = "0";
+			    var style = { font: "18px Arial", fill: "#ffffff", align: "center" };
+			    var t0 = that.game.add.text(0, 0, text, style);
+			    var t1 = that.game.add.text(0, 0, text, style);
 				
 				item.partner = closeLoop;
+				item.text = t0;
+				item.loops = 0;
 				closeLoop.partner = item;
+				closeLoop.text = t1;
+				closeLoop.loops = 0;
 			}
 			
 			currentBlocks.push(item);
@@ -401,6 +418,23 @@ Game1 = function() {
 			var item = currentBlocks[i];
 			item.x = gameWidth + 8 + 56 * (i % 7);
 			item.y = topSec + 10 + Math.trunc(i / 7) * 60;
+			
+			if (item.text) {
+				item.text.text = item.loops;
+				switch (item.key) {
+					case 'loopClose':
+						item.text.x = item.x + 8;
+						item.text.y = item.y + 24;
+						item.text
+						break;
+					case 'loopOpen':
+						item.text.x = item.x + 30;
+						item.text.y = item.y + 8;
+						break;
+					default:
+						break;
+				}
+			}
 		}		
 	}
 

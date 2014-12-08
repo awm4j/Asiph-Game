@@ -61,3 +61,6 @@ canvas {
    display : block;
    margin : auto;
 }
+#phaser-game{
+	margin-bottom:20px;
+}

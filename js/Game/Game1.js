@@ -2,6 +2,8 @@
  * Created by Nate on 12/6/2014.
  * Modified by AwM4J 12/6-7/2014.
  */
+var TILE_SIZE = 60;
+
 
 var gameWidth = 600;
 var kodingWidth = 400; // ;)
@@ -499,7 +501,7 @@ PopupWindow = function(game1, x, y, width, height) {
 
 
 ///Command should look like: '<command>:<duration>' duration can be distance, or time
-var COMAND_BLOCK_TIME = 10;
+var COMAND_BLOCK_TIME = 7.3;
 Console = function(game1)
 {
     this.game = game1;
@@ -544,7 +546,7 @@ Console = function(game1)
             var c = currentCommand.split(":");
 
             var command = c[0];
-            var duration = parseInt(c[1]);
+            var duration = parseInt(c[1]) * 5;
 
             this.timer += elapsedTime;
 

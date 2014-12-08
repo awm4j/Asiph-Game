@@ -408,8 +408,10 @@ Game1 = function() {
         }
         this.player.Update();
 
-		if(isWinConditionReached())
+		if(this.game.physics.arcade.collide(this.player.sprite, this.enemy.sprite))
 		{
+			this.console.StopCommands();
+			this.enemy.isAlive = false;
 			this.popup.Show("CONGRATS!\r\nYou beat the level");
 		}
     }
@@ -630,7 +632,9 @@ Enemy = function(game1, x_start, y_start)
 	this.sprite.animations.add( 'down_idle', Phaser.Animation.generateFrameNames('walkDown.' , 0 ,  0, ''), 10, true);
 
 	this.sprite.animations.play('down_idle', true);
-	
+
+	this.game.physics.arcade.enable(this.sprite);
+
 	this.Update = function(elapsedTime) {
 
 	}

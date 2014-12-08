@@ -451,12 +451,20 @@ Game1 = function() {
 			{
 				//block = currentBlocks[index + this.blockOffset];
 				//this.graphics.clear();
-				this.graphics.drawRect(block.x, block.y, block.width, block.height);
-				if(currentBlocks[index].key.indexOf("loopOpen") >= 0 && (index + this.blockOffset) < currentBlocks.length - 2) {
+				if(currentBlocks[index].key.indexOf("loopOpen") >= 0) {
 					++this.blockOffset;
 				}
+
+				if((index + this.blockOffset) <= this.console.commandsToRun.length - 1) {
+					block = currentBlocks[index + this.blockOffset];
+					this.graphics.drawRect(block.position.x, block.position.y, block.width, block.height);
+				}
+
 				this.previousCommand = index;
 			}
+			this.game.debug.text("INDEX: " + index, 10, 10);
+			this.game.debug.text("OFFSET: " + this.blockOffset, 10, 25);
+			this.game.debug.text("LENGTH: " + this.console.commandsToRun.length, 10, 40);
 		}
     }
 	

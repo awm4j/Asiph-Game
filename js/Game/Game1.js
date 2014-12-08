@@ -3,6 +3,7 @@
  * Modified by AwM4J 12/6-7/2014.
  */
 var TILE_SIZE = 60;
+var COMAND_BLOCK_TIME = 7.3;
 
 
 var gameWidth = 600;
@@ -501,6 +502,7 @@ Game1 = function() {
 };
 
 
+
 var Player = function(game1) {
     this.game = game1;
     this.sprite = game1.game.add.sprite(30, 0, 'player');
@@ -546,6 +548,22 @@ Player.prototype.ResetPosition = function () {
 }
 
 
+
+Enemy = function(game1, x_start, y_start)
+{
+	this.game = game1;
+	this.x_pos = x_start;
+	this.y_pos = y_start;
+	this.isAlive = true;
+
+	this.Update = function(elapsedTime) {
+
+	}
+
+};
+
+
+
 ControlManager = function(game1) {
     this.game = game1;
 
@@ -581,6 +599,7 @@ ControlManager = function(game1) {
         return (this.game.game.input.keyboard.isDown(key));
     }
 };
+
 
 
 PopupWindow = function(game1, x, y, width, height) {
@@ -635,8 +654,8 @@ PopupWindow = function(game1, x, y, width, height) {
 };
 
 
+
 ///Command should look like: '<command>:<duration>' duration can be distance, or time
-var COMAND_BLOCK_TIME = 7.3;
 Console = function(game1)
 {
     this.game = game1;
@@ -730,6 +749,8 @@ Console = function(game1)
         }
     }
 };
+
+
 
 // Taken from: http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
 Array.prototype.move = function (old_index, new_index) {

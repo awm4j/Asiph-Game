@@ -6,7 +6,7 @@
 var gameWidth = 600;
 var kodingWidth = 400; // ;)
 
-var topSec = 200;
+var topSec = 80;
 var botSec = 400;
 
 var totalWidth = gameWidth + kodingWidth;
@@ -56,13 +56,18 @@ Game1 = function() {
         this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         
 		// Code Blocks
-        this.game.load.image('block0','assets/blocks/up.png');
-        this.game.load.image('block1','assets/blocks/down.png');
-        this.game.load.image('block2','assets/blocks/left.png');
-        this.game.load.image('block3','assets/blocks/right.png');
-        this.game.load.image('block4','assets/blocks/sword.png');
-        this.game.load.image('block5','assets/blocks/bow.png');
+        this.game.load.image('up','assets/blocks/up.png');
+        this.game.load.image('down','assets/blocks/down.png');
+        this.game.load.image('left','assets/blocks/left.png');
+        this.game.load.image('right','assets/blocks/right.png');
+        this.game.load.image('sword','assets/blocks/sword.png');
+        this.game.load.image('bow','assets/blocks/bow.png');
+        
+		this.game.load.image('loop','assets/blocks/loop.png');
+        this.game.load.image('loopOpen','assets/blocks/loopOpen.png');
+        this.game.load.image('loopClose','assets/blocks/loopClose.png');
 		
+		// Play/Stop Button
         this.game.load.spritesheet('play','assets/play.png', 48, 48);
 
         this.game.load.spritesheet('btnArrowUp', 'assets/GamePad/keyArrowUp.png', 50, 50);
@@ -95,18 +100,18 @@ Game1 = function() {
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 
+
 		// Programming blocks
-		for (var i = 0; i < 7; ++i) {
-			for (var j = 0; j < 3; ++j) {
-				var blockName = 'block' + i % 6;
-				var item = this.game.add.sprite(gameWidth + 8 + 56 * i, 14 + 62 * j, blockName);
-				item.inputEnabled = true;
-				item.input.enableDrag(true);
-				item.x0 = item.x;
-				item.y0 = item.y;
-				item.original = true;
-				item.events.onDragStop.add(fixLocation);
-			}
+		var blockNames = ['up', 'down', 'left', 'right', 'sword', 'bow', 'loop'];
+		for (var i = 0; i < blockNames.length; ++i) {
+			var blockName = blockNames[i];
+			var item = this.game.add.sprite(gameWidth + 8 + 56 * (i % 7), 14 + 62 * Math.trunc(i / 7), blockName);
+			item.inputEnabled = true;
+			item.input.enableDrag(true);
+			item.x0 = item.x;
+			item.y0 = item.y;
+			item.original = true;
+			item.events.onDragStop.add(fixLocation);
 		}
 
         mCwU = this.game.add.sprite(100, 100, 'mainCharWalkUpAnim');

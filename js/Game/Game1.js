@@ -84,7 +84,7 @@ Game1 = function() {
         this.game.load.image('down','assets/blocks/down.png');
         this.game.load.image('left','assets/blocks/left.png');
         this.game.load.image('right','assets/blocks/right.png');
-        this.game.load.image('sword','assets/blocks/sword.png');
+        //this.game.load.image('sword','assets/blocks/sword.png');
         this.game.load.image('bow','assets/blocks/bow.png');
         
 		this.game.load.image('loop','assets/blocks/loop.png');
@@ -128,7 +128,7 @@ Game1 = function() {
 
 
 		// Programming blocks
-		var blockNames = ['up', 'down', 'left', 'right', 'sword', 'bow', 'loop'];
+		var blockNames = ['up', 'down', 'left', 'right', 'sword', 'loop'];
 		for (var i = 0; i < blockNames.length; ++i) {
 			var blockName = blockNames[i];
 			var item = this.game.add.sprite(gameWidth + 8 + 56 * (i % 7), 14 + 62 * Math.trunc(i / 7), blockName);
@@ -224,6 +224,7 @@ Game1 = function() {
 		}
 		// Play
 		else {
+			button.frame = 1;
 			this.player.sprite.position.x = 30;
 			this.player.sprite.position.y = 1;
 			
@@ -244,6 +245,9 @@ Game1 = function() {
             	this.console.StartCommands(function() {
 					button.frame = 0;
 				});
+			}
+			else {
+				button.frame = 0;
 			}
 		}
 	}

@@ -4,6 +4,7 @@
  * Blessed by Sippy 12/07/2014
  */
 var TILE_SIZE = 60;
+var COMAND_BLOCK_TIME = 7.3;
 
 
 var gameWidth = 600;
@@ -281,7 +282,6 @@ Game1 = function() {
 	
 	function executeLoop(startIndex, endIndex, console) {
 		var endItem = currentBlocks[endIndex];
-		endItem.loops = 2;
 		// Number of loops
 		for (var i = 0; i < endItem.loops; ++i) {
 			// Go through each loop
@@ -321,15 +321,33 @@ Game1 = function() {
 				item.input.enableDrag(true);
 				item.original = false;
 				item.events.onDragStop.add(fixLocation);
+				item.events.onInputDown.add(function() {
+					if (item.loops > 0)
+						item.loops -= 1;
+					closeLoop.loops = item.loops;
+				});
 				
 				closeLoop = that.game.add.sprite(item.x, item.y, 'loopClose');
 				closeLoop.inputEnabled = true;
 				closeLoop.input.enableDrag(true);
 				closeLoop.original = false;
 				closeLoop.events.onDragStop.add(fixLocation);
+				closeLoop.events.onInputDown.add(function() {
+					closeLoop.loops += 1;
+					item.loops = closeLoop.loops;
+				});
+				
+			    var text = "0";
+			    var style = { font: "18px Arial", fill: "#ffffff", align: "center" };
+			    var t0 = that.game.add.text(0, 0, text, style);
+			    var t1 = that.game.add.text(0, 0, text, style);
 				
 				item.partner = closeLoop;
+				item.text = t0;
+				item.loops = 0;
 				closeLoop.partner = item;
+				closeLoop.text = t1;
+				closeLoop.loops = 0;
 			}
 			
 			currentBlocks.push(item);
@@ -414,6 +432,23 @@ Game1 = function() {
 			var item = currentBlocks[i];
 			item.x = gameWidth + 8 + 56 * (i % 7);
 			item.y = topSec + 10 + Math.trunc(i / 7) * 60;
+			
+			if (item.text) {
+				item.text.text = item.loops;
+				switch (item.key) {
+					case 'loopClose':
+						item.text.x = item.x + 8;
+						item.text.y = item.y + 24;
+						item.text
+						break;
+					case 'loopOpen':
+						item.text.x = item.x + 30;
+						item.text.y = item.y + 8;
+						break;
+					default:
+						break;
+				}
+			}
 		}		
 	}
 
@@ -442,6 +477,7 @@ Game1 = function() {
 
 	this.ranFirstCommand = false;
     ///Called every frame for drawing
+	this.blockOffset = 0;
     function Render() {
         this.popup.Render();
 
@@ -453,17 +489,30 @@ Game1 = function() {
 			{
 				this.graphics = this.game.add.graphics(0,0);
 				this.graphics.lineStyle(3, 0x00FFFF, 1);
-				this.graphicsGroup = this.game.add.group();
-				this.graphicsGroup.add(this.graphics);
 
 				this.ranFirstCommand = true;
-			}
-			else if (this.previousCommand != index)
-			{
+				this.previousCommand = -1;
+				this.blockOffset = 0;
 				this.graphics.drawRect(block.x, block.y, block.width, block.height);
 			}
+			if (this.previousCommand != index)
+			{
+				//block = currentBlocks[index + this.blockOffset];
+				//this.graphics.clear();
+				if(currentBlocks[index].key.indexOf("loopOpen") >= 0) {
+					++this.blockOffset;
+				}
 
-			//this.graphics.beginFill(0x0000FF, 0.5);
+				if((index + this.blockOffset) <= this.console.commandsToRun.length - 1) {
+					block = currentBlocks[index + this.blockOffset];
+					this.graphics.drawRect(block.position.x, block.position.y, block.width, block.height);
+				}
+
+				this.previousCommand = index;
+			}
+			this.game.debug.text("INDEX: " + index, 10, 10);
+			this.game.debug.text("OFFSET: " + this.blockOffset, 10, 25);
+			this.game.debug.text("LENGTH: " + this.console.commandsToRun.length, 10, 40);
 		}
     }
 	
@@ -500,8 +549,11 @@ Game1 = function() {
 };
 
 
+<<<<<<< HEAD
 //this = this.game.add.sprite(12,12,'playerAnimation');
 
+=======
+>>>>>>> 4970b78d2619079642ec63524ca94673e5a880d7
 
 var Player = function(game1) {
     this.game = game1;
@@ -564,6 +616,22 @@ Player.prototype.ResetPosition = function () {
 }
 
 
+
+Enemy = function(game1, x_start, y_start)
+{
+	this.game = game1;
+	this.x_pos = x_start;
+	this.y_pos = y_start;
+	this.isAlive = true;
+
+	this.Update = function(elapsedTime) {
+
+	}
+
+};
+
+
+
 ControlManager = function(game1) {
     this.game = game1;
 
@@ -599,6 +667,7 @@ ControlManager = function(game1) {
         return (this.game.game.input.keyboard.isDown(key));
     }
 };
+
 
 
 PopupWindow = function(game1, x, y, width, height) {
@@ -653,8 +722,8 @@ PopupWindow = function(game1, x, y, width, height) {
 };
 
 
+
 ///Command should look like: '<command>:<duration>' duration can be distance, or time
-var COMAND_BLOCK_TIME = 7.3;
 Console = function(game1)
 {
     this.game = game1;
@@ -687,8 +756,8 @@ Console = function(game1)
 		this.timer = 0;
         this.isRunningCommands = false;
 		this.game.ranFirstCommand = false;
-		this.game.game.world.remove(this.game.graphicsGroup);
-
+		//this.game.game.world.remove(this.game.graphicsGroup);
+		this.game.graphics.clear();
 		if (this.callback) {
 			this.callback();
 		}
@@ -748,6 +817,8 @@ Console = function(game1)
         }
     }
 };
+
+
 
 // Taken from: http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
 Array.prototype.move = function (old_index, new_index) {

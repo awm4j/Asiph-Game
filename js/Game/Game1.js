@@ -334,7 +334,8 @@ Game1 = function() {
 				closeLoop.original = false;
 				closeLoop.events.onDragStop.add(fixLocation);
 				closeLoop.events.onInputDown.add(function() {
-					closeLoop.loops += 1;
+					if (closeLoop.loops < 99)
+						closeLoop.loops += 1;
 					item.loops = closeLoop.loops;
 				});
 				

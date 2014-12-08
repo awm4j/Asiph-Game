@@ -328,21 +328,27 @@ Game1 = function() {
 	function blockToCommand(item) {
 		var command = '';
 		switch (item.key) {
-			case 'block0':
+			case 'up':
 				command = 'MoveUp';
 				break;
-			case 'block1':
+			case 'down':
 				command = 'MoveDown';
 				break;
-			case 'block2':
+			case 'left':
 				command = 'MoveLeft';
 				break;
-			case 'block3':
+			case 'right':
 				command = 'MoveRight';
 				break;
-			case 'block4':
+			case 'bow':
 				break;
-			case 'block5':
+			case 'sword':
+				break;
+			case 'loopOpen':
+				command = 'loopOpen';
+				break;
+			case 'loopClose':
+				command = 'loopClose';
 				break;
 			default:
 				break;

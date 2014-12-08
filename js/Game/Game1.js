@@ -254,7 +254,7 @@ Game1 = function() {
 					var command = blockToCommand(currentBlocks[i]);
 					if (command == 'loopOpen') {
 						var endIndex = currentBlocks.indexOf(currentBlocks[i].partner);
-						executeLoop(i, endIndex, this.console);
+						executeLoop(i, endIndex, this.console, 0);
 						i = endIndex;
 					}
 					else {
@@ -279,8 +279,9 @@ Game1 = function() {
 		currentBlocks.length = 0;
 		updateCurrentBlocks();
 	}
+
+	function executeLoop(startIndex, endIndex, console, innerNum) {
 	
-	function executeLoop(startIndex, endIndex, console) {
 		var endItem = currentBlocks[endIndex];
 		// Number of loops
 		for (var i = 0; i < endItem.loops; ++i) {
@@ -289,7 +290,7 @@ Game1 = function() {
 				var command = blockToCommand(currentBlocks[startIndex + j]);
 				if (command == 'loopOpen') {
 					var innerEndIndex = currentBlocks.indexOf(currentBlocks[j].partner);
-					executeLoop(j, innerEndIndex, console);
+					executeLoop(j, innerEndIndex, console, innerNum+1);
 					j = innerEndIndex;
 				}
 				else {
@@ -297,6 +298,7 @@ Game1 = function() {
 				}
 			}
 		}
+
 	}
 	
 	// Used for the coding blocks
@@ -516,6 +518,7 @@ Game1 = function() {
 			this.game.debug.text("OFFSET: " + this.blockOffset, 10, 25);
 			this.game.debug.text("LENGTH: " + this.console.commandsToRun.length, 10, 40);
 		}
+		this.game.debug.text("ISLOOPING: " + isLoopExecuting, 10, 55);
     }
 	
 	function blockToCommand(item) {

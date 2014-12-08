@@ -5,7 +5,9 @@
 
 Player = function (game, playerNum)
 {
+	
     var Health = 100;
 
     this.game = game;
+	
 }

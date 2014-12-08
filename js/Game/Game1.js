@@ -1,6 +1,7 @@
 /**
- * Created by Nate on 12/6/2014.
- * Modified by AwM4J 12/6-7/2014.
+ * Created by Nate on 12/06/2014.
+ * Enhanced by AwM4J 12/07/2014
+ * Blessed by Sippy 12/07/2014
  */
 var TILE_SIZE = 60;
 var COMAND_BLOCK_TIME = 7.3;
@@ -59,7 +60,8 @@ Game1 = function() {
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('background3','assets/greenSquare.png');
 		
-        this.game.load.image('player','assets/player.png');
+        //this.game.load.image('player','assets/player.png');
+		/*
         this.game.load.atlasJSONHash('mainCharWalkUpAnim', 'assets/mainChar/wU.png', 'assets/mainChar/wU.json');
         this.game.load.atlasJSONHash('mainCharWalkDownAnim', 'assets/mainChar/wD.png', 'assets/mainChar/wD.json');
         this.game.load.atlasJSONHash('mainCharWalkLeftAnim', 'assets/mainChar/wL.png', 'assets/mainChar/wL.json');
@@ -69,7 +71,9 @@ Game1 = function() {
         this.game.load.atlasJSONHash('mainCharAttackLeftAnim', 'assets/mainChar/aL.png', 'assets/mainChar/aL.json');
         this.game.load.atlasJSONHash('mainCharAttackRightAnim', 'assets/mainChar/aR.png', 'assets/mainChar/aR.json');
         this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
-        
+        */
+		this.game.load.atlasJSONHash('playerAnimation', 'assets/mainPlayer.png', 'assets/mainPlayer.json');
+		
 		this.game.load.atlasJSONHash('humanEnemyWalkUpAnim', 'assets/humanEnemy/wU.png', 'assets/humanEnemy/wU.json');
         this.game.load.atlasJSONHash('humanEnemyWalkDownAnim', 'assets/humanEnemy/wD.png', 'assets/humanEnemy/wD.json');
         this.game.load.atlasJSONHash('humanEnemyWalkLeftAnim', 'assets/humanEnemy/wL.png', 'assets/humanEnemy/wL.json');
@@ -125,8 +129,10 @@ Game1 = function() {
 		
         cursors = this.game.input.keyboard.createCursorKeys();
 
+		
+		
 		this.player = new Player(this);
-
+		
 		this.play = this.game.add.button(totalWidth - 70, totalHeight - 70, 'play', playStop, this);
 		this.trash = this.game.add.button(totalWidth - 123, totalHeight - 70, 'trash', clearCommands, this, 0, 0, 1);
 
@@ -145,7 +151,7 @@ Game1 = function() {
 			item.original = true;
 			item.events.onDragStop.add(fixLocation);
 		}
-
+/*
         mCwU = this.game.add.sprite(50, 60, 'mainCharWalkUpAnim');
         mCwD = this.game.add.sprite(50, 110, 'mainCharWalkDownAnim');
         mCwL  = this.game.add.sprite(50, 170, 'mainCharWalkLeftAnim');
@@ -155,11 +161,14 @@ Game1 = function() {
         mCaL   = this.game.add.sprite(50, 400, 'mainCharAttackLeftAnim');
         mCaR  = this.game.add.sprite(50, 450, 'mainCharAttackRightAnim');
         mCDIE = this.game.add.sprite(50, 0, 'mainCharDie');
+*/
 
+		
 		hEwU = this.game.add.sprite(150, 60, 'humanEnemyWalkUpAnim');
 		hEwD = this.game.add.sprite(150, 110, 'humanEnemyWalkDownAnim');
 		hEwL  = this.game.add.sprite(150, 170, 'humanEnemyWalkLeftAnim');
 		hEwR = this.game.add.sprite(150, 230, 'humanEnemyWalkRightAnim');
+		
 		hEaU  = this.game.add.sprite(150, 300, 'humanEnemyAttackUpAnim');
 		hEaD  = this.game.add.sprite(150, 350, 'humanEnemyAttackDownAnim');
 		hEaL   = this.game.add.sprite(150, 400, 'humanEnemyAttackLeftAnim'); 
@@ -168,6 +177,7 @@ Game1 = function() {
 		
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
+		/*
 		mCwU.animations.add('run');
 		mCwD.animations.add('run');
 		mCwL.animations.add('run');
@@ -177,6 +187,7 @@ Game1 = function() {
 		mCaL.animations.add('run');
 		mCaR.animations.add('run');
 		mCDIE.animations.add('run');
+		*/
 		
 		hEwU.animations.add('run');
 		hEwD.animations.add('run');
@@ -190,6 +201,8 @@ Game1 = function() {
 		//  And this starts the animation playing by using its key ("run")
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
+		// this.sprite.anchor.setTo(0.5,0.4); //call this after every animation change to fix the animation center
+		/*
 		mCwU.animations.play('run', 5, true);
 		mCwD.animations.play('run', 5, true);
 		mCwL.animations.play('run', 5, true);
@@ -199,7 +212,7 @@ Game1 = function() {
 		mCaL.animations.play('run', 5, true);
 		mCaR.animations.play('run', 5, true);
 		mCDIE.animations.play('run', 5, true);
-		
+		*/
 		hEwU.animations.play('run', 5, true);
 		hEwD.animations.play('run', 5, true);
 		hEwL.animations.play('run', 5, true);
@@ -539,13 +552,32 @@ Game1 = function() {
 
 
 
+//this = this.game.add.sprite(12,12,'playerAnimation');
+
+
 var Player = function(game1) {
     this.game = game1;
-    this.sprite = game1.game.add.sprite(30, 0, 'player');
+    this.sprite = game1.game.add.sprite(12,12,'playerAnimation');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
     this.sprite.anchor.setTo(0.5, 0.5);
+	
+	this.sprite.animations.add( 'walk_left',  Phaser.Animation.generateFrameNames('walkLeft.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'walk_right',  Phaser.Animation.generateFrameNames('walkRight.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'walk_up',  Phaser.Animation.generateFrameNames('walkUp.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'walk_down',  Phaser.Animation.generateFrameNames('walkDown.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'die',  Phaser.Animation.generateFrameNames('die.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_left',  Phaser.Animation.generateFrameNames('attackLeft.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_right', Phaser.Animation.generateFrameNames('attackRight.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_up',  Phaser.Animation.generateFrameNames('attackUp.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_down', Phaser.Animation.generateFrameNames('attackDown.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'left_idle', Phaser.Animation.generateFrameNames('walkLeft.' , 0 , 0, ''), 10, true);
+	this.sprite.animations.add( 'right_idle', Phaser.Animation.generateFrameNames('walkRight.' , 0 ,  0, ''), 10, true);
+	this.sprite.animations.add( 'up_idle', Phaser.Animation.generateFrameNames('walkUp.' , 0 ,  0, ''), 10, true);
+	this.sprite.animations.add( 'down_idle', Phaser.Animation.generateFrameNames('walkDown.' , 0 ,  0, ''), 10, true);
 
+	this.sprite.animations.play('down_idle', true);
+	
     this.yDir = 0;
     this.xDir = 0;
 	

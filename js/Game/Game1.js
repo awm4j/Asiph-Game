@@ -274,8 +274,9 @@ Game1 = function() {
 	}
 
 	function clearCommands() {
-		for(var i = 0; i < currentBlocks.length; ++i)
-		{
+		for(var i = 0; i < currentBlocks.length; ++i) {
+			if (currentBlocks[i].text)
+				currentBlocks[i].text.destroy();
 			currentBlocks[i].destroy();
 		}
 		currentBlocks.length = 0;

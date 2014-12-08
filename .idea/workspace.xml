@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="11da8ae0-67e8-416c-a8e7-5a6d4f2f0542" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Game/Game1.js" afterPath="$PROJECT_DIR$/js/Game/Game1.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Koding-Hackathon.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,12 +40,11 @@
       <file leaf-file-name="Game1.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5297398" vertical-offset="1530" max-vertical-offset="3405">
-              <caret line="449" column="13" selection-start-line="449" selection-start-column="13" selection-end-line="449" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.027881041" vertical-offset="0" max-vertical-offset="3990">
+              <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
               <folding>
                 <element signature="e#0#104#0" expanded="false" />
-                <element signature="e#741#776#0" expanded="false" />
-                <element signature="e#834#2904#0" expanded="false" />
+                <element signature="e#742#777#0" expanded="false" />
                 <element signature="e#4861#5178#0" expanded="false" />
                 <element signature="e#5247#5293#0" expanded="false" />
                 <element signature="e#5549#6408#0" expanded="false" />
@@ -176,6 +176,7 @@
         <option value="$PROJECT_DIR$/js/index.html" />
         <option value="$PROJECT_DIR$/index.htm" />
         <option value="$PROJECT_DIR$/js/Game/EnemyTank.js" />
+        <option value="$PROJECT_DIR$/assets/mainPlayer.json" />
         <option value="$PROJECT_DIR$/js/Game/Game1.js" />
       </list>
     </option>
@@ -241,6 +242,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Koding-Hackathon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Koding-Hackathon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -403,8 +418,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#104#0" expanded="false" />
-            <element signature="e#741#776#0" expanded="false" />
-            <element signature="e#834#2904#0" expanded="false" />
+            <element signature="e#742#777#0" expanded="false" />
             <element signature="e#4861#5178#0" expanded="false" />
             <element signature="e#5247#5293#0" expanded="false" />
             <element signature="e#5549#6408#0" expanded="false" />
@@ -537,8 +551,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#104#0" expanded="false" />
-            <element signature="e#741#776#0" expanded="false" />
-            <element signature="e#834#2904#0" expanded="false" />
+            <element signature="e#742#777#0" expanded="false" />
             <element signature="e#4861#5178#0" expanded="false" />
             <element signature="e#5247#5293#0" expanded="false" />
             <element signature="e#5549#6408#0" expanded="false" />
@@ -671,8 +684,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#104#0" expanded="false" />
-            <element signature="e#741#776#0" expanded="false" />
-            <element signature="e#834#2904#0" expanded="false" />
+            <element signature="e#742#777#0" expanded="false" />
             <element signature="e#4861#5178#0" expanded="false" />
             <element signature="e#5247#5293#0" expanded="false" />
             <element signature="e#5549#6408#0" expanded="false" />
@@ -830,14 +842,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/assets/mainPlayer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8680352" vertical-offset="8292" max-vertical-offset="9315">
+          <caret line="612" column="147" selection-start-line="612" selection-start-column="20" selection-end-line="612" selection-end-column="147" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/Game/Game1.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5297398" vertical-offset="1530" max-vertical-offset="3405">
-          <caret line="449" column="13" selection-start-line="449" selection-start-column="13" selection-end-line="449" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.027881041" vertical-offset="0" max-vertical-offset="3990">
+          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
           <folding>
             <element signature="e#0#104#0" expanded="false" />
-            <element signature="e#741#776#0" expanded="false" />
-            <element signature="e#834#2904#0" expanded="false" />
+            <element signature="e#742#777#0" expanded="false" />
             <element signature="e#4861#5178#0" expanded="false" />
             <element signature="e#5247#5293#0" expanded="false" />
             <element signature="e#5549#6408#0" expanded="false" />

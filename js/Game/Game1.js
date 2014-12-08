@@ -4,7 +4,7 @@
  * Blessed by Sippy 12/07/2014
  */
 var TILE_SIZE = 60;
-var COMAND_BLOCK_TIME = 7.3;
+var COMAND_BLOCK_TIME = 7.43;
 
 
 var gameWidth = 600;
@@ -96,7 +96,7 @@ Game1 = function() {
 		for(var i=0; i<8;++i)
 		{
 			// Create the lavaTiles wall
-			var lava = this.game.add.sprite(60+(i*60), 0, 'lavaTile', 0, this.walls); 
+			var lava = this.game.add.sprite(60+(i*60), 0, 'lavaTile', 0, this.walls);
 			// Add Arcade physics
 			this.game.physics.arcade.enable(lava); 
 			// Set a property to make sure it won't move 

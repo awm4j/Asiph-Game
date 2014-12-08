@@ -252,6 +252,7 @@ Game1 = function() {
 			
 			item.original = false;
 			
+			var closeLoop;
 			if (item.key == 'loop') {
 				item.destroy();
 				item = that.game.add.sprite(item.x, item.y, 'loopOpen');
@@ -260,19 +261,24 @@ Game1 = function() {
 				item.original = false;
 				item.events.onDragStop.add(fixLocation);
 				
-				var closeLoop = that.game.add.sprite(item.x, item.y, 'loopClose');
+				closeLoop = that.game.add.sprite(item.x, item.y, 'loopClose');
 				closeLoop.inputEnabled = true;
 				closeLoop.input.enableDrag(true);
 				closeLoop.original = false;
 				closeLoop.events.onDragStop.add(fixLocation);
-				currentBlocks.push(closeLoop);
+				
+				item.partner = closeLoop;
+				closeLoop.partner = item;
 			}
 			
 			currentBlocks.push(item);
 			var oldIndex = currentBlocks.indexOf(item);
 			var newIndex = getBlockIndex(item);
-			
 			currentBlocks.move(oldIndex, newIndex);
+			
+			if (closeLoop) {
+				currentBlocks.push(closeLoop);
+			}
 		}
 		// Moved a fresh block outside the bottom coding area
 		else if (item.original) {
@@ -286,6 +292,15 @@ Game1 = function() {
 			if(i != -1) {
 				currentBlocks.splice(i, 1);
 			}
+			
+			if (item.partner) {
+				var j = currentBlocks.indexOf(item.partner);
+				if (j != -1) {
+					currentBlocks.splice(j, 1);
+				}
+				item.partner.destroy();
+			}
+			
 			item.destroy();
 		}
 		// Moved an old block around in the coding area

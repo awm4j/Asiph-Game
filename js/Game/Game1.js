@@ -229,12 +229,32 @@ Game1 = function() {
 			this.console.ClearCommands();
 			// Go through the blocks and add them to console
 			for (var i = 0; i < currentBlocks.length; ++i) {
-				var command = blockToCommand(currentBlocks[i]) + ':1';
-		        this.console.AddCommand(command);
-			}
+				var command = blockToCommand(currentBlocks[i]);
+				if (command == 'loopOpen') {
+					var endIndex = currentBlocks.indexOf(currentBlocks[i].partner);
+					executeLoop(i, endIndex, this.console);
+					i = endIndex;
+				}
+				else {
+			        this.console.AddCommand(command + ':1');
+				}	
+		    }
             this.console.StartCommands(function() {
 				button.frame = 0;
 			});
+		}
+	}
+	
+	function executeLoop(startIndex, endIndex, console) {		
+		var endItem = currentBlocks[endIndex];
+		endItem.loops = 2;
+		// Number of loops
+		for (var i = 0; i < endItem.loops; ++i) {
+			// Go through each loop
+			for (var j = 1; j < endIndex - startIndex; ++j) {
+				var command = blockToCommand(currentBlocks[startIndex + j]);
+				console.AddCommand(command + ':1');
+			}
 		}
 	}
 	

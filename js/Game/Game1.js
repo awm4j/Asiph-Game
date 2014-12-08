@@ -84,8 +84,8 @@ Game1 = function() {
         this.game.load.image('down','assets/blocks/down.png');
         this.game.load.image('left','assets/blocks/left.png');
         this.game.load.image('right','assets/blocks/right.png');
-        //this.game.load.image('sword','assets/blocks/sword.png');
-        this.game.load.image('bow','assets/blocks/bow.png');
+        this.game.load.image('sword','assets/blocks/sword.png');
+        //this.game.load.image('bow','assets/blocks/bow.png');
         
 		this.game.load.image('loop','assets/blocks/loop.png');
         this.game.load.image('loopOpen','assets/blocks/loopOpen.png');

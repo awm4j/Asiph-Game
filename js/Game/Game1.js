@@ -266,7 +266,14 @@ Game1 = function() {
 			// Go through each loop
 			for (var j = 1; j < endIndex - startIndex; ++j) {
 				var command = blockToCommand(currentBlocks[startIndex + j]);
-				console.AddCommand(command + ':1');
+				if (command == 'loopOpen') {
+					var innerEndIndex = currentBlocks.indexOf(currentBlocks[j].partner);
+					executeLoop(j, innerEndIndex, console);
+					j = innerEndIndex;
+				}
+				else {
+					console.AddCommand(command + ':1');
+				}
 			}
 		}
 	}

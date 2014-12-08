@@ -70,10 +70,10 @@ Game1 = function() {
         this.game.load.spritesheet('btnArrowLeft', 'assets/GamePad/keyArrowLeft.png', 50, 50);
         this.game.load.spritesheet('btnArrowRight', 'assets/GamePad/keyArrowRight.png', 50, 50);
 
-        this.game.load.spritesheet('btnKeyW', 'assets/GamePad/keyW.png');
-        this.game.load.spritesheet('btnKeyA', 'assets/GamePad/keyA.png');
-        this.game.load.spritesheet('btnKeyS', 'assets/GamePad/keyS.png');
-        this.game.load.spritesheet('btnKeyD', 'assets/GamePad/keyD.png');
+        this.game.load.spritesheet('btnKeyW', 'assets/GamePad/keyW.png', 50, 50);
+        this.game.load.spritesheet('btnKeyA', 'assets/GamePad/keyA.png', 50, 50);
+        this.game.load.spritesheet('btnKeyS', 'assets/GamePad/keyS.png', 50, 50);
+        this.game.load.spritesheet('btnKeyD', 'assets/GamePad/keyD.png', 50, 50);
     } 
 
     ///Use to instantiate objects before the game starts
@@ -306,6 +306,8 @@ Player.prototype.MoveRight = function(){
 
 ControlManager = function(game1) {
     this.game = game1;
+
+    ///Arrow Keys
     this.IsArrowKeyUp_Pressed = function() {
         return (this.isKeyPressed(Phaser.Keyboard.UP) || isBtnArrowUp_Pressed);
     };
@@ -318,6 +320,21 @@ ControlManager = function(game1) {
     this.IsArrowKeyRight_Pressed = function() {
         return (this.isKeyPressed(Phaser.Keyboard.RIGHT) || isBtnArrowRight_Pressed);
     };
+
+    //Keys WASD
+    this.IsBtnKeyW_Pressed = function() {
+        return (this.isKeyPressed(Phaser.Keyboard.W) || isBtnKeyW_Pressed);
+    };
+    this.IsBtnKeyA_Pressed = function() {
+        return (this.isKeyPressed(Phaser.Keyboard.A) || isBtnKeyA_Pressed);
+    };
+    this.IsBtnKeyS_Pressed = function() {
+        return (this.isKeyPressed(Phaser.Keyboard.S) || isBtnKeyS_Pressed);
+    };
+    this.IsBtnKeyD_Pressed = function() {
+        return (this.isKeyPressed(Phaser.Keyboard.D) || isBtnKeyD_Pressed);
+    };
+
     this.isKeyPressed = function(key) {
         return (this.game.game.input.keyboard.isDown(key));
     }
@@ -438,8 +455,7 @@ Console = function(game1)
 
     this.runCommand = function(command)
     {
-        var c = command.split(":");
-        switch (c[0])
+        switch (command)
         {
             case "MoveUp":
                 this.game.player.MoveUp();
@@ -478,6 +494,10 @@ var isBtnArrowDown_Pressed = false;
 var isBtnArrowLeft_Pressed = false;
 var isBtnArrowRight_Pressed = false;
 
+var isBtnKeyW_Pressed = false;
+var isBtnKeyA_Pressed = false;
+var isBtnKeyS_Pressed = false;
+var isBtnKeyD_Pressed = false;
 VGamePad = function(game1)
 {
     this.game = game1;
@@ -530,11 +550,65 @@ VGamePad = function(game1)
     this.btnArrowRight.events.onInputDown.add(this.onBtnArrowRight_Pressed);
     this.btnArrowRight.events.onInputUp.add(this.onBtnArrowRight_Released);
 
-
-
     this.groupArrows = this.game.game.add.group();
     this.groupArrows.add(this.btnArrowUp);
     this.groupArrows.add(this.btnArrowDown);
     this.groupArrows.add(this.btnArrowLeft);
     this.groupArrows.add(this.btnArrowRight);
+
+
+
+    this.onBtnKeyW_Pressed = function() {
+        isBtnKeyW_Pressed = true;
+    };
+    this.onBtnKeyW_Released = function(){
+        isBtnKeyW_Pressed = false;
+    };
+
+    this.onBtnKeyA_Pressed = function() {
+        isBtnKeyA_Pressed = true;
+    };
+    this.onBtnKeyA_Released = function(){
+        isBtnKeyA_Pressed = false;
+    };
+
+    this.onBtnKeyS_Pressed = function() {
+        isBtnKeyS_Pressed = true;
+    };
+    this.onBtnKeyS_Released = function(){
+        isBtnKeyS_Pressed = false;
+    };
+
+    this.onBtnKeyD_Pressed = function() {
+        isBtnKeyD_Pressed = true;
+    };
+    this.onBtnKeyD_Released = function(){
+        isBtnKeyD_Pressed = false;
+    };
+
+    this.btnKeyW = this.game.add.button(60, totalHeight - 110, 'btnKeyW', null, this, 0, 0, 1);
+    this.btnKeyW.fixedToCamera = true;
+    this.btnKeyW.events.onInputDown.add(this.onBtnKeyW_Pressed);
+    this.btnKeyW.events.onInputUp.add(this.onBtnKeyW_Released);
+
+    this.btnKeyA = this.game.add.button(5, totalHeight - 55, 'btnKeyA', null, this, 0, 0, 1);
+    this.btnKeyA.fixedToCamera = true;
+    this.btnKeyA.events.onInputDown.add(this.onBtnKeyA_Pressed);
+    this.btnKeyA.events.onInputUp.add(this.onBtnKeyA_Released);
+
+    this.btnKeyS = this.game.add.button(60, totalHeight - 55, 'btnKeyS', null, this, 0, 0, 1);
+    this.btnKeyS.fixedToCamera = true;
+    this.btnKeyS.events.onInputDown.add(this.onBtnKeyS_Pressed);
+    this.btnKeyS.events.onInputUp.add(this.onBtnKeyS_Released);
+
+    this.btnKeyD = this.game.add.button(115, totalHeight - 55, 'btnKeyD', null, this, 0, 0, 1);
+    this.btnKeyD.fixedToCamera = true;
+    this.btnKeyD.events.onInputDown.add(this.onBtnKeyD_Pressed);
+    this.btnKeyD.events.onInputUp.add(this.onBtnKeyD_Released);
+
+    this.groupWASD = this.game.game.add.group();
+    this.groupWASD.add(this.btnKeyW);
+    this.groupWASD.add(this.btnKeyA);
+    this.groupWASD.add(this.btnKeyS);
+    this.groupWASD.add(this.btnKeyD);
 };

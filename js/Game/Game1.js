@@ -264,7 +264,8 @@ Game1 = function() {
 				closeLoop.original = false;
 				closeLoop.events.onDragStop.add(fixLocation);
 				closeLoop.events.onInputDown.add(function() {
-					closeLoop.loops += 1;
+					if (closeLoop.loops < 99)
+						closeLoop.loops += 1;
 					item.loops = closeLoop.loops;
 				});
 				
@@ -469,6 +470,7 @@ Game1 = function() {
 			case 'bow':
 				break;
 			case 'sword':
+				command = 'SwordAttack';
 				break;
 			case 'loopOpen':
 				command = 'loopOpen';
@@ -535,7 +537,6 @@ Player.prototype.Update = function() {
 	this.sprite.body.velocity.x = this.xDir / len * SPEED;
 	this.sprite.body.velocity.y = this.yDir / len * SPEED;
 
-
     this.yDir = 0;
     this.xDir = 0;
 	
@@ -554,26 +555,55 @@ Player.prototype.Update = function() {
 Player.prototype.MoveUp = function(){
     this.yDir -= 1;
 	this.sprite.animations.play('walk_up', true);
+	
+	this.ResetStatus();
+	this.up = true;
 };
 Player.prototype.MoveDown = function(){
     this.yDir += 1;
 	this.sprite.animations.play('walk_down', true);
+	
+	this.ResetStatus();
+	this.down = true;
 };
 Player.prototype.MoveLeft = function(){
     this.xDir -= 1;
 	this.sprite.animations.play('walk_left', true);
+	
+	this.ResetStatus();
+	this.left = true;
 };
 Player.prototype.MoveRight = function(){
     this.xDir += 1;
 	this.sprite.animations.play('walk_right', true);
+	
+	this.ResetStatus();
+	this.right = true;
 };
 Player.prototype.ResetPosition = function () {
 	this.sprite.position.x = 30;
 	this.sprite.position.y = 0;
 	
 	this.sprite.animations.play('down_idle', true);
+};
+Player.prototype.ResetStatus = function (){
+	this.up = false;
+	this.down = false;
+	this.left = false;
+	this.right = false;
+	this.attacking = false
 }
-
+Player.prototype.Attack = function () {
+	this.attacking = true;
+	if (this.right)
+		this.sprite.animations.play('attack_right', true);
+	else if (this.left)
+		this.sprite.animations.play('attack_left', true);
+	else if (this.up)
+		this.sprite.animations.play('attack_up', true);
+	else
+		this.sprite.animations.play('attack_down', true);		
+};
 
 
 Enemy = function(game1, x_start, y_start)
@@ -790,6 +820,9 @@ Console = function(game1)
             case "MoveRight":
                 this.game.player.MoveRight();
                 break;
+			case "SwordAttack":
+				this.game.player.Attack();
+				break;
             default:
                 break;
         }

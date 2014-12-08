@@ -222,7 +222,10 @@ Game1 = function() {
 		// Play
 		else {
 			button.frame = 1;
-						
+			
+			this.player.sprite.position.x = 30;
+			this.player.sprite.position.y = 0;
+			
 			this.console.ClearCommands();
 			// Go through the blocks and add them to console
 			for (var i = 0; i < currentBlocks.length; ++i) {
@@ -257,7 +260,12 @@ Game1 = function() {
 				item.original = false;
 				item.events.onDragStop.add(fixLocation);
 				
-				
+				var closeLoop = that.game.add.sprite(item.x, item.y, 'loopClose');
+				closeLoop.inputEnabled = true;
+				closeLoop.input.enableDrag(true);
+				closeLoop.original = false;
+				closeLoop.events.onDragStop.add(fixLocation);
+				currentBlocks.push(closeLoop);
 			}
 			
 			currentBlocks.push(item);
@@ -372,7 +380,7 @@ Game1 = function() {
 
 var Player = function(game1) {
     this.game = game1;
-    this.sprite = game1.game.add.sprite(game1.game.world.centerX, game1.game.world.centerY, 'player');
+    this.sprite = game1.game.add.sprite(30, 0, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
     this.sprite.anchor.setTo(0.5, 0.5);

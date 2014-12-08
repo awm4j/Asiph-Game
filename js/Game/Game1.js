@@ -109,15 +109,15 @@ Game1 = function() {
 			}
 		}
 
-        mCwU = this.game.add.sprite(100, 100, 'mainCharWalkUpAnim');
-        mCwD = this.game.add.sprite(100, 150, 'mainCharWalkDownAnim');
-        mCwL = this.game.add.sprite(100, 200, 'mainCharWalkLeftAnim');
-        mCwR = this.game.add.sprite(100, 250, 'mainCharWalkRightAnim');
-        mCaU = this.game.add.sprite(100, 300, 'mainCharAttackUpAnim');
-        mCaD = this.game.add.sprite(100, 350, 'mainCharAttackDownAnim');
-        mCaL = this.game.add.sprite(100, 400, 'mainCharAttackLeftAnim');
-        mCaR = this.game.add.sprite(100, 450, 'mainCharAttackRightAnim');
-        mCDIE = this.game.add.sprite(100, 500, 'mainCharDie');
+        mCwU = this.game.add.sprite(50, 60, 'mainCharWalkUpAnim');
+        mCwD = this.game.add.sprite(50, 110, 'mainCharWalkDownAnim');
+        mCwL = this.game.add.sprite(50, 170, 'mainCharWalkLeftAnim');
+        mCwR = this.game.add.sprite(50, 230, 'mainCharWalkRightAnim');
+        mCaU = this.game.add.sprite(50, 300, 'mainCharAttackUpAnim');
+        mCaD = this.game.add.sprite(50, 350, 'mainCharAttackDownAnim');
+        mCaL = this.game.add.sprite(50, 400, 'mainCharAttackLeftAnim');
+        mCaR = this.game.add.sprite(50, 450, 'mainCharAttackRightAnim');
+        mCDIE = this.game.add.sprite(50, 0, 'mainCharDie');
 
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
@@ -135,14 +135,14 @@ Game1 = function() {
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
 		mCwU.animations.play('run', 5, true);
-		mCwD.animations.play('run', 5, 10);
-		mCwL.animations.play('run', 5, 10);
-		mCwR.animations.play('run', 5, 10);
+		mCwD.animations.play('run', 5, true);
+		mCwL.animations.play('run', 5, true);
+		mCwR.animations.play('run', 5, true);
 		mCaU.animations.play('run', 5, true);
 		mCaD.animations.play('run', 5, true);
 		mCaL.animations.play('run', 5, true);
 		mCaR.animations.play('run', 5, true);
-		mCDIE.animations.play('run', 5, 10);
+		mCDIE.animations.play('run', 5, true);
 		
 		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);

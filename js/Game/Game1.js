@@ -498,7 +498,7 @@ Game1 = function() {
 				this.blockOffset = 0;
 				this.graphics.drawRect(block.x, block.y, block.width, block.height);
 			}
-			if (this.previousCommand != index)
+			if (this.previousCommand < index && index < currentBlocks.length)
 			{
 				//block = currentBlocks[index + this.blockOffset];
 				//this.graphics.clear();
@@ -506,8 +506,8 @@ Game1 = function() {
 					++this.blockOffset;
 				}
 
-				if((index + this.blockOffset) <= this.console.commandsToRun.length - 1) {
-					block = currentBlocks[index + this.blockOffset];
+				if((index + this.blockOffset) <= currentBlocks.length - 1) {
+					//block = currentBlocks[index + this.blockOffset];
 					this.graphics.drawRect(block.position.x, block.position.y, block.width, block.height);
 				}
 
@@ -601,19 +601,25 @@ Player.prototype.Update = function() {
 
 Player.prototype.MoveUp = function(){
     this.yDir -= 1;
+	this.sprite.animations.play('walk_up', true);
 };
 Player.prototype.MoveDown = function(){
     this.yDir += 1;
+	this.sprite.animations.play('walk_down', true);
 };
 Player.prototype.MoveLeft = function(){
     this.xDir -= 1;
+	this.sprite.animations.play('walk_left', true);
 };
 Player.prototype.MoveRight = function(){
     this.xDir += 1;
+	this.sprite.animations.play('walk_right', true);
 };
 Player.prototype.ResetPosition = function () {
 	this.sprite.position.x = 30;
 	this.sprite.position.y = 0;
+	
+	this.sprite.animations.play('down_idle', true);
 }
 
 
@@ -757,8 +763,9 @@ Console = function(game1)
 		this.timer = 0;
         this.isRunningCommands = false;
 		this.game.ranFirstCommand = false;
-		//this.game.game.world.remove(this.game.graphicsGroup);
-		this.game.graphics.clear();
+		if(!(typeof this.game.graphics === 'undefined')) {
+			this.game.graphics.clear();
+		}
 		if (this.callback) {
 			this.callback();
 		}

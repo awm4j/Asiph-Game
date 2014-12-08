@@ -225,18 +225,23 @@ Game1 = function() {
 		// Play
 		else {
 			this.player.sprite.position.x = 30;
-			this.player.sprite.position.y = 0;
-
-			if(currentBlocks.length > 0) {
-				button.frame = 1;
+			this.player.sprite.position.y = 1;
+			
+			if (currentBlocks.length > 0) {
 				this.console.ClearCommands();
 				// Go through the blocks and add them to console
 				for (var i = 0; i < currentBlocks.length; ++i) {
-					var command = blockToCommand(currentBlocks[i]) + ':1';
-					this.console.AddCommand(command);
-				}
-
-				this.console.StartCommands(function () {
+					var command = blockToCommand(currentBlocks[i]);
+					if (command == 'loopOpen') {
+						var endIndex = currentBlocks.indexOf(currentBlocks[i].partner);
+						executeLoop(i, endIndex, this.console);
+						i = endIndex;
+					}
+					else {
+			        	this.console.AddCommand(command + ':1');
+					}	
+		    	}
+            	this.console.StartCommands(function() {
 					button.frame = 0;
 				});
 			}
@@ -251,6 +256,19 @@ Game1 = function() {
 		}
 		currentBlocks.length = 0;
 		updateCurrentBlocks();
+	}
+	
+	function executeLoop(startIndex, endIndex, console) {		
+		var endItem = currentBlocks[endIndex];
+		endItem.loops = 2;
+		// Number of loops
+		for (var i = 0; i < endItem.loops; ++i) {
+			// Go through each loop
+			for (var j = 1; j < endIndex - startIndex; ++j) {
+				var command = blockToCommand(currentBlocks[startIndex + j]);
+				console.AddCommand(command + ':1');
+			}
+		}
 	}
 	
 	// Used for the coding blocks

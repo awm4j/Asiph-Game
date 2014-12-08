@@ -102,7 +102,7 @@ Game1 = function() {
 			// Set a property to make sure it won't move 
 			lava.body.immovable = true;
 			
-			lavaTile=lava;
+			this.lavaTile.push(lava);
 		}
 		for(var i=0; i<5;++i)
 		{
@@ -113,7 +113,8 @@ Game1 = function() {
 			// Set a property to make sure it won't move 
 			lava.body.immovable = true;
 			
-			lavaTile=lava;
+			//lavaTile=lava;
+			this.lavaTile.push(lava);
 		}
 		
 		// Set all the walls to be immovable
@@ -405,6 +406,11 @@ Game1 = function() {
             this.console.Update(1);
         }
         this.player.Update();
+
+		if(isWinConditionReached())
+		{
+			this.popup.Show("CONGRATS!\r\nYou beat the level");
+		}
     }
 
 	this.ranFirstCommand = false;
@@ -442,9 +448,6 @@ Game1 = function() {
 
 				this.previousCommand = index;
 			}
-			this.game.debug.text("INDEX: " + index, 10, 10);
-			this.game.debug.text("OFFSET: " + this.blockOffset, 10, 25);
-			this.game.debug.text("LENGTH: " + this.console.commandsToRun.length, 10, 40);
 		}
     }
 	
@@ -477,6 +480,15 @@ Game1 = function() {
 				break;
 		}
 		return command;
+	}
+
+	function isWinConditionReached()
+	{
+		if((typeof this.enemy != 'undefined') && !this.enemy.isAlive)
+		{
+			return true;
+		}
+		return false;
 	}
 };
 
@@ -528,6 +540,15 @@ Player.prototype.Update = function() {
     this.xDir = 0;
 	
 	this.game.physics.arcade.collide(this.player, this.game.walls);
+
+	for(var i = 0; i < this.game.lavaTile.length; ++i)
+	{
+		if(this.game.physics.arcade.collide(this.sprite, this.game.lavaTile[i]))
+		{
+			this.game.console.StopCommands();
+			this.game.popup.Show("TRY AGAIN\r\nDeath by lava");
+		}
+	}
 };
 
 Player.prototype.MoveUp = function(){

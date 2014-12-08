@@ -39,7 +39,7 @@ Game1 = function() {
     //Use to load the game assets
     function Preload() {
 		// Backgrounds
-        this.game.load.image('background','assets/rockFlooring.png');
+        this.game.load.image('background','assets/backgroundGrid.png');//rockFlooring.png');
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('background3','assets/greenSquare.png');
 		

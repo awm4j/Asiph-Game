@@ -117,6 +117,7 @@ Game1 = function() {
 			this.lavaTile.push(lava);
 		}
 		
+		
 		// Set all the walls to be immovable
 		this.walls.setAll('body.immovable', true);
 

@@ -22,6 +22,16 @@ var mCaL;
 var mCaR; 
 var mCDIE;
 
+var hEwU;
+var hEwD;
+var hEwL;
+var hEwR; 
+var hEaU;
+var hEaD;
+var hEaL;
+var hEaR; 
+var hEDIE;
+
 //The main game class
 Game1 = function() {
     this.game = new Phaser.Game(totalWidth, totalHeight, Phaser.AUTO, 'phaser-game', {preload: Preload, create: Create, update: Update, render: Render });
@@ -39,7 +49,7 @@ Game1 = function() {
     //Use to load the game assets
     function Preload() {
 		// Backgrounds
-        this.game.load.image('background','assets/rockFlooring.png');
+        this.game.load.image('background','assets/backgroundGrid.png');//rockFlooring.png');
         this.game.load.image('background2','assets/light_sand.png');
         this.game.load.image('background3','assets/greenSquare.png');
 		
@@ -53,7 +63,19 @@ Game1 = function() {
         this.game.load.atlasJSONHash('mainCharAttackLeftAnim', 'assets/mainChar/aL.png', 'assets/mainChar/aL.json');
         this.game.load.atlasJSONHash('mainCharAttackRightAnim', 'assets/mainChar/aR.png', 'assets/mainChar/aR.json');
         this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
-        this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
+        
+		this.game.load.atlasJSONHash('humanEnemyWalkUpAnim', 'assets/humanEnemy/wU.png', 'assets/humanEnemy/wU.json');
+        this.game.load.atlasJSONHash('humanEnemyWalkDownAnim', 'assets/humanEnemy/wD.png', 'assets/humanEnemy/wD.json');
+        this.game.load.atlasJSONHash('humanEnemyWalkLeftAnim', 'assets/humanEnemy/wL.png', 'assets/humanEnemy/wL.json');
+        this.game.load.atlasJSONHash('humanEnemyWalkRightAnim', 'assets/humanEnemy/wR.png', 'assets/humanEnemy/wR.json');
+        this.game.load.atlasJSONHash('humanEnemyAttackUpAnim', 'assets/humanEnemy/aU.png', 'assets/humanEnemy/aU.json');
+        this.game.load.atlasJSONHash('humanEnemyAttackDownAnim', 'assets/humanEnemy/aD.png', 'assets/humanEnemy/aD.json');
+        this.game.load.atlasJSONHash('humanEnemyAttackLeftAnim', 'assets/humanEnemy/aL.png', 'assets/humanEnemy/aL.json');
+        this.game.load.atlasJSONHash('humanEnemyAttackRightAnim', 'assets/humanEnemy/aR.png', 'assets/humanEnemy/aR.json');
+        this.game.load.atlasJSONHash('humanEnemyDie', 'assets/humanEnemy/die.png', 'assets/humanEnemy/die.json');
+        
+		
+		this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         
 		// Code Blocks
         this.game.load.image('up','assets/blocks/up.png');
@@ -114,16 +136,26 @@ Game1 = function() {
 			item.events.onDragStop.add(fixLocation);
 		}
 
-        mCwU = this.game.add.sprite(100, 100, 'mainCharWalkUpAnim');
-        mCwD = this.game.add.sprite(100, 150, 'mainCharWalkDownAnim');
-        mCwL = this.game.add.sprite(100, 200, 'mainCharWalkLeftAnim');
-        mCwR = this.game.add.sprite(100, 250, 'mainCharWalkRightAnim');
-        mCaU = this.game.add.sprite(100, 300, 'mainCharAttackUpAnim');
-        mCaD = this.game.add.sprite(100, 350, 'mainCharAttackDownAnim');
-        mCaL = this.game.add.sprite(100, 400, 'mainCharAttackLeftAnim');
-        mCaR = this.game.add.sprite(100, 450, 'mainCharAttackRightAnim');
-        mCDIE = this.game.add.sprite(100, 500, 'mainCharDie');
+        mCwU = this.game.add.sprite(50, 60, 'mainCharWalkUpAnim');
+        mCwD = this.game.add.sprite(50, 110, 'mainCharWalkDownAnim');
+        mCwL  = this.game.add.sprite(50, 170, 'mainCharWalkLeftAnim');
+        mCwR = this.game.add.sprite(50, 230, 'mainCharWalkRightAnim');
+        mCaU  = this.game.add.sprite(50, 300, 'mainCharAttackUpAnim');
+        mCaD  = this.game.add.sprite(50, 350, 'mainCharAttackDownAnim');
+        mCaL   = this.game.add.sprite(50, 400, 'mainCharAttackLeftAnim');
+        mCaR  = this.game.add.sprite(50, 450, 'mainCharAttackRightAnim');
+        mCDIE = this.game.add.sprite(50, 0, 'mainCharDie');
 
+		hEwU = this.game.add.sprite(150, 60, 'humanEnemyWalkUpAnim');
+		hEwD = this.game.add.sprite(150, 110, 'humanEnemyWalkDownAnim');
+		hEwL  = this.game.add.sprite(150, 170, 'humanEnemyWalkLeftAnim');
+		hEwR = this.game.add.sprite(150, 230, 'humanEnemyWalkRightAnim');
+		hEaU  = this.game.add.sprite(150, 300, 'humanEnemyAttackUpAnim');
+		hEaD  = this.game.add.sprite(150, 350, 'humanEnemyAttackDownAnim');
+		hEaL   = this.game.add.sprite(150, 400, 'humanEnemyAttackLeftAnim'); 
+		hEaR  = this.game.add.sprite(150, 450, 'humanEnemyAttackRightAnim');
+		hEDIE = this.game.add.sprite(150, 0, 'humanEnemyDie');
+		
 		//  Here we add a new animation called 'run'
 		//  We haven't specified any frames because it's using every frame in the texture atlas
 		mCwU.animations.add('run');
@@ -136,19 +168,37 @@ Game1 = function() {
 		mCaR.animations.add('run');
 		mCDIE.animations.add('run');
 		
+		hEwU.animations.add('run');
+		hEwD.animations.add('run');
+		hEwL.animations.add('run');
+		hEwR.animations.add('run');
+		hEaU.animations.add('run');
+		hEaD.animations.add('run');
+		hEaL.animations.add('run'); 
+		hEaR.animations.add('run');
+		hEDIE.animations.add('run'); 
 		//  And this starts the animation playing by using its key ("run")
 		//  15 is the frame rate (15fps)
 		//  true means it will loop when it finishes
 		mCwU.animations.play('run', 5, true);
-		mCwD.animations.play('run', 5, 10);
-		mCwL.animations.play('run', 5, 10);
-		mCwR.animations.play('run', 5, 10);
+		mCwD.animations.play('run', 5, true);
+		mCwL.animations.play('run', 5, true);
+		mCwR.animations.play('run', 5, true);
 		mCaU.animations.play('run', 5, true);
 		mCaD.animations.play('run', 5, true);
 		mCaL.animations.play('run', 5, true);
 		mCaR.animations.play('run', 5, true);
-		mCDIE.animations.play('run', 5, 10);
+		mCDIE.animations.play('run', 5, true);
 		
+		hEwU.animations.play('run', 5, true);
+		hEwD.animations.play('run', 5, true);
+		hEwL.animations.play('run', 5, true);
+		hEwR.animations.play('run', 5, true);
+		hEaU.animations.play('run', 5, true);
+		hEaD.animations.play('run', 5, true);
+		hEaL.animations.play('run', 5, true);
+		hEaR.animations.play('run', 5, true);
+		hEDIE.animations.play('run', 5, true);
 		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
 

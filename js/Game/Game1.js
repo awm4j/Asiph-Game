@@ -116,10 +116,10 @@ Game1 = function() {
 		this.game.world.setBounds(0, 0, gameWidth, totalHeight);
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-        this.player = new Player(this);
 		
         cursors = this.game.input.keyboard.createCursorKeys();
+
+		this.player = new Player(this);
 
 		this.play = this.game.add.button(totalWidth - 70, totalHeight - 70, 'play', playStop, this);
 		this.trash = this.game.add.button(totalWidth - 123, totalHeight - 70, 'trash', clearCommands, this, 0, 0, 1);

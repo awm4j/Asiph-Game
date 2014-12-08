@@ -2,12 +2,14 @@
  * Created by Nate on 12/6/2014.
  * Modified by AwM4J 12/6-7/2014.
  */
+var TILE_SIZE = 60;
+
 
 var gameWidth = 600;
 var kodingWidth = 400; // ;)
 
 var topSec = 80;
-var botSec = 400;
+var botSec = 520;
 
 var totalWidth = gameWidth + kodingWidth;
 var totalHeight = topSec + botSec;
@@ -224,7 +226,7 @@ Game1 = function() {
 			this.console.ClearCommands();
 			// Go through the blocks and add them to console
 			for (var i = 0; i < currentBlocks.length; ++i) {
-				var command = blockToCommand(currentBlocks[i]) + ':5';
+				var command = blockToCommand(currentBlocks[i]) + ':1';
 		        this.console.AddCommand(command);
 			}
             this.console.StartCommands(function() {
@@ -236,7 +238,7 @@ Game1 = function() {
 	// Used for the coding blocks
 	function fixLocation (item) {
 		// Moved a fresh block into the bottom coding area
-		if (item.x > gameWidth - item.width && item.y > topSec - item.height && item.original) {			
+		if (item.x > gameWidth - item.width && item.y > topSec - item.height && item.original) {
 			var newItem = that.game.add.sprite(item.x0, item.y0, item.key);
 			newItem.inputEnabled = true;
 			newItem.input.enableDrag(true);
@@ -247,14 +249,24 @@ Game1 = function() {
 			
 			item.original = false;
 			
-			currentBlocks.push(item);
+			if (item.key == 'loop') {
+				item.destroy();
+				item = that.game.add.sprite(item.x, item.y, 'loopOpen');
+				item.inputEnabled = true;
+				item.input.enableDrag(true);
+				item.original = false;
+				item.events.onDragStop.add(fixLocation);
+				
+				
+			}
 			
+			currentBlocks.push(item);
 			var oldIndex = currentBlocks.indexOf(item);
 			var newIndex = getBlockIndex(item);
 			
 			currentBlocks.move(oldIndex, newIndex);
 		}
-		// Moved a fresh block somewhere other than the bottom coding area
+		// Moved a fresh block outside the bottom coding area
 		else if (item.original) {
 			item.x = item.x0;
 			item.y = item.y0;
@@ -268,7 +280,7 @@ Game1 = function() {
 			}
 			item.destroy();
 		}
-		// Moved an old block inside of the coding area
+		// Moved an old block around in the coding area
 		else {
 			var oldIndex = currentBlocks.indexOf(item);
 			var newIndex = getBlockIndex(item);		
@@ -489,7 +501,7 @@ PopupWindow = function(game1, x, y, width, height) {
 
 
 ///Command should look like: '<command>:<duration>' duration can be distance, or time
-var COMAND_BLOCK_TIME = 10;
+var COMAND_BLOCK_TIME = 7.3;
 Console = function(game1)
 {
     this.game = game1;
@@ -534,7 +546,7 @@ Console = function(game1)
             var c = currentCommand.split(":");
 
             var command = c[0];
-            var duration = parseInt(c[1]);
+            var duration = parseInt(c[1]) * 5;
 
             this.timer += elapsedTime;
 

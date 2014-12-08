@@ -217,9 +217,7 @@ Game1 = function() {
 
 
         //Creating and adding commands to the console
-        this.console = new Console(this);
-		
-		this.player.ResetPosition();
+        this.console = new Console(this);		
     }
 	
 	function playStop (button, pointer, isOver) {
@@ -259,8 +257,7 @@ Game1 = function() {
 		}
 	}
 
-	function clearCommands()
-	{
+	function clearCommands() {
 		for(var i = 0; i < currentBlocks.length; ++i)
 		{
 			currentBlocks[i].destroy();
@@ -269,7 +266,7 @@ Game1 = function() {
 		updateCurrentBlocks();
 	}
 	
-	function executeLoop(startIndex, endIndex, console) {		
+	function executeLoop(startIndex, endIndex, console) {
 		var endItem = currentBlocks[endIndex];
 		endItem.loops = 2;
 		// Number of loops
@@ -329,6 +326,7 @@ Game1 = function() {
 			
 			if (closeLoop) {
 				currentBlocks.push(closeLoop);
+				currentBlocks.move(currentBlocks.length - 1, newIndex + 1);
 			}
 		}
 		// Moved a fresh block outside the bottom coding area
@@ -359,11 +357,23 @@ Game1 = function() {
 			var oldIndex = currentBlocks.indexOf(item);
 			var newIndex = getBlockIndex(item);
 			
+			// It's a loop
 			if (item.partner) {
-				if (item.key == 'loopClose' && currentBlocks.indexOf(item.partner) < newIndex) {
+				// Make sure you're not moving a loop on the other side of an existing loop
+				var crossLoop = false;
+				for (var i = 1; i <= Math.abs(newIndex - oldIndex); ++i) {
+					var sign = Math.sign(newIndex - oldIndex);
+					var index = Math.trunc(i * sign + oldIndex);
+					var key = currentBlocks[index].key;
+					if (key == 'loopClose' || key == 'loopOpen') {
+						crossLoop = true;
+					}
+				}
+				
+				if (item.key == 'loopClose' && currentBlocks.indexOf(item.partner) < newIndex && !crossLoop) {
 					currentBlocks.move(oldIndex, newIndex);
 				}
-				else if (item.key == 'loopOpen' && currentBlocks.indexOf(item.partner) > newIndex) {
+				else if (item.key == 'loopOpen' && currentBlocks.indexOf(item.partner) > newIndex && !crossLoop) {
 					currentBlocks.move(oldIndex, newIndex);
 				}
 			}

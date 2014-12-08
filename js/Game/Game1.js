@@ -102,7 +102,7 @@ Game1 = function() {
 			// Set a property to make sure it won't move 
 			lava.body.immovable = true;
 			
-			lavaTile=lava;
+			this.lavaTile.push(lava);
 		}
 		for(var i=0; i<5;++i)
 		{
@@ -113,7 +113,8 @@ Game1 = function() {
 			// Set a property to make sure it won't move 
 			lava.body.immovable = true;
 			
-			lavaTile=lava;
+			//lavaTile=lava;
+			this.lavaTile.push(lava);
 		}
 		
 		
@@ -182,7 +183,7 @@ Game1 = function() {
 					var command = blockToCommand(currentBlocks[i]);
 					if (command == 'loopOpen') {
 						var endIndex = currentBlocks.indexOf(currentBlocks[i].partner);
-						executeLoop(i, endIndex, this.console);
+						executeLoop(i, endIndex, this.console, 0);
 						i = endIndex;
 					}
 					else {
@@ -208,8 +209,9 @@ Game1 = function() {
 		currentBlocks.length = 0;
 		updateCurrentBlocks();
 	}
+
+	function executeLoop(startIndex, endIndex, console, innerNum) {
 	
-	function executeLoop(startIndex, endIndex, console) {
 		var endItem = currentBlocks[endIndex];
 		// Number of loops
 		for (var i = 0; i < endItem.loops; ++i) {
@@ -218,7 +220,7 @@ Game1 = function() {
 				var command = blockToCommand(currentBlocks[startIndex + j]);
 				if (command == 'loopOpen') {
 					var innerEndIndex = currentBlocks.indexOf(currentBlocks[j].partner);
-					executeLoop(j, innerEndIndex, console);
+					executeLoop(j, innerEndIndex, console, innerNum+1);
 					j = innerEndIndex;
 				}
 				else {
@@ -226,6 +228,7 @@ Game1 = function() {
 				}
 			}
 		}
+
 	}
 	
 	// Used for the coding blocks
@@ -262,7 +265,8 @@ Game1 = function() {
 				closeLoop.original = false;
 				closeLoop.events.onDragStop.add(fixLocation);
 				closeLoop.events.onInputDown.add(function() {
-					closeLoop.loops += 1;
+					if (closeLoop.loops < 99)
+						closeLoop.loops += 1;
 					item.loops = closeLoop.loops;
 				});
 				
@@ -404,6 +408,11 @@ Game1 = function() {
             this.console.Update(1);
         }
         this.player.Update();
+
+		if(isWinConditionReached())
+		{
+			this.popup.Show("CONGRATS!\r\nYou beat the level");
+		}
     }
 
 	this.ranFirstCommand = false;
@@ -428,7 +437,7 @@ Game1 = function() {
 			}
 			if (this.previousCommand < index && index < currentBlocks.length)
 			{
-				//block = currentBlocks[index + this.blockOffset];
+				//block = currentBlocks[index - this.blockOffset];
 				//this.graphics.clear();
 				if(currentBlocks[index].key.indexOf("loopOpen") >= 0) {
 					++this.blockOffset;
@@ -441,9 +450,6 @@ Game1 = function() {
 
 				this.previousCommand = index;
 			}
-			this.game.debug.text("INDEX: " + index, 10, 10);
-			this.game.debug.text("OFFSET: " + this.blockOffset, 10, 25);
-			this.game.debug.text("LENGTH: " + this.console.commandsToRun.length, 10, 40);
 		}
     }
 	
@@ -465,6 +471,7 @@ Game1 = function() {
 			case 'bow':
 				break;
 			case 'sword':
+				command = 'SwordAttack';
 				break;
 			case 'loopOpen':
 				command = 'loopOpen';
@@ -476,6 +483,15 @@ Game1 = function() {
 				break;
 		}
 		return command;
+	}
+
+	function isWinConditionReached()
+	{
+		if((typeof this.enemy != 'undefined') && !this.enemy.isAlive)
+		{
+			return true;
+		}
+		return false;
 	}
 };
 
@@ -522,36 +538,73 @@ Player.prototype.Update = function() {
 	this.sprite.body.velocity.x = this.xDir / len * SPEED;
 	this.sprite.body.velocity.y = this.yDir / len * SPEED;
 
-
     this.yDir = 0;
     this.xDir = 0;
 	
 	this.game.physics.arcade.collide(this.player, this.game.walls);
+
+	for(var i = 0; i < this.game.lavaTile.length; ++i)
+	{
+		if(this.game.physics.arcade.collide(this.sprite, this.game.lavaTile[i]))
+		{
+			this.game.console.StopCommands();
+			this.game.popup.Show("TRY AGAIN\r\nDeath by lava");
+		}
+	}
 };
 
 Player.prototype.MoveUp = function(){
     this.yDir -= 1;
 	this.sprite.animations.play('walk_up', true);
+	
+	this.ResetStatus();
+	this.up = true;
 };
 Player.prototype.MoveDown = function(){
     this.yDir += 1;
 	this.sprite.animations.play('walk_down', true);
+	
+	this.ResetStatus();
+	this.down = true;
 };
 Player.prototype.MoveLeft = function(){
     this.xDir -= 1;
 	this.sprite.animations.play('walk_left', true);
+	
+	this.ResetStatus();
+	this.left = true;
 };
 Player.prototype.MoveRight = function(){
     this.xDir += 1;
 	this.sprite.animations.play('walk_right', true);
+	
+	this.ResetStatus();
+	this.right = true;
 };
 Player.prototype.ResetPosition = function () {
 	this.sprite.position.x = 30;
 	this.sprite.position.y = 0;
 	
 	this.sprite.animations.play('down_idle', true);
+};
+Player.prototype.ResetStatus = function (){
+	this.up = false;
+	this.down = false;
+	this.left = false;
+	this.right = false;
+	this.attacking = false
 }
-
+Player.prototype.Attack = function () {
+	this.attacking = true;
+	if (this.right)
+		this.sprite.animations.play('attack_right', true);
+	else if (this.left)
+		this.sprite.animations.play('attack_left', true);
+	else if (this.up)
+		this.sprite.animations.play('attack_up', true);
+	else
+		this.sprite.animations.play('attack_down', true);		
+};
 
 
 Enemy = function(game1, x_start, y_start)
@@ -768,6 +821,9 @@ Console = function(game1)
             case "MoveRight":
                 this.game.player.MoveRight();
                 break;
+			case "SwordAttack":
+				this.game.player.Attack();
+				break;
             default:
                 break;
         }

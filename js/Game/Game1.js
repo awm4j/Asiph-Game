@@ -88,7 +88,7 @@ Game1 = function() {
         this.game.load.image('left','assets/blocks/left.png');
         this.game.load.image('right','assets/blocks/right.png');
         this.game.load.image('sword','assets/blocks/sword.png');
-        this.game.load.image('bow','assets/blocks/bow.png');
+        //this.game.load.image('bow','assets/blocks/bow.png');
         
 		this.game.load.image('loop','assets/blocks/loop.png');
         this.game.load.image('loopOpen','assets/blocks/loopOpen.png');
@@ -133,7 +133,7 @@ Game1 = function() {
 
 
 		// Programming blocks
-		var blockNames = ['up', 'down', 'left', 'right', 'sword', 'bow', 'loop'];
+		var blockNames = ['up', 'down', 'left', 'right', 'sword', 'loop'];
 		for (var i = 0; i < blockNames.length; ++i) {
 			var blockName = blockNames[i];
 			var item = this.game.add.sprite(gameWidth + 8 + 56 * (i % 7), 14 + 62 * Math.trunc(i / 7), blockName);
@@ -218,19 +218,22 @@ Game1 = function() {
 
         //Creating and adding commands to the console
         this.console = new Console(this);
+		
+		this.player.ResetPosition();
     }
 	
 	function playStop (button, pointer, isOver) {
 		// Stop
 		if (button.frame == 1) {
 			button.frame = 0;
+			this.player.ResetPosition();
 			this.console.callback = null;
 			this.console.StopCommands();
 		}
 		// Play
 		else {
-			this.player.sprite.position.x = 30;
-			this.player.sprite.position.y = 1;
+			button.frame = 1;
+			this.player.ResetPosition();
 			
 			if (currentBlocks.length > 0) {
 				this.console.ClearCommands();
@@ -249,6 +252,9 @@ Game1 = function() {
             	this.console.StartCommands(function() {
 					button.frame = 0;
 				});
+			}
+			else {
+				button.frame = 0;
 			}
 		}
 	}
@@ -271,7 +277,14 @@ Game1 = function() {
 			// Go through each loop
 			for (var j = 1; j < endIndex - startIndex; ++j) {
 				var command = blockToCommand(currentBlocks[startIndex + j]);
-				console.AddCommand(command + ':1');
+				if (command == 'loopOpen') {
+					var innerEndIndex = currentBlocks.indexOf(currentBlocks[j].partner);
+					executeLoop(j, innerEndIndex, console);
+					j = innerEndIndex;
+				}
+				else {
+					console.AddCommand(command + ':1');
+				}
 			}
 		}
 	}
@@ -466,7 +479,7 @@ Game1 = function() {
 
 var Player = function(game1) {
     this.game = game1;
-    this.sprite = game1.game.add.sprite(30, 1, 'player');
+    this.sprite = game1.game.add.sprite(30, 0, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
     this.sprite.anchor.setTo(0.5, 0.5);
@@ -503,6 +516,10 @@ Player.prototype.MoveLeft = function(){
 Player.prototype.MoveRight = function(){
     this.xDir += 1;
 };
+Player.prototype.ResetPosition = function () {
+	this.sprite.position.x = 30;
+	this.sprite.position.y = 0;
+}
 
 
 ControlManager = function(game1) {

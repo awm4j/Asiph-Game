@@ -227,22 +227,24 @@ Game1 = function() {
 			this.player.sprite.position.x = 30;
 			this.player.sprite.position.y = 1;
 			
-			this.console.ClearCommands();
-			// Go through the blocks and add them to console
-			for (var i = 0; i < currentBlocks.length; ++i) {
-				var command = blockToCommand(currentBlocks[i]);
-				if (command == 'loopOpen') {
-					var endIndex = currentBlocks.indexOf(currentBlocks[i].partner);
-					executeLoop(i, endIndex, this.console);
-					i = endIndex;
-				}
-				else {
-			        this.console.AddCommand(command + ':1');
-				}	
-		    }
-            this.console.StartCommands(function() {
-				button.frame = 0;
-			});
+			if (currentBlocks.length > 0) {
+				this.console.ClearCommands();
+				// Go through the blocks and add them to console
+				for (var i = 0; i < currentBlocks.length; ++i) {
+					var command = blockToCommand(currentBlocks[i]);
+					if (command == 'loopOpen') {
+						var endIndex = currentBlocks.indexOf(currentBlocks[i].partner);
+						executeLoop(i, endIndex, this.console);
+						i = endIndex;
+					}
+					else {
+			        	this.console.AddCommand(command + ':1');
+					}	
+		    	}
+            	this.console.StartCommands(function() {
+					button.frame = 0;
+				});
+			}
 		}
 	}
 

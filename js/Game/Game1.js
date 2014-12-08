@@ -224,7 +224,7 @@ Game1 = function() {
 			button.frame = 1;
 			
 			this.player.sprite.position.x = 30;
-			this.player.sprite.position.y = 0;
+			this.player.sprite.position.y = 1;
 			
 			this.console.ClearCommands();
 			// Go through the blocks and add them to console
@@ -306,8 +306,19 @@ Game1 = function() {
 		// Moved an old block around in the coding area
 		else {
 			var oldIndex = currentBlocks.indexOf(item);
-			var newIndex = getBlockIndex(item);		
-			currentBlocks.move(oldIndex, newIndex);
+			var newIndex = getBlockIndex(item);
+			
+			if (item.partner) {
+				if (item.key == 'loopClose' && currentBlocks.indexOf(item.partner) < newIndex) {
+					currentBlocks.move(oldIndex, newIndex);
+				}
+				else if (item.key == 'loopOpen' && currentBlocks.indexOf(item.partner) > newIndex) {
+					currentBlocks.move(oldIndex, newIndex);
+				}
+			}
+			else {
+				currentBlocks.move(oldIndex, newIndex);
+			}
 		}
 		
 		updateCurrentBlocks();
@@ -395,7 +406,7 @@ Game1 = function() {
 
 var Player = function(game1) {
     this.game = game1;
-    this.sprite = game1.game.add.sprite(30, 0, 'player');
+    this.sprite = game1.game.add.sprite(30, 1, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
     this.sprite.anchor.setTo(0.5, 0.5);

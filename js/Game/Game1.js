@@ -156,17 +156,25 @@ Game1 = function() {
     }
 	
 	function playStop (button, pointer, isOver) {
+		// Stop
 		if (button.frame == 1) {
 			button.frame = 0;
+			this.console.callback = null;
+			this.console.StopCommands();
 		}
+		// Play
 		else {
-			button.frame = 1;	
+			button.frame = 1;
+						
+			this.console.ClearCommands();
 			// Go through the blocks and add them to console
 			for (var i = 0; i < currentBlocks.length; ++i) {
 				var command = blockToCommand(currentBlocks[i]) + ':5';
 		        this.console.AddCommand(command);
 			}
-            this.console.StartCommands();
+            this.console.StartCommands(function() {
+				button.frame = 0;
+			});
 		}
 	}
 	
@@ -208,8 +216,7 @@ Game1 = function() {
 		// Moved an old block inside of the coding area
 		else {
 			var oldIndex = currentBlocks.indexOf(item);
-			var newIndex = getBlockIndex(item);
-			
+			var newIndex = getBlockIndex(item);		
 			currentBlocks.move(oldIndex, newIndex);
 		}
 		
@@ -429,6 +436,7 @@ Console = function(game1)
     this.commandsToRun = new Array();
     this.currentCommandIndex = 0;
     this.timer = 0;
+	this.callback = null;
 
     this.AddCommand = function(command)
     {
@@ -440,20 +448,26 @@ Console = function(game1)
         this.commandsToRun.length = 0;
     };
 
-    this.StartCommands = function()
+	// The callback is executed when the commands are finished running
+    this.StartCommands = function(callback)
     {
         this.isRunningCommands = true;
         this.currentCommandIndex = 0;
+		this.callback = callback;
     };
 
     this.StopCommands = function()
     {
+		this.timer = 0;
         this.isRunningCommands = false;
+		if (this.callback) {
+			this.callback();
+		}
     };
 
     this.Update = function(elapsedTime)
     {		
-        if(this.isRunningCommands) {			
+        if(this.isRunningCommands) {
             var currentCommand = this.commandsToRun[this.currentCommandIndex];
 
             var c = currentCommand.split(":");

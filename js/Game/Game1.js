@@ -600,19 +600,25 @@ Player.prototype.Update = function() {
 
 Player.prototype.MoveUp = function(){
     this.yDir -= 1;
+	this.sprite.animations.play('walk_up', true);
 };
 Player.prototype.MoveDown = function(){
     this.yDir += 1;
+	this.sprite.animations.play('walk_down', true);
 };
 Player.prototype.MoveLeft = function(){
     this.xDir -= 1;
+	this.sprite.animations.play('walk_left', true);
 };
 Player.prototype.MoveRight = function(){
     this.xDir += 1;
+	this.sprite.animations.play('walk_right', true);
 };
 Player.prototype.ResetPosition = function () {
 	this.sprite.position.x = 30;
 	this.sprite.position.y = 0;
+	
+	this.sprite.animations.play('down_idle', true);
 }
 
 

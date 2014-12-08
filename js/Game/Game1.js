@@ -504,7 +504,7 @@ Game1 = function() {
 			}
 			if (this.previousCommand < index && index < currentBlocks.length)
 			{
-				//block = currentBlocks[index + this.blockOffset];
+				//block = currentBlocks[index - this.blockOffset];
 				//this.graphics.clear();
 				if(currentBlocks[index].key.indexOf("loopOpen") >= 0) {
 					++this.blockOffset;
@@ -521,7 +521,6 @@ Game1 = function() {
 			this.game.debug.text("OFFSET: " + this.blockOffset, 10, 25);
 			this.game.debug.text("LENGTH: " + this.console.commandsToRun.length, 10, 40);
 		}
-		this.game.debug.text("ISLOOPING: " + isLoopExecuting, 10, 55);
     }
 	
 	function blockToCommand(item) {

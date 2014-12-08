@@ -458,7 +458,7 @@ Game1 = function() {
     function Update() {
 
         if(!this.isGamePaused) {
-            if (this.controlManager.IsArrowKeyUp_Pressed()) {
+            /*if (this.controlManager.IsArrowKeyUp_Pressed()) {
                 this.player.MoveUp();
             }
             if (this.controlManager.IsArrowKeyDown_Pressed()) {
@@ -470,7 +470,7 @@ Game1 = function() {
             }
             if (this.controlManager.IsArrowKeyRight_Pressed()) {
                 this.player.MoveRight();
-            }
+            }*/
 
             this.console.Update(1);
         }
@@ -497,7 +497,7 @@ Game1 = function() {
 				this.blockOffset = 0;
 				this.graphics.drawRect(block.x, block.y, block.width, block.height);
 			}
-			if (this.previousCommand != index)
+			if (this.previousCommand < index && index < currentBlocks.length)
 			{
 				//block = currentBlocks[index + this.blockOffset];
 				//this.graphics.clear();
@@ -505,8 +505,8 @@ Game1 = function() {
 					++this.blockOffset;
 				}
 
-				if((index + this.blockOffset) <= this.console.commandsToRun.length - 1) {
-					block = currentBlocks[index + this.blockOffset];
+				if((index + this.blockOffset) <= currentBlocks.length - 1) {
+					//block = currentBlocks[index + this.blockOffset];
 					this.graphics.drawRect(block.position.x, block.position.y, block.width, block.height);
 				}
 
@@ -762,8 +762,9 @@ Console = function(game1)
 		this.timer = 0;
         this.isRunningCommands = false;
 		this.game.ranFirstCommand = false;
-		//this.game.game.world.remove(this.game.graphicsGroup);
-		this.game.graphics.clear();
+		if(!(typeof this.game.graphics === 'undefined')) {
+			this.game.graphics.clear();
+		}
 		if (this.callback) {
 			this.callback();
 		}

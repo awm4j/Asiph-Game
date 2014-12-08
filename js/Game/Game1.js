@@ -73,7 +73,8 @@ Game1 = function() {
         this.game.load.atlasJSONHash('mainCharDie', 'assets/mainChar/die.png', 'assets/mainChar/die.json');
         */
 		this.game.load.atlasJSONHash('playerAnimation', 'assets/mainPlayer.png', 'assets/mainPlayer.json');
-		
+		this.game.load.atlasJSONHash('enemy1Animation', 'assets/enemy1.png', 'assets/enemy1.json');
+		/*
 		this.game.load.atlasJSONHash('humanEnemyWalkUpAnim', 'assets/humanEnemy/wU.png', 'assets/humanEnemy/wU.json');
         this.game.load.atlasJSONHash('humanEnemyWalkDownAnim', 'assets/humanEnemy/wD.png', 'assets/humanEnemy/wD.json');
         this.game.load.atlasJSONHash('humanEnemyWalkLeftAnim', 'assets/humanEnemy/wL.png', 'assets/humanEnemy/wL.json');
@@ -83,7 +84,7 @@ Game1 = function() {
         this.game.load.atlasJSONHash('humanEnemyAttackLeftAnim', 'assets/humanEnemy/aL.png', 'assets/humanEnemy/aL.json');
         this.game.load.atlasJSONHash('humanEnemyAttackRightAnim', 'assets/humanEnemy/aR.png', 'assets/humanEnemy/aR.json');
         this.game.load.atlasJSONHash('humanEnemyDie', 'assets/humanEnemy/die.png', 'assets/humanEnemy/die.json');
-        
+        */
 		
 		this.game.load.spritesheet('btnOk', 'assets/btnOk.png', 200, 50)
         
@@ -132,6 +133,7 @@ Game1 = function() {
 		
 		
 		this.player = new Player(this);
+		this.enemy = new Enemy(this);
 		
 		this.play = this.game.add.button(totalWidth - 70, totalHeight - 70, 'play', playStop, this);
 		this.trash = this.game.add.button(totalWidth - 123, totalHeight - 70, 'trash', clearCommands, this, 0, 0, 1);
@@ -161,7 +163,7 @@ Game1 = function() {
         mCaL   = this.game.add.sprite(50, 400, 'mainCharAttackLeftAnim');
         mCaR  = this.game.add.sprite(50, 450, 'mainCharAttackRightAnim');
         mCDIE = this.game.add.sprite(50, 0, 'mainCharDie');
-*/
+
 
 		
 		hEwU = this.game.add.sprite(150, 60, 'humanEnemyWalkUpAnim');
@@ -187,7 +189,7 @@ Game1 = function() {
 		mCaL.animations.add('run');
 		mCaR.animations.add('run');
 		mCDIE.animations.add('run');
-		*/
+		
 		
 		hEwU.animations.add('run');
 		hEwD.animations.add('run');
@@ -212,7 +214,7 @@ Game1 = function() {
 		mCaL.animations.play('run', 5, true);
 		mCaR.animations.play('run', 5, true);
 		mCDIE.animations.play('run', 5, true);
-		*/
+		
 		hEwU.animations.play('run', 5, true);
 		hEwD.animations.play('run', 5, true);
 		hEwL.animations.play('run', 5, true);
@@ -222,7 +224,7 @@ Game1 = function() {
 		hEaL.animations.play('run', 5, true);
 		hEaR.animations.play('run', 5, true);
 		hEDIE.animations.play('run', 5, true);
-		
+		*/
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
 
 		//This will add virtual keys on the game board
@@ -272,8 +274,9 @@ Game1 = function() {
 	}
 
 	function clearCommands() {
-		for(var i = 0; i < currentBlocks.length; ++i)
-		{
+		for(var i = 0; i < currentBlocks.length; ++i) {
+			if (currentBlocks[i].text)
+				currentBlocks[i].text.destroy();
 			currentBlocks[i].destroy();
 		}
 		currentBlocks.length = 0;
@@ -599,6 +602,7 @@ Player.prototype.Update = function() {
 
     this.yDir = 0;
     this.xDir = 0;
+	
 };
 
 Player.prototype.MoveUp = function(){
@@ -632,7 +636,25 @@ Enemy = function(game1, x_start, y_start)
 	this.x_pos = x_start;
 	this.y_pos = y_start;
 	this.isAlive = true;
+	
+	this.sprite = game1.game.add.sprite(200,200,'enemy1Animation');
+	
+	this.sprite.animations.add( 'walk_left',  Phaser.Animation.generateFrameNames('walkLeft.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'walk_right',  Phaser.Animation.generateFrameNames('walkRight.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'walk_up',  Phaser.Animation.generateFrameNames('walkUp.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'walk_down',  Phaser.Animation.generateFrameNames('walkDown.' , 1 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'die',  Phaser.Animation.generateFrameNames('die.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_left',  Phaser.Animation.generateFrameNames('attackLeft.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_right', Phaser.Animation.generateFrameNames('attackRight.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_up',  Phaser.Animation.generateFrameNames('attackUp.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'attack_down', Phaser.Animation.generateFrameNames('attackDown.' , 0 ,  8, ''), 10, true);
+	this.sprite.animations.add( 'left_idle', Phaser.Animation.generateFrameNames('walkLeft.' , 0 , 0, ''), 10, true);
+	this.sprite.animations.add( 'right_idle', Phaser.Animation.generateFrameNames('walkRight.' , 0 ,  0, ''), 10, true);
+	this.sprite.animations.add( 'up_idle', Phaser.Animation.generateFrameNames('walkUp.' , 0 ,  0, ''), 10, true);
+	this.sprite.animations.add( 'down_idle', Phaser.Animation.generateFrameNames('walkDown.' , 0 ,  0, ''), 10, true);
 
+	this.sprite.animations.play('down_idle', true);
+	
 	this.Update = function(elapsedTime) {
 
 	}

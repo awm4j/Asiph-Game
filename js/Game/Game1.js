@@ -93,6 +93,7 @@ Game1 = function() {
 		
 		// Play/Stop Button
         this.game.load.spritesheet('play','assets/play.png', 48, 48);
+		this.game.load.spritesheet('trash', 'assets/trash.png', 48, 48);
 
         this.game.load.spritesheet('btnArrowUp', 'assets/GamePad/keyArrowUp.png', 50, 50);
         this.game.load.spritesheet('btnArrowDown', 'assets/GamePad/keyArrowDown.png', 50, 50);
@@ -121,6 +122,7 @@ Game1 = function() {
         cursors = this.game.input.keyboard.createCursorKeys();
 
 		this.play = this.game.add.button(totalWidth - 70, totalHeight - 70, 'play', playStop, this);
+		this.trash = this.game.add.button(totalWidth - 123, totalHeight - 70, 'trash', clearCommands, this, 0, 0, 1);
 
 	    //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400)
 
@@ -204,7 +206,8 @@ Game1 = function() {
 		
         this.popup = new PopupWindow(this, 50, 50, 500, 400);
 
-        this.vGamePad = new VGamePad(this);
+		//This will add virtual keys on the game board
+        //this.vGamePad = new VGamePad(this);
         this.controlManager = new ControlManager(this);
 
 
@@ -221,21 +224,33 @@ Game1 = function() {
 		}
 		// Play
 		else {
-			button.frame = 1;
-			
 			this.player.sprite.position.x = 30;
 			this.player.sprite.position.y = 0;
-			
-			this.console.ClearCommands();
-			// Go through the blocks and add them to console
-			for (var i = 0; i < currentBlocks.length; ++i) {
-				var command = blockToCommand(currentBlocks[i]) + ':1';
-		        this.console.AddCommand(command);
+
+			if(currentBlocks.length > 0) {
+				button.frame = 1;
+				this.console.ClearCommands();
+				// Go through the blocks and add them to console
+				for (var i = 0; i < currentBlocks.length; ++i) {
+					var command = blockToCommand(currentBlocks[i]) + ':1';
+					this.console.AddCommand(command);
+				}
+
+				this.console.StartCommands(function () {
+					button.frame = 0;
+				});
 			}
-            this.console.StartCommands(function() {
-				button.frame = 0;
-			});
 		}
+	}
+
+	function clearCommands()
+	{
+		for(var i = 0; i < currentBlocks.length; ++i)
+		{
+			currentBlocks[i].destroy();
+		}
+		currentBlocks.length = 0;
+		updateCurrentBlocks();
 	}
 	
 	// Used for the coding blocks
@@ -562,8 +577,12 @@ Console = function(game1)
     };
 
     this.Update = function(elapsedTime)
-    {		
-        if(this.isRunningCommands) {
+    {
+		if(this.isRunningCommands && this.commandsToRun.length <= 0)
+		{
+			this.StopCommands();
+		}
+        else if(this.isRunningCommands) {
             var currentCommand = this.commandsToRun[this.currentCommandIndex];
 
             var c = currentCommand.split(":");

@@ -365,6 +365,8 @@ Game1 = function() {
 				if (j != -1) {
 					currentBlocks.splice(j, 1);
 				}
+				item.text.destroy();
+				item.partner.text.destroy();
 				item.partner.destroy();
 			}
 			
@@ -429,7 +431,7 @@ Game1 = function() {
 						item.text
 						break;
 					case 'loopOpen':
-						item.text.x = item.x + 30;
+						item.text.x = item.x + 24;
 						item.text.y = item.y + 8;
 						break;
 					default:

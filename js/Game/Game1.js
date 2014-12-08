@@ -42,6 +42,9 @@ Game1 = function() {
     this.controlManager;
     this.isGamePaused = false;
     this.vGamePad;
+	this.graphics;
+	this.graphicsGroup;
+	this.previousCommand = 0;
 	
 	var currentBlocks = [];
 	
@@ -85,7 +88,7 @@ Game1 = function() {
         this.game.load.image('left','assets/blocks/left.png');
         this.game.load.image('right','assets/blocks/right.png');
         this.game.load.image('sword','assets/blocks/sword.png');
-        this.game.load.image('bow','assets/blocks/bow.png');
+        //this.game.load.image('bow','assets/blocks/bow.png');
         
 		this.game.load.image('loop','assets/blocks/loop.png');
         this.game.load.image('loopOpen','assets/blocks/loopOpen.png');
@@ -112,6 +115,8 @@ Game1 = function() {
 		this.game.add.tileSprite(0, 0, gameWidth, totalHeight, 'background');
         this.game.add.tileSprite(gameWidth, 0, kodingWidth, topSec, 'background3');
         this.game.add.tileSprite(gameWidth, topSec, kodingWidth, botSec, 'background2');
+
+
 		
 		this.game.world.setBounds(0, 0, gameWidth, totalHeight);
 
@@ -128,7 +133,7 @@ Game1 = function() {
 
 
 		// Programming blocks
-		var blockNames = ['up', 'down', 'left', 'right', 'sword', 'bow', 'loop'];
+		var blockNames = ['up', 'down', 'left', 'right', 'sword', 'loop'];
 		for (var i = 0; i < blockNames.length; ++i) {
 			var blockName = blockNames[i];
 			var item = this.game.add.sprite(gameWidth + 8 + 56 * (i % 7), 14 + 62 * Math.trunc(i / 7), blockName);
@@ -213,19 +218,22 @@ Game1 = function() {
 
         //Creating and adding commands to the console
         this.console = new Console(this);
+		
+		this.player.ResetPosition();
     }
 	
 	function playStop (button, pointer, isOver) {
 		// Stop
 		if (button.frame == 1) {
 			button.frame = 0;
+			this.player.ResetPosition();
 			this.console.callback = null;
 			this.console.StopCommands();
 		}
 		// Play
 		else {
-			this.player.sprite.position.x = 30;
-			this.player.sprite.position.y = 1;
+			button.frame = 1;
+			this.player.ResetPosition();
 			
 			if (currentBlocks.length > 0) {
 				this.console.ClearCommands();
@@ -244,6 +252,9 @@ Game1 = function() {
             	this.console.StartCommands(function() {
 					button.frame = 0;
 				});
+			}
+			else {
+				button.frame = 0;
 			}
 		}
 	}
@@ -406,9 +417,31 @@ Game1 = function() {
         this.player.Update();
     }
 
+	this.ranFirstCommand = false;
     ///Called every frame for drawing
     function Render() {
         this.popup.Render();
+
+		if(this.console.isRunningCommands)
+		{
+			var index = this.console.currentCommandIndex;
+			var block = currentBlocks[index];
+			if(!this.ranFirstCommand)
+			{
+				this.graphics = this.game.add.graphics(0,0);
+				this.graphics.lineStyle(3, 0x00FFFF, 1);
+				this.graphicsGroup = this.game.add.group();
+				this.graphicsGroup.add(this.graphics);
+
+				this.ranFirstCommand = true;
+			}
+			else if (this.previousCommand != index)
+			{
+				this.graphics.drawRect(block.x, block.y, block.width, block.height);
+			}
+
+			//this.graphics.beginFill(0x0000FF, 0.5);
+		}
     }
 	
 	function blockToCommand(item) {
@@ -446,7 +479,7 @@ Game1 = function() {
 
 var Player = function(game1) {
     this.game = game1;
-    this.sprite = game1.game.add.sprite(30, 1, 'player');
+    this.sprite = game1.game.add.sprite(30, 0, 'player');
     this.sprite.angle = 0;
     this.sprite.rotation = 0;
     this.sprite.anchor.setTo(0.5, 0.5);
@@ -483,6 +516,10 @@ Player.prototype.MoveLeft = function(){
 Player.prototype.MoveRight = function(){
     this.xDir += 1;
 };
+Player.prototype.ResetPosition = function () {
+	this.sprite.position.x = 30;
+	this.sprite.position.y = 0;
+}
 
 
 ControlManager = function(game1) {
@@ -607,6 +644,9 @@ Console = function(game1)
     {
 		this.timer = 0;
         this.isRunningCommands = false;
+		this.game.ranFirstCommand = false;
+		this.game.game.world.remove(this.game.graphicsGroup);
+
 		if (this.callback) {
 			this.callback();
 		}

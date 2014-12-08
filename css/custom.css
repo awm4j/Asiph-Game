@@ -62,5 +62,7 @@ canvas {
    margin : auto;
 }
 #phaser-game{
-	margin-bottom:20px;
+	padding-bottom:42px;
+	padding-top: 42px;
+	background-color: #0A8D67;
 }
